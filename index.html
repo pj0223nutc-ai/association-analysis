@@ -278,6 +278,7 @@
       animation: spin .7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes flashTab { 0%,100%{background:transparent;} 50%{background:var(--amber-light);} }
 
     /* ============================================================
        Data Preview Table
@@ -1104,6 +1105,12 @@ function processRawRows(rows, name) {
   showToast('success', '載入成功', `${name}：${rawData.length} 筆記錄，${N} 筆訂單，${productList.length} 種商品`);
   document.getElementById('dataEmptyState').style.display = 'none';
   document.getElementById('dataSummarySection').style.display = '';
+
+  // Auto-switch to analysis tab after 800ms so user can start analyzing immediately
+  setTimeout(() => {
+    switchTab('analysis');
+    showToast('info', '可以開始分析', '已自動切換到關聯分析頁面，請選擇目標商品後點擊「執行分析」');
+  }, 800);
 }
 
 function clearData() {
@@ -1206,6 +1213,10 @@ function populateProductSelect() {
   const sel = document.getElementById('targetProduct');
   sel.innerHTML = '<option value="">— 請選擇目標商品 —</option>' +
     productList.map(p => `<option value="${p}">${p}</option>`).join('');
+  // Auto-select first product for convenience
+  if (productList.length > 0) {
+    sel.value = productList[0];
+  }
 }
 
 function filterProductSelect() {
@@ -1260,8 +1271,21 @@ function resetThresholds() {
 // ================================================================
 function runAnalysis() {
   const target = document.getElementById('targetProduct').value;
-  if (!target) { showToast('warning', '未選商品', '請先選擇目標商品'); return; }
-  if (!N) { showToast('warning', '無資料', '請先在資料管理頁載入資料'); return; }
+  if (!N) {
+    showToast('warning', '尚未載入資料', '請先回到「資料管理」頁面上傳 Excel 或 CSV 檔案');
+    // Flash the data tab button to draw attention
+    const dataBtn = document.getElementById('tabBtn-data');
+    dataBtn.style.animation = 'none'; dataBtn.offsetHeight; // reflow
+    dataBtn.style.animation = 'flashTab 0.5s ease 3';
+    return;
+  }
+  if (!target) {
+    showToast('warning', '未選擇商品', '請在左側下拉選單中選擇一個目標商品');
+    document.getElementById('targetProduct').focus();
+    document.getElementById('targetProduct').style.borderColor = '#C17B7B';
+    setTimeout(() => { document.getElementById('targetProduct').style.borderColor = ''; }, 2000);
+    return;
+  }
 
   const minSup = parseFloat(document.getElementById('supportInput').value) || 0.03;
   const minCon = parseFloat(document.getElementById('confidenceInput').value) || 0.4;
