@@ -691,9 +691,10 @@
 
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
           <label style="font-size:.88rem; font-weight:600; color:var(--gray-700);">目標商品：</label>
-          <span style="padding:7px 14px; background:var(--primary-light); border:1.5px solid var(--primary); border-radius:var(--radius-sm); font-size:.88rem; font-weight:700; color:var(--primary-dark);">黃金搭檔（兒童青少年）</span>
+          <select id="s2-product-select" style="padding:7px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius-sm); font-family:inherit; font-size:.88rem; outline:none; background:var(--gray-50); max-width:280px;"></select>
           <button class="btn btn-accent btn-sm" onclick="filterByProduct()">篩選</button>
         </div>
+        <div style="font-size:.78rem; color:var(--gray-500); margin-bottom:10px;">📌 作業題目：黃金搭檔（兒童青少年），但你可以選擇任何商品來探索</div>
 
         <div id="s2-result-info" style="font-size:.85rem; color:var(--gray-700); margin-bottom:8px; display:none;">
         </div>
@@ -779,25 +780,10 @@
         </div>
       </div>
 
-      <!-- Verification -->
+      <!-- Verification (dynamically populated) -->
       <div class="verify-section">
-        <div class="verify-label">✏️ 找出 4 個最常共現的商品（目標商品本身除外）</div>
-        <div class="input-group">
-          <label>黃金搭檔（女士）出現在幾筆訂單？</label>
-          <input type="number" id="s3-q1" placeholder="輸入數字" />
-        </div>
-        <div class="input-group">
-          <label>威士雅金絲燕窩出現在幾筆訂單？</label>
-          <input type="number" id="s3-q2" placeholder="輸入數字" />
-        </div>
-        <div class="input-group">
-          <label>張裕葡萄酒禮盒出現在幾筆訂單？</label>
-          <input type="number" id="s3-q3" placeholder="輸入數字" />
-        </div>
-        <div class="input-group">
-          <label>劍南春52度出現在幾筆訂單？</label>
-          <input type="number" id="s3-q4" placeholder="輸入數字" />
-        </div>
+        <div class="verify-label">✏️ 找出前 4 個最常共現的商品（目標商品本身除外）</div>
+        <div id="s3-verify-inputs"></div>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="verifyStep3()">確認並繼續</button>
         </div>
@@ -844,25 +830,10 @@
         <div class="summary-bar" id="s4-summary"></div>
       </div>
 
-      <!-- Verification -->
+      <!-- Verification (dynamically populated) -->
       <div class="verify-section">
         <div class="verify-label">✏️ 輸入支援度（小數點後 4 位，誤差 ±0.001 可接受）</div>
-        <div class="input-group">
-          <label>黃金搭檔（女士）支援度：</label>
-          <input type="number" step="0.0001" id="s4-q1" placeholder="0.0000" />
-        </div>
-        <div class="input-group">
-          <label>威士雅金絲燕窩支援度：</label>
-          <input type="number" step="0.0001" id="s4-q2" placeholder="0.0000" />
-        </div>
-        <div class="input-group">
-          <label>張裕葡萄酒禮盒支援度：</label>
-          <input type="number" step="0.0001" id="s4-q3" placeholder="0.0000" />
-        </div>
-        <div class="input-group">
-          <label>劍南春52度支援度：</label>
-          <input type="number" step="0.0001" id="s4-q4" placeholder="0.0000" />
-        </div>
+        <div id="s4-verify-inputs"></div>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="verifyStep4()">確認並繼續</button>
         </div>
@@ -895,8 +866,8 @@
         <span class="f-var">|X∩Y|</span>
         <span class="f-op"> ÷ </span>
         <span class="f-var">|X|</span><br>
-        <span style="font-size:.78rem; color:#C9B99A;">
-          |X| = 包含目標商品 X 的訂單數（34）
+        <span style="font-size:.78rem; color:#C9B99A;" id="s5-x-count-label">
+          |X| = 包含目標商品 X 的訂單數
         </span>
       </div>
 
@@ -910,25 +881,10 @@
         <div class="summary-bar" id="s5-summary"></div>
       </div>
 
-      <!-- Verification -->
+      <!-- Verification (dynamically populated) -->
       <div class="verify-section">
         <div class="verify-label">✏️ 輸入信賴度（小數點後 4 位，誤差 ±0.001 可接受）</div>
-        <div class="input-group">
-          <label>黃金搭檔（女士）信賴度：</label>
-          <input type="number" step="0.0001" id="s5-q1" placeholder="0.0000" />
-        </div>
-        <div class="input-group">
-          <label>威士雅金絲燕窩信賴度：</label>
-          <input type="number" step="0.0001" id="s5-q2" placeholder="0.0000" />
-        </div>
-        <div class="input-group">
-          <label>張裕葡萄酒禮盒信賴度：</label>
-          <input type="number" step="0.0001" id="s5-q3" placeholder="0.0000" />
-        </div>
-        <div class="input-group">
-          <label>劍南春52度信賴度：</label>
-          <input type="number" step="0.0001" id="s5-q4" placeholder="0.0000" />
-        </div>
+        <div id="s5-verify-inputs"></div>
         <div class="btn-row">
           <button class="btn btn-primary" onclick="verifyStep5()">確認並繼續</button>
         </div>
@@ -1042,23 +998,38 @@ for (const [orderId, products] of Object.entries(RAW_ORDERS)) {
   }
 }
 
-// ===== Constants =====
-const TARGET_PRODUCT = "黃金搭檔（兒童青少年）";
+// ===== Constants & Dynamic State =====
 const MIN_SUPPORT = 0.03;
 const MIN_CONFIDENCE = 0.4;
 const TOTAL_ORDERS = Object.keys(RAW_ORDERS).length; // 984
 
-// Target orders: orders containing target product
-const TARGET_ORDERS = Object.keys(RAW_ORDERS).filter(k => RAW_ORDERS[k].includes(TARGET_PRODUCT));
-// TARGET_ORDERS.length == 34
+// Dynamic: changes when user picks a different target in Step 2
+let TARGET_PRODUCT = "黃金搭檔（兒童青少年）";
+let TARGET_ORDERS = [];
+let ASSOC_PRODS = [];
 
-// Top 4 associated products (excluding target itself)
-const ASSOC_PRODS = [
-  { name: "黃金搭檔（女士）",   count: 33 },
-  { name: "威士雅金絲燕窩",     count: 20 },
-  { name: "張裕葡萄酒禮盒",     count: 16 },
-  { name: "劍南春52度",         count: 7  }
-];
+// Recompute all dynamic answers based on current TARGET_PRODUCT
+function recomputeForTarget(target) {
+  TARGET_PRODUCT = target;
+  TARGET_ORDERS = Object.keys(RAW_ORDERS).filter(k => RAW_ORDERS[k].includes(target));
+
+  // Count co-occurring products in target orders
+  const freq = {};
+  TARGET_ORDERS.forEach(oid => {
+    RAW_ORDERS[oid].forEach(p => {
+      if (p !== target) freq[p] = (freq[p] || 0) + 1;
+    });
+  });
+
+  // Sort by count descending, take top 4
+  ASSOC_PRODS = Object.entries(freq)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map(([name, count]) => ({ name, count }));
+}
+
+// Initialize with default target
+recomputeForTarget(TARGET_PRODUCT);
 
 // ===== Progress State =====
 let completedSteps = 0;
@@ -1201,11 +1172,34 @@ function verifyStep1() {
 
 // ===== STEP 2 =====
 function initStep2() {
-  // Target product is fixed by the assignment
+  const sel = document.getElementById("s2-product-select");
+  const products = [...new Set(RECORDS.map(r => r.product))].sort();
+  sel.innerHTML = "";
+  // Put default target first
+  const defaultTarget = "黃金搭檔（兒童青少年）";
+  const opt0 = document.createElement("option");
+  opt0.value = defaultTarget; opt0.textContent = defaultTarget;
+  sel.appendChild(opt0);
+  products.filter(p => p !== defaultTarget).forEach(p => {
+    const o = document.createElement("option");
+    o.value = p; o.textContent = p;
+    sel.appendChild(o);
+  });
 }
 
 function filterByProduct() {
-  const product = TARGET_PRODUCT;
+  const product = document.getElementById("s2-product-select").value;
+  // Recompute all dynamic answers for this target
+  recomputeForTarget(product);
+  // Reset steps 3-6 if they were completed (answers changed)
+  if (completedSteps >= 2) {
+    for (let i = 3; i <= 6; i++) {
+      const card = document.getElementById("step-" + i);
+      if (card) card.classList.remove("completed");
+      const dot = document.getElementById("dot-" + i);
+      if (dot) { dot.classList.remove("done"); dot.classList.remove("active"); }
+    }
+  }
   const filtered = RECORDS.filter(r => r.product === product);
 
   const infoEl = document.getElementById("s2-result-info");
@@ -1228,7 +1222,7 @@ function filterByProduct() {
 }
 
 function dedupOrders() {
-  const product = TARGET_PRODUCT;
+  const product = document.getElementById("s2-product-select").value;
   const orders = [...new Set(RECORDS.filter(r => r.product === product).map(r => r.order))];
 
   const badge = document.getElementById("s2-dedup-badge");
@@ -1242,7 +1236,7 @@ function dedupOrders() {
   document.getElementById("s2-dedup-result").style.display = "block";
 
   // Pre-fill verification
-  {
+  if (product === TARGET_PRODUCT) {
     document.getElementById("s2-q1").value = orders.length;
     document.getElementById("s2-q1").classList.add("correct");
   }
@@ -1324,6 +1318,13 @@ function buildFreqTable() {
 
   document.getElementById("s3-freq-wrap").style.display = "block";
 
+  // Dynamically populate verification inputs
+  document.getElementById("s3-verify-inputs").innerHTML = ASSOC_PRODS.map((p, i) => `
+    <div class="input-group">
+      <label>${p.name} 出現在幾筆訂單？</label>
+      <input type="number" id="s3-q${i+1}" placeholder="輸入數字" />
+    </div>`).join("");
+
   // Pre-fill verification
   ASSOC_PRODS.forEach((p, i) => {
     const input = document.getElementById(`s3-q${i + 1}`);
@@ -1332,8 +1333,8 @@ function buildFreqTable() {
 }
 
 function verifyStep3() {
-  const answers = [33, 20, 16, 7];
-  const ids = ["s3-q1", "s3-q2", "s3-q3", "s3-q4"];
+  const answers = ASSOC_PRODS.map(p => p.count);
+  const ids = ASSOC_PRODS.map((p, i) => `s3-q${i+1}`);
   const fb = document.getElementById("fb-3");
   let ok = true;
   ids.forEach((id, i) => {
@@ -1358,6 +1359,12 @@ function verifyStep3() {
 
 // ===== STEP 4: Support Calculator =====
 function initStep4() {
+  // Dynamically populate verification inputs
+  document.getElementById("s4-verify-inputs").innerHTML = ASSOC_PRODS.map((p, i) => `
+    <div class="input-group">
+      <label>${p.name} 支援度：</label>
+      <input type="number" step="0.0001" id="s4-q${i+1}" placeholder="0.0000" />
+    </div>`).join("");
   const container = document.getElementById("s4-calc-cards");
   container.innerHTML = ASSOC_PRODS.map((p, i) => `
     <div class="calc-card" id="s4-card-${i}">
@@ -1403,7 +1410,7 @@ function updateSupportSummary() {
 
 function verifyStep4() {
   const answers = ASSOC_PRODS.map(p => p.count / TOTAL_ORDERS);
-  const ids = ["s4-q1", "s4-q2", "s4-q3", "s4-q4"];
+  const ids = ASSOC_PRODS.map((p, i) => `s4-q${i+1}`);
   const fb = document.getElementById("fb-4");
   let ok = true;
   ids.forEach((id, i) => {
@@ -1427,9 +1434,17 @@ function verifyStep4() {
 }
 
 // ===== STEP 5: Confidence Calculator =====
-const TARGET_COUNT = TARGET_ORDERS.length; // 34
-
 function initStep5() {
+  const TARGET_COUNT = TARGET_ORDERS.length;
+  // Update the formula label
+  const label = document.getElementById("s5-x-count-label");
+  if (label) label.textContent = `|X| = 包含目標商品 X 的訂單數（${TARGET_COUNT}）`;
+  // Dynamically populate verification inputs
+  document.getElementById("s5-verify-inputs").innerHTML = ASSOC_PRODS.map((p, i) => `
+    <div class="input-group">
+      <label>${p.name} 信賴度：</label>
+      <input type="number" step="0.0001" id="s5-q${i+1}" placeholder="0.0000" />
+    </div>`).join("");
   const container = document.getElementById("s5-calc-cards");
   container.innerHTML = ASSOC_PRODS.map((p, i) => `
     <div class="calc-card" id="s5-card-${i}">
@@ -1439,7 +1454,7 @@ function initStep5() {
         <input class="calc-field" id="s5-xy-${i}" type="number" value="${p.count}" />
         <span>÷</span>
         <span class="calc-label">|X| =</span>
-        <input class="calc-field readonly" id="s5-x-${i}" type="number" value="${TARGET_COUNT}" readonly />
+        <input class="calc-field readonly" id="s5-x-${i}" type="number" value="${TARGET_ORDERS.length}" readonly />
         <span>=</span>
         <div class="calc-result" id="s5-res-${i}">?</div>
         <button class="btn btn-accent btn-sm" onclick="calcConfidence(${i})">計算</button>
@@ -1474,8 +1489,8 @@ function updateConfidenceSummary() {
 }
 
 function verifyStep5() {
-  const answers = ASSOC_PRODS.map(p => p.count / TARGET_COUNT);
-  const ids = ["s5-q1", "s5-q2", "s5-q3", "s5-q4"];
+  const answers = ASSOC_PRODS.map(p => p.count / TARGET_ORDERS.length);
+  const ids = ASSOC_PRODS.map((p, i) => `s5-q${i+1}`);
   const fb = document.getElementById("fb-5");
   let ok = true;
   ids.forEach((id, i) => {
@@ -1505,7 +1520,7 @@ function initStep6() {
   const tbody = document.getElementById("s6-judge-tbody");
   tbody.innerHTML = ASSOC_PRODS.map((p, i) => {
     const sup = p.count / TOTAL_ORDERS;
-    const conf = p.count / TARGET_COUNT;
+    const conf = p.count / TARGET_ORDERS.length;
     return `<tr id="s6-row-${i}">
       <td class="prod-col">${p.name}</td>
       <td>${p.count}</td>
@@ -1556,7 +1571,7 @@ function updateRowHighlight(idx) {
 function autoJudge() {
   ASSOC_PRODS.forEach((p, i) => {
     const sup = p.count / TOTAL_ORDERS;
-    const conf = p.count / TARGET_COUNT;
+    const conf = p.count / TARGET_ORDERS.length;
     const supOk = sup >= MIN_SUPPORT;
     const confOk = conf >= MIN_CONFIDENCE;
     const isAssoc = supOk && confOk;
