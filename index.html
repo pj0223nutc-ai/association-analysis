@@ -691,8 +691,7 @@
 
         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
           <label style="font-size:.88rem; font-weight:600; color:var(--gray-700);">目標商品：</label>
-          <select id="s2-product-select" onchange="onProductChange()" style="padding:7px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius-sm); font-family:inherit; font-size:.88rem; outline:none; background:var(--gray-50);">
-          </select>
+          <span style="padding:7px 14px; background:var(--primary-light); border:1.5px solid var(--primary); border-radius:var(--radius-sm); font-size:.88rem; font-weight:700; color:var(--primary-dark);">黃金搭檔（兒童青少年）</span>
           <button class="btn btn-accent btn-sm" onclick="filterByProduct()">篩選</button>
         </div>
 
@@ -1202,32 +1201,11 @@ function verifyStep1() {
 
 // ===== STEP 2 =====
 function initStep2() {
-  // Populate product select
-  const sel = document.getElementById("s2-product-select");
-  const products = [...new Set(RECORDS.map(r => r.product))].sort();
-  sel.innerHTML = "";
-  // Put target first
-  const opt = document.createElement("option");
-  opt.value = TARGET_PRODUCT;
-  opt.textContent = TARGET_PRODUCT;
-  sel.appendChild(opt);
-  products.filter(p => p !== TARGET_PRODUCT).forEach(p => {
-    const o = document.createElement("option");
-    o.value = p; o.textContent = p;
-    sel.appendChild(o);
-  });
-}
-
-function onProductChange() {
-  // Reset when product changes
-  document.getElementById("s2-result-info").style.display = "none";
-  document.getElementById("s2-table-wrap").style.display = "none";
-  document.getElementById("btn-dedup").style.display = "none";
-  document.getElementById("s2-dedup-result").style.display = "none";
+  // Target product is fixed by the assignment
 }
 
 function filterByProduct() {
-  const product = document.getElementById("s2-product-select").value;
+  const product = TARGET_PRODUCT;
   const filtered = RECORDS.filter(r => r.product === product);
 
   const infoEl = document.getElementById("s2-result-info");
@@ -1250,7 +1228,7 @@ function filterByProduct() {
 }
 
 function dedupOrders() {
-  const product = document.getElementById("s2-product-select").value;
+  const product = TARGET_PRODUCT;
   const orders = [...new Set(RECORDS.filter(r => r.product === product).map(r => r.order))];
 
   const badge = document.getElementById("s2-dedup-badge");
@@ -1263,8 +1241,8 @@ function dedupOrders() {
 
   document.getElementById("s2-dedup-result").style.display = "block";
 
-  // If target product, pre-fill verification
-  if (product === TARGET_PRODUCT) {
+  // Pre-fill verification
+  {
     document.getElementById("s2-q1").value = orders.length;
     document.getElementById("s2-q1").classList.add("correct");
   }
