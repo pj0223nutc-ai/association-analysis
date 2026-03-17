@@ -32,8 +32,6 @@
       --radius-sm: 8px;
       --transition: .25s ease;
     }
-
-    /* ===== Reset & Base ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -46,486 +44,307 @@
 
     /* ===== Sticky Progress Bar ===== */
     #progress-bar-wrap {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: white;
-      border-bottom: 2px solid var(--gray-200);
+      position: sticky; top: 0; z-index: 100;
+      background: white; border-bottom: 2px solid var(--gray-200);
       padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      display: flex; align-items: center; gap: 14px;
       box-shadow: var(--shadow-sm);
     }
-    #progress-label {
-      font-size: .85rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      white-space: nowrap;
-      min-width: 72px;
-    }
-    #progress-track {
-      flex: 1;
-      height: 10px;
-      background: var(--gray-200);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    #progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      border-radius: 99px;
-      width: 0%;
-      transition: width .5s cubic-bezier(.4,0,.2,1);
-    }
-    .progress-dots {
-      display: flex;
-      gap: 6px;
-    }
+    #progress-label { font-size: .85rem; font-weight: 700; color: var(--primary-dark); white-space: nowrap; min-width: 72px; }
+    #progress-track { flex: 1; height: 10px; background: var(--gray-200); border-radius: 99px; overflow: hidden; }
+    #progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 99px; width: 0%; transition: width .5s cubic-bezier(.4,0,.2,1); }
+    .progress-dots { display: flex; gap: 6px; }
     .progress-dot {
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--gray-300);
-      background: white;
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--gray-300); background: white;
       display: flex; align-items: center; justify-content: center;
-      font-size: .6rem;
-      font-weight: 700;
-      color: var(--gray-500);
+      font-size: .6rem; font-weight: 700; color: var(--gray-500);
       transition: all var(--transition);
-      cursor: default;
     }
-    .progress-dot.active {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-    .progress-dot.done {
-      background: var(--green);
-      border-color: var(--green);
-      color: white;
-    }
+    .progress-dot.active { border-color: var(--primary); color: var(--primary); }
+    .progress-dot.done { background: var(--green); border-color: var(--green); color: white; }
 
     /* ===== Header ===== */
     .site-header {
       background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--accent) 100%);
-      color: white;
-      text-align: center;
-      padding: 40px 24px 36px;
+      color: white; text-align: center; padding: 40px 24px 36px;
     }
-    .site-header h1 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: .02em;
-      margin-bottom: 8px;
-    }
-    .site-header p {
-      font-size: .95rem;
-      opacity: .88;
-      max-width: 520px;
-      margin: 0 auto;
-    }
-    .header-badges {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
+    .site-header h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: .02em; margin-bottom: 8px; }
+    .site-header p { font-size: .95rem; opacity: .88; max-width: 520px; margin: 0 auto; }
+    .header-badges { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
     .badge {
-      background: rgba(255,255,255,.18);
-      border: 1px solid rgba(255,255,255,.3);
-      border-radius: 99px;
-      padding: 4px 12px;
-      font-size: .78rem;
-      backdrop-filter: blur(4px);
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 99px; padding: 4px 12px; font-size: .78rem; backdrop-filter: blur(4px);
     }
 
     /* ===== Main Layout ===== */
-    .main-wrap {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 28px 20px 60px;
-    }
+    .main-wrap { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
 
     /* ===== Step Cards ===== */
     .step-card {
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 20px;
-      overflow: hidden;
+      background: white; border-radius: var(--radius); box-shadow: var(--shadow-sm);
+      margin-bottom: 20px; overflow: hidden;
       border: 1.5px solid var(--gray-200);
       transition: box-shadow var(--transition), border-color var(--transition);
     }
-    .step-card.active {
-      border-color: var(--accent);
-      box-shadow: var(--shadow-md);
-    }
-    .step-card.completed {
-      border-color: var(--green);
-    }
-    .step-card.locked {
-      opacity: .6;
-    }
+    .step-card.active { border-color: var(--accent); box-shadow: var(--shadow-md); }
+    .step-card.completed { border-color: var(--green); }
+    .step-card.locked { opacity: .55; pointer-events: none; }
 
-    /* Step header row */
     .step-header {
-      display: flex;
-      align-items: center;
-      padding: 16px 20px;
-      cursor: pointer;
-      user-select: none;
-      gap: 14px;
-      background: var(--gray-50);
-      border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center; padding: 16px 20px;
+      cursor: pointer; user-select: none; gap: 14px;
+      background: var(--gray-50); border-bottom: 1px solid var(--gray-200);
       transition: background var(--transition);
     }
     .step-card.locked .step-header { cursor: default; }
-    .step-header:hover:not(.locked-header) { background: var(--primary-light); }
+    .step-header:hover { background: var(--primary-light); }
+    .step-card.locked .step-header:hover { background: var(--gray-50); }
 
     .step-badge {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: white;
-      font-weight: 800;
-      font-size: .9rem;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--primary); color: white;
+      font-weight: 800; font-size: .9rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .step-card.locked .step-badge { background: var(--gray-300); color: var(--gray-500); }
     .step-card.completed .step-badge { background: var(--green); }
 
     .step-title-wrap { flex: 1; }
-    .step-title-wrap h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--gray-800);
-    }
-    .step-title-wrap .step-subtitle {
-      font-size: .8rem;
-      color: var(--gray-500);
-      margin-top: 2px;
-    }
-
-    .step-status {
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-    .chevron {
-      font-size: .75rem;
-      color: var(--gray-500);
-      transition: transform var(--transition);
-      flex-shrink: 0;
-    }
+    .step-title-wrap h2 { font-size: 1rem; font-weight: 700; color: var(--gray-800); }
+    .step-title-wrap .step-subtitle { font-size: .8rem; color: var(--gray-500); margin-top: 2px; }
+    .step-status { font-size: 1.1rem; flex-shrink: 0; }
+    .chevron { font-size: .75rem; color: var(--gray-500); transition: transform var(--transition); flex-shrink: 0; }
     .step-card.open .chevron { transform: rotate(180deg); }
 
-    /* Step body */
-    .step-body {
-      display: none;
-      padding: 24px 22px;
-    }
+    .step-body { display: none; padding: 24px 22px; }
     .step-card.open .step-body { display: block; }
 
     /* ===== Teaching Box ===== */
     .teaching-box {
-      background: var(--primary-light);
-      border-left: 4px solid var(--primary);
+      background: var(--primary-light); border-left: 4px solid var(--primary);
       border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      padding: 14px 16px;
-      margin-bottom: 20px;
-      font-size: .93rem;
-      line-height: 1.65;
-      color: var(--gray-700);
+      padding: 14px 16px; margin-bottom: 20px;
+      font-size: .93rem; line-height: 1.65; color: var(--gray-700);
     }
-    .teaching-box .teach-label {
-      font-size: .7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--primary);
-      margin-bottom: 6px;
+    .teach-label {
+      font-size: .7rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--primary); margin-bottom: 6px;
     }
 
     /* ===== Formula Card ===== */
     .formula-card {
-      background: var(--gray-800);
-      border-radius: var(--radius-sm);
-      padding: 16px 18px;
-      margin: 16px 0;
+      background: var(--gray-800); border-radius: var(--radius-sm);
+      padding: 16px 18px; margin: 16px 0;
       font-family: "Courier New", "Consolas", monospace;
-      font-size: .92rem;
-      color: #F5EDE3;
-      line-height: 1.7;
+      font-size: .92rem; color: #F5EDE3; line-height: 1.7;
     }
     .formula-card .f-label {
-      font-size: .7rem;
-      letter-spacing: .1em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      font-size: .7rem; letter-spacing: .1em; color: var(--accent);
+      text-transform: uppercase; margin-bottom: 8px;
       font-family: "Microsoft JhengHei", sans-serif;
     }
     .f-var { color: #C4956A; font-weight: 700; }
     .f-op { color: #9B8AAE; }
     .f-num { color: #7ABDB0; }
     .f-result { color: #A8D5A2; font-weight: 700; }
-    .f-example {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,.1);
-      font-size: .85rem;
-      color: #C9B99A;
-    }
 
-    /* ===== Task Section ===== */
-    .task-section {
-      background: white;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius-sm);
-      padding: 18px 18px 16px;
-      margin-bottom: 16px;
+    /* ===== Interactive Tool Box ===== */
+    .tool-box {
+      background: #FDFAF7; border: 2px solid var(--accent);
+      border-radius: var(--radius); padding: 18px;
+      margin-bottom: 20px;
     }
-    .task-label {
-      font-size: .7rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--accent);
-      margin-bottom: 10px;
+    .tool-box-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--accent); margin-bottom: 14px;
     }
-    .task-question {
-      font-size: .94rem;
-      font-weight: 600;
-      color: var(--gray-700);
-      margin-bottom: 14px;
-      line-height: 1.5;
-    }
-
-    /* Input groups */
-    .input-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .input-group label {
-      font-size: .88rem;
-      color: var(--gray-700);
-      min-width: 180px;
-      font-weight: 500;
-    }
-    .input-group input[type="number"],
-    .input-group input[type="text"] {
-      width: 110px;
-      padding: 7px 10px;
-      border: 1.5px solid var(--gray-300);
-      border-radius: var(--radius-sm);
-      font-size: .9rem;
-      font-family: inherit;
-      color: var(--gray-800);
-      background: var(--gray-50);
-      transition: border-color var(--transition), box-shadow var(--transition);
-      outline: none;
-    }
-    .input-group input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-light);
-    }
-    .input-group input.correct {
-      border-color: var(--green);
-      background: var(--green-light);
-      color: var(--green-dark);
-    }
-    .input-group input.wrong {
-      border-color: var(--red);
-      background: var(--red-light);
-    }
-    .input-group .input-icon {
-      font-size: 1rem;
-      min-width: 20px;
-    }
-    .input-group input:disabled { cursor: not-allowed; opacity: .85; }
+    .tool-box-label .tool-icon { font-size: 1rem; }
 
     /* ===== Buttons ===== */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      border: none;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: .88rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all var(--transition);
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border: none; border-radius: var(--radius-sm);
+      font-family: inherit; font-size: .88rem; font-weight: 700;
+      cursor: pointer; transition: all var(--transition);
     }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
+    .btn-primary { background: var(--primary); color: white; }
     .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-    .btn-ghost {
-      background: transparent;
-      color: var(--primary);
-      border: 1.5px solid var(--primary);
-    }
+    .btn-ghost { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
     .btn-ghost:hover { background: var(--primary-light); }
     .btn-sm { padding: 6px 12px; font-size: .8rem; }
     .btn-green { background: var(--green); color: white; }
     .btn-green:hover { background: var(--green-dark); }
-    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .btn-accent { background: var(--accent); color: white; }
+    .btn-accent:hover { background: #A87A52; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
-
-    /* ===== Hint Box ===== */
-    .hint-toggle {
-      background: none;
-      border: none;
-      color: var(--amber);
-      font-size: .85rem;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 4px 0;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .hint-toggle:hover { color: var(--accent); text-decoration: underline; }
-    .hint-content {
-      background: var(--amber-light, #FCEEE0);
-      border: 1px solid var(--accent);
-      border-radius: var(--radius-sm);
-      padding: 12px 14px;
-      font-size: .87rem;
-      color: var(--gray-700);
-      margin-top: 8px;
-      display: none;
-      line-height: 1.6;
-    }
-    .hint-content.visible { display: block; }
-
-    /* ===== Feedback Messages ===== */
-    .feedback-msg {
-      display: none;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      font-size: .87rem;
-      font-weight: 600;
-      margin-top: 12px;
-      align-items: center;
-      gap: 8px;
-    }
-    .feedback-msg.visible { display: flex; }
-    .feedback-msg.success {
-      background: var(--green-light);
-      color: var(--green-dark);
-      border: 1px solid var(--green);
-    }
-    .feedback-msg.error {
-      background: var(--red-light);
-      color: #8B4545;
-      border: 1px solid var(--red);
-    }
-
-    /* ===== Reveal Panel ===== */
-    .reveal-panel {
-      display: none;
-      background: var(--gray-50);
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius-sm);
-      padding: 16px 18px;
-      margin-top: 16px;
-      animation: fadeSlideIn .3s ease;
-    }
-    .reveal-panel.visible { display: block; }
-    .reveal-panel h4 {
-      font-size: .88rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      margin-bottom: 10px;
-    }
-
-    @keyframes fadeSlideIn {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== Data Preview Table ===== */
+    /* ===== Data Table ===== */
     .table-wrap {
-      overflow-x: auto;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--gray-200);
-      margin: 14px 0;
+      overflow-x: auto; overflow-y: auto;
+      border-radius: var(--radius-sm); border: 1px solid var(--gray-200);
+      margin: 10px 0;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: .85rem;
-    }
-    thead { background: var(--primary); color: white; }
-    thead th {
-      padding: 9px 14px;
-      text-align: left;
-      font-weight: 700;
-      font-size: .82rem;
-      letter-spacing: .03em;
-      white-space: nowrap;
-    }
+    .table-wrap.max-h { max-height: 300px; }
+    table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+    thead { background: var(--primary); color: white; position: sticky; top: 0; z-index: 2; }
+    thead th { padding: 9px 14px; text-align: left; font-weight: 700; font-size: .82rem; white-space: nowrap; }
     tbody tr { border-bottom: 1px solid var(--gray-200); }
     tbody tr:last-child { border-bottom: none; }
     tbody tr:hover { background: var(--primary-light); }
-    tbody td {
-      padding: 8px 14px;
-      color: var(--gray-700);
-      font-size: .84rem;
-    }
+    tbody td { padding: 7px 14px; color: var(--gray-700); }
     .row-alt { background: var(--gray-50); }
-    .highlight-row { background: #FFF8E7 !important; font-weight: 700; }
-    .meet-threshold { background: var(--green-light) !important; }
-    .no-threshold { background: var(--red-light) !important; }
-
-    /* ===== Order ID List ===== */
-    .order-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .order-chip {
-      background: var(--primary-light);
-      border: 1px solid var(--accent);
-      border-radius: 6px;
-      padding: 3px 8px;
-      font-size: .75rem;
-      font-family: "Courier New", monospace;
-      color: var(--primary-dark);
+    .highlight-row td { background: #FFF8E7 !important; font-weight: 700; }
+    .meet-threshold td { background: var(--green-light) !important; }
+    .no-threshold td { background: var(--red-light) !important; }
+    .tag-target {
+      display: inline-block; background: var(--accent); color: white;
+      border-radius: 99px; padding: 1px 8px; font-size: .72rem; font-weight: 700;
+      margin-left: 6px;
     }
 
-    /* ===== Checkbox Group ===== */
-    .checkbox-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 12px 0;
-    }
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all var(--transition);
+    /* ===== Search Box ===== */
+    .search-wrap { position: relative; margin-bottom: 10px; }
+    .search-wrap input {
+      width: 100%; padding: 8px 12px 8px 34px;
+      border: 1.5px solid var(--gray-300); border-radius: var(--radius-sm);
+      font-family: inherit; font-size: .88rem; outline: none;
       background: var(--gray-50);
+      transition: border-color var(--transition);
+    }
+    .search-wrap input:focus { border-color: var(--primary); }
+    .search-wrap .search-icon {
+      position: absolute; left: 10px; top: 50%;
+      transform: translateY(-50%); color: var(--gray-500); font-size: .9rem;
+    }
+
+    /* ===== Stat Counter ===== */
+    .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+    .stat-chip {
+      flex: 1; min-width: 140px;
+      background: white; border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm); padding: 12px 14px;
+      text-align: center;
+    }
+    .stat-chip .stat-num {
+      font-size: 1.5rem; font-weight: 900; color: var(--primary-dark);
+      display: block; transition: all .3s;
+    }
+    .stat-chip .stat-desc { font-size: .75rem; color: var(--gray-500); margin-top: 2px; }
+    .stat-chip.revealed .stat-num { color: var(--green-dark); }
+
+    /* ===== Calc Card ===== */
+    .calc-card {
+      background: white; border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .calc-card .prod-name {
+      font-weight: 700; color: var(--primary-dark);
+      font-size: .9rem; margin-bottom: 10px;
+    }
+    .calc-row {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap; font-size: .9rem;
+    }
+    .calc-field {
+      width: 70px; padding: 6px 8px;
+      border: 1.5px solid var(--gray-300); border-radius: 6px;
+      font-family: "Courier New", monospace; font-size: .88rem;
+      text-align: center; outline: none; background: var(--gray-50);
+    }
+    .calc-field:focus { border-color: var(--primary); }
+    .calc-field.readonly { background: var(--primary-light); color: var(--primary-dark); cursor: default; }
+    .calc-result {
+      padding: 6px 12px; border-radius: 6px;
+      font-weight: 700; font-family: "Courier New", monospace;
+      font-size: .9rem; min-width: 80px; text-align: center;
+      border: 1.5px dashed var(--gray-300); color: var(--gray-500);
+    }
+    .calc-result.green { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+    .calc-result.red { background: var(--red-light); border-color: var(--red); color: #8B4545; }
+    .calc-label { font-size: .8rem; color: var(--gray-500); min-width: 60px; }
+    .threshold-badge { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+
+    /* ===== Summary Table for Step 6 ===== */
+    .judge-table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+    .judge-table thead th { background: var(--primary); color: white; padding: 8px 10px; text-align: center; font-size: .8rem; }
+    .judge-table tbody td { padding: 8px 10px; border-bottom: 1px solid var(--gray-200); text-align: center; }
+    .judge-table tbody tr:last-child td { border-bottom: none; }
+    .judge-table .prod-col { text-align: left; font-weight: 600; color: var(--gray-800); }
+    .toggle-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid var(--gray-300); background: white;
+      font-size: .85rem; cursor: pointer; transition: all var(--transition);
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .toggle-btn.yes { background: var(--green); border-color: var(--green); color: white; }
+    .toggle-btn.no { background: var(--red-light); border-color: var(--red); color: #8B4545; }
+    .judge-table tbody tr.assoc-row td { background: var(--green-light) !important; }
+    .judge-table tbody tr.not-assoc-row td { background: var(--red-light) !important; }
+
+    /* ===== Verification Section ===== */
+    .verify-section {
+      border-top: 1.5px dashed var(--gray-200);
+      margin-top: 18px; padding-top: 18px;
+    }
+    .verify-label {
+      font-size: .75rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--gray-500); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .input-group {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .input-group label { font-size: .88rem; color: var(--gray-700); min-width: 200px; font-weight: 500; }
+    .input-group input[type="number"],
+    .input-group input[type="text"] {
+      width: 110px; padding: 7px 10px;
+      border: 1.5px solid var(--gray-300); border-radius: var(--radius-sm);
+      font-size: .9rem; font-family: inherit; color: var(--gray-800);
+      background: var(--gray-50);
+      transition: border-color var(--transition), box-shadow var(--transition); outline: none;
+    }
+    .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+    .input-group input.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+    .input-group input.wrong { border-color: var(--red); background: var(--red-light); }
+    .input-group input:disabled { cursor: not-allowed; opacity: .85; }
+
+    /* ===== Feedback ===== */
+    .feedback-msg {
+      display: none; padding: 10px 14px; border-radius: var(--radius-sm);
+      font-size: .87rem; font-weight: 600; margin-top: 12px;
+      align-items: center; gap: 8px;
+    }
+    .feedback-msg.visible { display: flex; }
+    .feedback-msg.success { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green); }
+    .feedback-msg.error { background: var(--red-light); color: #8B4545; border: 1px solid var(--red); }
+
+    /* ===== Pill Tags ===== */
+    .pill { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: .75rem; font-weight: 700; }
+    .pill-green { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green); }
+    .pill-red { background: var(--red-light); color: #8B4545; border: 1px solid var(--red); }
+    .pill-amber { background: #FFF3E8; color: #7A5030; border: 1px solid var(--accent); }
+    .pill-purple { background: #F0ECF5; color: #6A5A80; border: 1px solid var(--purple); }
+
+    /* ===== Order Chips ===== */
+    .order-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .order-chip {
+      background: var(--primary-light); border: 1px solid var(--accent);
+      border-radius: 6px; padding: 3px 8px; font-size: .73rem;
+      font-family: "Courier New", monospace; color: var(--primary-dark);
+    }
+
+    /* ===== Checkbox Group (Step 6) ===== */
+    .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+    .check-item {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+      cursor: pointer; transition: all var(--transition); background: var(--gray-50);
     }
     .check-item:hover { border-color: var(--primary); background: var(--primary-light); }
     .check-item.selected { border-color: var(--primary); background: var(--primary-light); }
@@ -535,44 +354,21 @@
     .check-item label { cursor: pointer; font-size: .92rem; color: var(--gray-700); font-weight: 500; }
 
     /* ===== Celebration ===== */
-    #celebration {
-      display: none;
-      text-align: center;
-      padding: 32px 20px;
-      position: relative;
-      overflow: hidden;
-    }
+    #celebration { display: none; text-align: center; padding: 32px 20px; position: relative; overflow: hidden; }
     #celebration.visible { display: block; }
-    .celebration-title {
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--primary-dark);
-      margin-bottom: 8px;
-      animation: bounce .6s ease;
-    }
-    .celebration-sub {
-      font-size: 1rem;
-      color: var(--gray-500);
-      margin-bottom: 20px;
-    }
+    .celebration-title { font-size: 2rem; font-weight: 900; color: var(--primary-dark); margin-bottom: 8px; animation: bounce .6s ease; }
+    .celebration-sub { font-size: 1rem; color: var(--gray-500); margin-bottom: 20px; }
     .conclusion-box {
       background: linear-gradient(135deg, var(--primary-light), #FFF8F0);
-      border: 2px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 20px 22px;
-      text-align: left;
-      margin: 16px 0;
+      border: 2px solid var(--accent); border-radius: var(--radius);
+      padding: 20px 22px; text-align: left; margin: 16px 0;
     }
     .conclusion-box h4 { color: var(--primary-dark); font-size: 1rem; margin-bottom: 10px; }
     .conclusion-box p { font-size: .9rem; color: var(--gray-700); line-height: 1.65; }
     .biz-rec {
-      background: var(--green-light);
-      border: 1.5px solid var(--green);
-      border-radius: var(--radius-sm);
-      padding: 14px 16px;
-      margin-top: 12px;
-      font-size: .9rem;
-      color: var(--gray-700);
+      background: var(--green-light); border: 1.5px solid var(--green);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      margin-top: 12px; font-size: .9rem; color: var(--gray-700);
     }
     .biz-rec h5 { color: var(--green-dark); font-size: .88rem; margin-bottom: 6px; }
 
@@ -583,126 +379,84 @@
     }
 
     /* Confetti */
-    .confetti-container {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .confetti-piece {
-      position: absolute;
-      width: 8px; height: 8px;
-      border-radius: 2px;
-      animation: confetti-fall linear infinite;
-    }
+    .confetti-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+    .confetti-piece { position: absolute; width: 8px; height: 8px; border-radius: 2px; animation: confetti-fall linear infinite; }
     @keyframes confetti-fall {
       0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(320px) rotate(720deg); opacity: 0; }
+      100% { transform: translateY(340px) rotate(720deg); opacity: 0; }
     }
 
     /* ===== Side Panel ===== */
     #side-panel-toggle {
-      position: fixed;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px 0 0 8px;
-      padding: 12px 8px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      writing-mode: vertical-rl;
-      font-family: inherit;
-      font-weight: 700;
-      font-size: .8rem;
-      letter-spacing: .06em;
-      z-index: 200;
-      transition: background var(--transition);
+      position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+      background: var(--primary); color: white; border: none;
+      border-radius: 8px 0 0 8px; padding: 12px 8px;
+      writing-mode: vertical-rl; font-family: inherit;
+      font-weight: 700; font-size: .8rem; letter-spacing: .06em;
+      z-index: 200; transition: background var(--transition); cursor: pointer;
       box-shadow: var(--shadow-md);
     }
     #side-panel-toggle:hover { background: var(--primary-dark); }
     #side-panel {
-      position: fixed;
-      right: -320px;
-      top: 0;
-      height: 100vh;
-      width: 300px;
-      background: white;
-      box-shadow: var(--shadow-lg);
-      z-index: 300;
-      overflow-y: auto;
-      transition: right .3s cubic-bezier(.4,0,.2,1);
+      position: fixed; right: -320px; top: 0; height: 100vh; width: 300px;
+      background: white; box-shadow: var(--shadow-lg); z-index: 300;
+      overflow-y: auto; transition: right .3s cubic-bezier(.4,0,.2,1);
       padding: 20px 18px;
     }
     #side-panel.open { right: 0; }
     #side-panel-close {
-      position: absolute;
-      top: 14px; right: 14px;
-      background: var(--gray-200);
-      border: none;
-      border-radius: 50%;
-      width: 28px; height: 28px;
-      font-size: 1rem;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--gray-700);
+      position: absolute; top: 14px; right: 14px;
+      background: var(--gray-200); border: none; border-radius: 50%;
+      width: 28px; height: 28px; font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: var(--gray-700);
     }
     #side-panel-close:hover { background: var(--gray-300); }
-    .panel-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      margin-bottom: 16px;
-      padding-right: 30px;
-    }
-    .panel-section {
-      display: none;
-    }
+    .panel-title { font-size: 1rem; font-weight: 800; color: var(--primary-dark); margin-bottom: 16px; padding-right: 30px; }
+    .panel-section { display: none; }
     .panel-section.active { display: block; }
-    .panel-section h4 {
-      font-size: .85rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin: 14px 0 6px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid var(--gray-200);
-    }
-    .panel-section p, .panel-section li {
-      font-size: .82rem;
-      color: var(--gray-700);
-      line-height: 1.6;
-      margin-bottom: 4px;
-    }
+    .panel-section h4 { font-size: .85rem; font-weight: 700; color: var(--primary); margin: 14px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--gray-200); }
+    .panel-section p, .panel-section li { font-size: .82rem; color: var(--gray-700); line-height: 1.6; margin-bottom: 4px; }
     .panel-section ul { padding-left: 16px; }
-    .panel-section code {
-      background: var(--gray-100);
-      border-radius: 4px;
-      padding: 1px 5px;
-      font-size: .78rem;
-      font-family: "Courier New", monospace;
-      color: var(--primary-dark);
-    }
-    .panel-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.3);
-      z-index: 250;
-    }
+    .panel-section code { background: var(--gray-100); border-radius: 4px; padding: 1px 5px; font-size: .78rem; font-family: "Courier New", monospace; color: var(--primary-dark); }
+    .panel-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 250; }
     .panel-overlay.open { display: block; }
 
     /* ===== Footer ===== */
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: .78rem;
-      color: var(--gray-500);
-      border-top: 1px solid var(--gray-200);
-      background: white;
+    footer { text-align: center; padding: 20px; font-size: .78rem; color: var(--gray-500); border-top: 1px solid var(--gray-200); background: white; }
+
+    /* ===== Count Badge ===== */
+    .count-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary-light); border: 1px solid var(--accent);
+      border-radius: 8px; padding: 6px 12px; font-size: .85rem;
+      font-weight: 700; color: var(--primary-dark); margin: 6px 4px 0;
     }
+
+    /* ===== Summary bar ===== */
+    .summary-bar {
+      background: var(--gray-100); border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      font-size: .85rem; color: var(--gray-700); margin-top: 10px;
+      display: none;
+    }
+    .summary-bar.visible { display: block; }
+
+    /* ===== Collapsible ===== */
+    .collapsible-btn {
+      background: none; border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm); padding: 5px 12px;
+      font-size: .82rem; color: var(--gray-700); cursor: pointer;
+      font-family: inherit; transition: all var(--transition); margin-top: 6px;
+    }
+    .collapsible-btn:hover { background: var(--gray-100); border-color: var(--gray-500); }
+    .collapsible-content { display: none; }
+    .collapsible-content.open { display: block; }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeSlideIn .3s ease; }
 
     /* ===== Responsive ===== */
     @media (max-width: 600px) {
@@ -711,62 +465,9 @@
       .input-group label { min-width: unset; }
       .input-group input { width: 100%; max-width: 200px; }
       .progress-dots { display: none; }
-      #side-panel-toggle { font-size: .65rem; padding: 10px 6px; }
+      .calc-row { gap: 5px; }
+      .calc-field { width: 58px; }
     }
-
-    /* ===== Collapsible order list ===== */
-    .collapsible-btn {
-      background: none;
-      border: 1px solid var(--gray-300);
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      font-size: .82rem;
-      color: var(--gray-700);
-      cursor: pointer;
-      font-family: inherit;
-      transition: all var(--transition);
-      margin-top: 6px;
-    }
-    .collapsible-btn:hover { background: var(--gray-100); border-color: var(--gray-500); }
-    .collapsible-content {
-      display: none;
-      animation: fadeSlideIn .25s ease;
-    }
-    .collapsible-content.open { display: block; }
-
-    /* Step complete animation */
-    @keyframes checkPop {
-      0% { transform: scale(0); opacity: 0; }
-      60% { transform: scale(1.3); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .check-pop { animation: checkPop .4s cubic-bezier(.4,0,.2,1) forwards; }
-
-    /* Show-answer btn (appears after wrong attempt) */
-    .show-answer-btn {
-      background: none;
-      border: 1px dashed var(--gray-300);
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      font-size: .8rem;
-      color: var(--gray-500);
-      cursor: pointer;
-      font-family: inherit;
-      transition: all var(--transition);
-    }
-    .show-answer-btn:hover { border-color: var(--primary); color: var(--primary); }
-
-    /* Pill tags */
-    .pill {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 99px;
-      font-size: .75rem;
-      font-weight: 700;
-    }
-    .pill-green { background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green); }
-    .pill-red { background: var(--red-light); color: #8B4545; border: 1px solid var(--red); }
-    .pill-amber { background: #FFF3E8; color: #7A5030; border: 1px solid var(--accent); }
   </style>
 </head>
 <body>
@@ -788,7 +489,7 @@
 <!-- Header -->
 <header class="site-header">
   <h1>商品關聯分析 — 互動教學</h1>
-  <p>跟著步驟一步步完成配送中心商品關聯分析作業</p>
+  <p>跟著步驟，操作工具，自己發現答案！</p>
   <div class="header-badges">
     <span class="badge">984 筆訂單</span>
     <span class="badge">3,333 筆出庫記錄</span>
@@ -797,116 +498,94 @@
 </header>
 
 <!-- Side Panel Toggle -->
-<button id="side-panel-toggle" onclick="togglePanel()">操作說明 📖</button>
-<div class="panel-overlay" id="panel-overlay" onclick="closePanel()"></div>
-
-<!-- Side Panel -->
+<button id="side-panel-toggle" onclick="togglePanel()">📖 說明</button>
+<div class="panel-overlay" id="panel-overlay" onclick="togglePanel()"></div>
 <div id="side-panel">
-  <button id="side-panel-close" onclick="closePanel()">✕</button>
-  <div class="panel-title">📖 操作說明</div>
+  <button id="side-panel-close" onclick="togglePanel()">✕</button>
+  <div class="panel-title">步驟說明 &amp; Excel 操作對照</div>
 
-  <div class="panel-section active" id="panel-1">
-    <h4>Step 1 — 認識資料</h4>
-    <p>這步是要瞭解資料的基本結構。</p>
-    <h4>在 Excel 中怎麼做</h4>
+  <div class="panel-section active" id="panel-s1">
+    <h4>步驟 1：認識資料</h4>
+    <p>這份資料來自一個配送中心的出庫記錄，格式為「一筆訂單 → 多個商品」。</p>
+    <h4>Excel 操作對照</h4>
     <ul>
-      <li>開啟出庫資料 Excel 檔</li>
-      <li>觀察欄位：<code>訂單編號</code>、<code>商品名稱</code></li>
-      <li>用「資料→移除重複項」計算不重複訂單數</li>
-      <li>同法計算不重複商品數</li>
+      <li>在 Excel 中，原始資料通常為兩欄：訂單編號 / 商品名稱</li>
+      <li>用「移除重複」功能統計不重複訂單數</li>
+      <li>用「COUNTIF + 樞紐分析」統計商品種類數</li>
     </ul>
-    <h4>常見錯誤</h4>
-    <ul>
-      <li>把記錄筆數當作訂單數（一筆訂單有多行）</li>
-      <li>忘記先選對欄位再移除重複</li>
-    </ul>
+    <h4>小技巧</h4>
+    <p>注意：一筆訂單可能包含多個商品，所以原始記錄數（3,333）遠大於訂單數（984）。</p>
   </div>
 
-  <div class="panel-section" id="panel-2">
-    <h4>Step 2 — 篩選目標商品</h4>
-    <p>找出包含「黃金搭檔（兒童青少年）」的訂單。</p>
-    <h4>在 Excel 中怎麼做</h4>
+  <div class="panel-section" id="panel-s2">
+    <h4>步驟 2：篩選目標商品訂單</h4>
+    <p>找出所有「包含目標商品 X」的訂單，這是計算支援度的分子第一步。</p>
+    <h4>Excel 操作</h4>
     <ul>
-      <li>在「商品名稱」欄位加上篩選</li>
-      <li>篩選出 = 黃金搭檔（兒童青少年）</li>
-      <li>複製出現的「訂單編號」欄到新工作表</li>
-      <li>移除重複，計算個數</li>
+      <li>篩選欄位：在商品名稱欄位使用「篩選」功能</li>
+      <li>選取目標商品後，複製訂單編號那欄</li>
+      <li>貼到新工作表，再用「移除重複」統計不重複訂單數</li>
     </ul>
-    <h4>常見錯誤</h4>
-    <ul>
-      <li>沒有去重複，直接數行數</li>
-    </ul>
+    <h4>為什麼要去重複？</h4>
+    <p>如果一筆訂單裡有兩件目標商品，直接計數會算兩次，所以要先去重複再算。</p>
   </div>
 
-  <div class="panel-section" id="panel-3">
-    <h4>Step 3 — 統計共現頻次</h4>
-    <p>在目標商品訂單裡，其他商品出現幾次（訂單筆數，非數量）。</p>
-    <h4>在 Excel 中怎麼做</h4>
+  <div class="panel-section" id="panel-s3">
+    <h4>步驟 3：統計共現商品頻次</h4>
+    <p>在 34 筆目標訂單中，計算每種商品「出現在幾筆不同訂單」。</p>
+    <h4>Excel 操作（樞紐分析表）</h4>
     <ul>
-      <li>用前步驟的 34 個訂單編號</li>
-      <li>回原資料以 <code>VLOOKUP</code> 或篩選方式找出這 34 筆訂單的全部明細</li>
-      <li>建立商品樞紐分析表，以「訂單編號」計算不重複個數</li>
+      <li>先篩選出 34 筆目標訂單的所有記錄（共 119 筆）</li>
+      <li>插入 → 樞紐分析表</li>
+      <li>將「商品名稱」拖到「列」，將「訂單編號」拖到「值」（計數）</li>
+      <li>排序：從大到小</li>
     </ul>
     <h4>注意</h4>
-    <ul>
-      <li>計算「訂單筆數」不是「購買數量」</li>
-      <li>目標商品本身也要排除在外</li>
-    </ul>
+    <p>目標商品本身（黃金搭檔兒童青少年）也會出現在統計結果中（34次），這是正常的。</p>
   </div>
 
-  <div class="panel-section" id="panel-4">
-    <h4>Step 4 — 計算支援度</h4>
-    <p>Support = 兩商品同時出現的訂單數 ÷ 全部訂單數。</p>
-    <h4>公式</h4>
-    <p><code>Support = |X∩Y| / N</code></p>
-    <ul>
-      <li>|X∩Y| = 兩商品共同出現次數</li>
-      <li>N = 全部訂單數 = 984</li>
-    </ul>
+  <div class="panel-section" id="panel-s4">
+    <h4>步驟 4：計算支援度</h4>
+    <div style="background: var(--gray-800); border-radius: 8px; padding: 12px; margin: 8px 0; font-family: monospace; font-size: .85rem; color: #F5EDE3;">
+      Support(X→Y) = |X∩Y| / N
+    </div>
+    <p>|X∩Y| = 兩個商品同時出現在幾筆訂單<br>N = 全部訂單總數（984）</p>
     <h4>Excel 操作</h4>
     <ul>
-      <li>在儲存格輸入 <code>=共現次數/984</code></li>
-      <li>格式設為「數字，小數 4 位」</li>
+      <li>在步驟 3 的頻次表旁邊新增一欄「支援度」</li>
+      <li>公式：<code>=共現次數/984</code></li>
+      <li>設定門檻：最小支援度 = 0.03（即 3%）</li>
     </ul>
-    <h4>常見錯誤</h4>
-    <ul>
-      <li>分母用 34（目標訂單數）而非 984（全部）</li>
-    </ul>
+    <h4>解讀</h4>
+    <p>支援度 0.0335 代表有 3.35% 的訂單同時包含這兩件商品。</p>
   </div>
 
-  <div class="panel-section" id="panel-5">
-    <h4>Step 5 — 計算信賴度</h4>
-    <p>Confidence = 兩商品共現訂單數 ÷ 目標商品訂單數。</p>
-    <h4>公式</h4>
-    <p><code>Confidence = |X∩Y| / |X|</code></p>
-    <ul>
-      <li>|X∩Y| = 共現次數</li>
-      <li>|X| = 目標商品訂單數 = 34</li>
-    </ul>
+  <div class="panel-section" id="panel-s5">
+    <h4>步驟 5：計算信賴度</h4>
+    <div style="background: var(--gray-800); border-radius: 8px; padding: 12px; margin: 8px 0; font-family: monospace; font-size: .85rem; color: #F5EDE3;">
+      Confidence(X→Y) = |X∩Y| / |X|
+    </div>
+    <p>|X| = 包含 X（目標商品）的訂單數（34）</p>
     <h4>Excel 操作</h4>
     <ul>
-      <li>在儲存格輸入 <code>=共現次數/34</code></li>
+      <li>在支援度旁邊新增一欄「信賴度」</li>
+      <li>公式：<code>=共現次數/34</code></li>
+      <li>設定門檻：最小信賴度 = 0.4（即 40%）</li>
     </ul>
-    <h4>常見錯誤</h4>
-    <ul>
-      <li>把支援度和信賴度的分母搞混</li>
-    </ul>
+    <h4>解讀</h4>
+    <p>信賴度 0.9706 代表：買了 X 的訂單中，有 97.06% 也買了 Y。</p>
   </div>
 
-  <div class="panel-section" id="panel-6">
-    <h4>Step 6 — 判斷關聯商品</h4>
-    <p>同時滿足最小支援度 AND 最小信賴度才算關聯性商品。</p>
-    <h4>判斷條件</h4>
+  <div class="panel-section" id="panel-s6">
+    <h4>步驟 6：判斷關聯商品</h4>
+    <p>必須同時滿足兩個條件：<br>✅ 支援度 ≥ 0.03<br>✅ 信賴度 ≥ 0.4</p>
+    <h4>Excel 操作</h4>
     <ul>
-      <li>最小支援度 ≥ 0.03</li>
-      <li>最小信賴度 ≥ 0.40</li>
-      <li>兩個條件都要滿足！</li>
+      <li>新增「是否為關聯商品」欄位</li>
+      <li>公式：<code>=IF(AND(支援度>=0.03, 信賴度>=0.4), "是", "否")</code></li>
     </ul>
-    <h4>關聯規則的意義</h4>
-    <ul>
-      <li>支援度：整體上有多常一起買</li>
-      <li>信賴度：買了 X 之後有多大機率也買 Y</li>
-    </ul>
+    <h4>業務意義</h4>
+    <p>找到關聯商品後，可以在推薦系統中設定：「買了 X 的客戶，推薦商品 Y」。這就是購物車分析的核心！</p>
   </div>
 </div>
 
@@ -914,1006 +593,1101 @@
 <div class="main-wrap">
 
   <!-- ========== STEP 1 ========== -->
-  <div class="step-card open active" id="step-card-1">
+  <div class="step-card active open" id="step-1">
     <div class="step-header" onclick="toggleStep(1)">
       <div class="step-badge">1</div>
       <div class="step-title-wrap">
         <h2>認識資料</h2>
-        <div class="step-subtitle">了解這份配送中心出庫資料的基本結構</div>
+        <div class="step-subtitle">瀏覽出庫記錄，統計訂單數與商品種類</div>
       </div>
-      <div class="step-status" id="status-1"></div>
+      <div class="step-status" id="status-1">🔓</div>
       <div class="chevron">▼</div>
     </div>
-    <div class="step-body" id="body-1">
+    <div class="step-body">
       <div class="teaching-box">
-        <div class="teach-label">學習目標</div>
-        首先，我們需要了解這份配送中心的出庫資料。這份資料記錄了每筆訂單購買了哪些商品，
-        每一列代表一筆訂單裡的一件商品。一個訂單編號可能對應多列記錄（因為同一訂單買了多種商品）。
+        <div class="teach-label">本步驟目標</div>
+        這份資料是某配送中心的出庫記錄，每筆記錄包含「訂單編號」與「商品名稱」。
+        先用下方工具瀏覽資料，再統計基本數字。
       </div>
 
-      <!-- Data Preview Table -->
-      <p style="font-size:.85rem;color:var(--gray-500);margin-bottom:6px;">以下是前 20 筆記錄預覽：</p>
-      <div class="table-wrap">
-        <table id="preview-table">
-          <thead><tr><th>#</th><th>訂單編號</th><th>商品名稱</th></tr></thead>
-          <tbody id="preview-tbody"></tbody>
-        </table>
-      </div>
+      <!-- Interactive Tool -->
+      <div class="tool-box">
+        <div class="tool-box-label"><span class="tool-icon">🔍</span> 資料瀏覽器</div>
 
-      <div class="task-section">
-        <div class="task-label">你的任務</div>
-        <div class="task-question">請觀察資料，回答以下問題：</div>
-
-        <div class="input-group">
-          <label>Q1. 不重複的訂單總數：</label>
-          <input type="number" id="s1-q1" placeholder="輸入答案" min="0" />
-          <span class="input-icon" id="s1-q1-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>Q2. 不重複的商品種數：</label>
-          <input type="number" id="s1-q2" placeholder="輸入答案" min="0" />
-          <span class="input-icon" id="s1-q2-icon"></span>
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="s1-search" placeholder="搜尋訂單編號或商品名稱..." oninput="filterTable1()" />
         </div>
 
-        <button class="hint-toggle" onclick="toggleHint('hint-1')">💡 顯示提示</button>
-        <div class="hint-content" id="hint-1">
-          訂單編號相同的記錄屬於同一筆訂單。計算「不重複訂單數」時，
-          要先去掉重複的訂單編號再數。在 Excel 中可用「移除重複項」功能，
-          或使用樞紐分析表。
+        <div class="table-wrap max-h" id="s1-table-wrap">
+          <table id="s1-table">
+            <thead><tr><th>#</th><th>訂單編號</th><th>商品名稱</th></tr></thead>
+            <tbody id="s1-tbody"></tbody>
+          </table>
         </div>
+        <div id="s1-count-info" style="font-size:.8rem; color:var(--gray-500); margin-top:6px;"></div>
 
         <div class="btn-row">
-          <button class="btn btn-primary" id="s1-verify-btn" onclick="verifyStep1()">驗證答案</button>
-          <button class="show-answer-btn" id="s1-show-btn" style="display:none" onclick="showAnswer(1)">顯示答案</button>
+          <button class="btn btn-accent btn-sm" onclick="countOrders()" id="btn-count-orders">統計不重複訂單數</button>
+          <button class="btn btn-ghost btn-sm" onclick="countProducts()" id="btn-count-products">統計商品種類數</button>
         </div>
 
-        <div class="feedback-msg" id="s1-feedback"></div>
+        <div class="stat-row" style="margin-top:12px;">
+          <div class="stat-chip" id="chip-orders">
+            <span class="stat-num" id="num-orders">—</span>
+            <div class="stat-desc">不重複訂單數</div>
+          </div>
+          <div class="stat-chip" id="chip-products">
+            <span class="stat-num" id="num-products">—</span>
+            <div class="stat-desc">商品種類數</div>
+          </div>
+          <div class="stat-chip">
+            <span class="stat-num">3,333</span>
+            <div class="stat-desc">總出庫記錄筆數</div>
+          </div>
+        </div>
       </div>
 
-      <div class="reveal-panel" id="s1-reveal">
-        <h4>正確答案說明</h4>
-        <ul style="font-size:.88rem;color:var(--gray-700);padding-left:18px;line-height:1.8;">
-          <li>資料共 <strong>984</strong> 筆不重複訂單，<strong>3,333</strong> 筆出庫記錄</li>
-          <li>商品種類共 <strong>132</strong> 種</li>
-          <li>平均每筆訂單有 3,333 ÷ 984 ≈ <strong>3.4</strong> 件商品</li>
-        </ul>
+      <!-- Verification -->
+      <div class="verify-section">
+        <div class="verify-label">✏️ 驗證你的發現</div>
+        <div class="input-group">
+          <label>這份資料共有幾筆不重複訂單？</label>
+          <input type="number" id="s1-q1" placeholder="輸入數字" />
+        </div>
+        <div class="input-group">
+          <label>共有幾種不重複商品？</label>
+          <input type="number" id="s1-q2" placeholder="輸入數字" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="verifyStep1()">確認並繼續</button>
+        </div>
+        <div class="feedback-msg" id="fb-1"></div>
       </div>
     </div>
   </div>
 
   <!-- ========== STEP 2 ========== -->
-  <div class="step-card locked" id="step-card-2">
-    <div class="step-header locked-header" onclick="tryUnlockStep(2)">
+  <div class="step-card locked" id="step-2">
+    <div class="step-header" onclick="toggleStep(2)">
       <div class="step-badge">2</div>
       <div class="step-title-wrap">
         <h2>篩選目標商品訂單</h2>
-        <div class="step-subtitle">找出所有包含目標商品的訂單</div>
+        <div class="step-subtitle">找出所有含目標商品的訂單</div>
       </div>
       <div class="step-status" id="status-2">🔒</div>
       <div class="chevron">▼</div>
     </div>
-    <div class="step-body" id="body-2">
+    <div class="step-body">
       <div class="teaching-box">
-        <div class="teach-label">學習目標</div>
-        接下來，我們要找出所有包含「黃金搭檔（兒童青少年）」的訂單。
-        這些訂單就是我們的「目標商品訂單集合」，後續所有的共現統計和信賴度計算都以這個集合為基礎。
+        <div class="teach-label">本步驟目標</div>
+        找出所有包含「目標商品 X」的訂單。這批訂單就是計算關聯規則的基礎集合。
+        試著用下方的篩選器來完成這個任務！
       </div>
 
-      <div class="formula-card">
-        <div class="f-label">篩選方式</div>
-        <span class="f-var">含有目標商品的訂單數</span> <span class="f-op">=</span><br>
-        篩選「商品名稱」<span class="f-op">==</span> <span class="f-result">「黃金搭檔（兒童青少年）」</span><br>
-        → 計算不重複的「訂單編號」個數
+      <!-- Interactive Tool -->
+      <div class="tool-box">
+        <div class="tool-box-label"><span class="tool-icon">🎯</span> 商品篩選器</div>
+
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+          <label style="font-size:.88rem; font-weight:600; color:var(--gray-700);">目標商品：</label>
+          <select id="s2-product-select" onchange="onProductChange()" style="padding:7px 12px; border:1.5px solid var(--gray-300); border-radius:var(--radius-sm); font-family:inherit; font-size:.88rem; outline:none; background:var(--gray-50);">
+          </select>
+          <button class="btn btn-accent btn-sm" onclick="filterByProduct()">篩選</button>
+        </div>
+
+        <div id="s2-result-info" style="font-size:.85rem; color:var(--gray-700); margin-bottom:8px; display:none;">
+        </div>
+
+        <div class="table-wrap max-h" id="s2-table-wrap" style="display:none;">
+          <table>
+            <thead><tr><th>#</th><th>訂單編號</th><th>商品名稱</th></tr></thead>
+            <tbody id="s2-tbody"></tbody>
+          </table>
+        </div>
+
+        <button class="btn btn-ghost btn-sm" id="btn-dedup" onclick="dedupOrders()" style="margin-top:10px; display:none;">去重複統計訂單數</button>
+
+        <div id="s2-dedup-result" style="margin-top:10px; display:none;" class="fade-in">
+          <div class="count-badge" id="s2-dedup-badge"></div>
+          <div style="margin-top:10px;">
+            <div style="font-size:.82rem; font-weight:700; color:var(--gray-700); margin-bottom:6px;">不重複訂單編號列表：</div>
+            <div class="order-list" id="s2-order-chips"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="task-section">
-        <div class="task-label">你的任務</div>
-        <div class="task-question">「黃金搭檔（兒童青少年）」出現在多少筆訂單中？</div>
-
+      <!-- Verification -->
+      <div class="verify-section">
+        <div class="verify-label">✏️ 驗證你的發現</div>
         <div class="input-group">
-          <label>目標商品訂單數：</label>
-          <input type="number" id="s2-q1" placeholder="輸入答案" min="0" />
-          <span class="input-icon" id="s2-q1-icon"></span>
+          <label>包含目標商品的不重複訂單共幾筆？</label>
+          <input type="number" id="s2-q1" placeholder="輸入數字" />
         </div>
-
-        <button class="hint-toggle" onclick="toggleHint('hint-2')">💡 顯示提示</button>
-        <div class="hint-content" id="hint-2">
-          在 Excel 中，先用「自動篩選」在商品名稱欄篩選出等於「黃金搭檔（兒童青少年）」的列，
-          接著複製訂單編號欄到新工作表，再使用「移除重複項」，最後用 COUNTA 計算剩餘列數。
-        </div>
-
         <div class="btn-row">
-          <button class="btn btn-primary" id="s2-verify-btn" onclick="verifyStep2()">驗證答案</button>
-          <button class="show-answer-btn" id="s2-show-btn" style="display:none" onclick="showAnswer(2)">顯示答案</button>
+          <button class="btn btn-primary" onclick="verifyStep2()">確認並繼續</button>
         </div>
-
-        <div class="feedback-msg" id="s2-feedback"></div>
-      </div>
-
-      <div class="reveal-panel" id="s2-reveal">
-        <h4>這 34 筆訂單的編號如下：</h4>
-        <button class="collapsible-btn" onclick="toggleCollapsible('order-list-wrap')">展開訂單清單 ▼</button>
-        <div class="collapsible-content" id="order-list-wrap">
-          <div class="order-list" id="order-list"></div>
-        </div>
-        <p style="font-size:.84rem;color:var(--gray-500);margin-top:10px;">
-          這 34 筆訂單將成為後續「共現分析」的基礎資料集。
-        </p>
+        <div class="feedback-msg" id="fb-2"></div>
       </div>
     </div>
   </div>
 
   <!-- ========== STEP 3 ========== -->
-  <div class="step-card locked" id="step-card-3">
-    <div class="step-header locked-header" onclick="tryUnlockStep(3)">
+  <div class="step-card locked" id="step-3">
+    <div class="step-header" onclick="toggleStep(3)">
       <div class="step-badge">3</div>
       <div class="step-title-wrap">
         <h2>統計共現商品頻次</h2>
-        <div class="step-subtitle">在目標訂單中，其他商品出現幾次？</div>
+        <div class="step-subtitle">在 34 筆訂單中，每種商品出現幾次？</div>
       </div>
       <div class="step-status" id="status-3">🔒</div>
       <div class="chevron">▼</div>
     </div>
-    <div class="step-body" id="body-3">
+    <div class="step-body">
       <div class="teaching-box">
-        <div class="teach-label">學習目標</div>
-        現在我們要看在這 34 筆訂單中，還有哪些其他商品同時被購買。
-        統計的單位是「訂單筆數」（同一訂單只算一次），不是「購買數量」。
-        目標商品本身不需要計入。
+        <div class="teach-label">本步驟目標</div>
+        在 34 筆目標訂單中，統計「每種商品各出現在幾筆不同訂單」。
+        這就像在 Excel 中建立樞紐分析表！點擊下方按鈕，看看結果是什麼。
       </div>
 
-      <div class="task-section">
-        <div class="task-label">你的任務</div>
-        <div class="task-question">以下四種商品在 34 筆目標訂單中，各出現在幾筆訂單？</div>
+      <!-- Interactive Tool -->
+      <div class="tool-box">
+        <div class="tool-box-label"><span class="tool-icon">📊</span> 樞紐分析表</div>
 
-        <div class="input-group">
-          <label>黃金搭檔（女士）：</label>
-          <input type="number" id="s3-q1" placeholder="訂單筆數" min="0" />
-          <span class="input-icon" id="s3-q1-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>威士雅金絲燕窩：</label>
-          <input type="number" id="s3-q2" placeholder="訂單筆數" min="0" />
-          <span class="input-icon" id="s3-q2-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>張裕葡萄酒禮盒：</label>
-          <input type="number" id="s3-q3" placeholder="訂單筆數" min="0" />
-          <span class="input-icon" id="s3-q3-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>劍南春52度：</label>
-          <input type="number" id="s3-q4" placeholder="訂單筆數" min="0" />
-          <span class="input-icon" id="s3-q4-icon"></span>
+        <div class="btn-row" style="margin-top:0; margin-bottom:12px;">
+          <button class="btn btn-ghost btn-sm" onclick="expandAllRecords()">展開完整訂單內容（119 筆）</button>
+          <button class="btn btn-accent btn-sm" onclick="buildFreqTable()">生成頻次統計</button>
         </div>
 
-        <button class="hint-toggle" onclick="toggleHint('hint-3')">💡 顯示提示</button>
-        <div class="hint-content" id="hint-3">
-          把 34 個目標訂單的編號當作篩選條件，回到原資料中，篩選出這 34 筆訂單的所有明細。
-          接著建立樞紐分析表：「列」放商品名稱，「值」放訂單編號（計數不重複）。
-          這樣就能看出每種商品出現在幾筆訂單中。
+        <div id="s3-all-records-wrap" style="display:none;" class="fade-in">
+          <div style="font-size:.8rem; color:var(--gray-500); margin-bottom:6px;">34 筆目標訂單的所有出庫記錄（共 119 筆）：</div>
+          <div class="table-wrap max-h">
+            <table>
+              <thead><tr><th>#</th><th>訂單編號</th><th>商品名稱</th></tr></thead>
+              <tbody id="s3-all-tbody"></tbody>
+            </table>
+          </div>
         </div>
 
+        <div id="s3-freq-wrap" style="display:none; margin-top:12px;" class="fade-in">
+          <div style="font-size:.8rem; color:var(--gray-500); margin-bottom:6px;">頻次統計（依出現次數排序）：</div>
+          <div class="table-wrap max-h">
+            <table>
+              <thead><tr><th>排名</th><th>商品名稱</th><th>出現訂單數</th><th>標記</th></tr></thead>
+              <tbody id="s3-freq-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification -->
+      <div class="verify-section">
+        <div class="verify-label">✏️ 找出 4 個最常共現的商品（目標商品本身除外）</div>
+        <div class="input-group">
+          <label>黃金搭檔（女士）出現在幾筆訂單？</label>
+          <input type="number" id="s3-q1" placeholder="輸入數字" />
+        </div>
+        <div class="input-group">
+          <label>威士雅金絲燕窩出現在幾筆訂單？</label>
+          <input type="number" id="s3-q2" placeholder="輸入數字" />
+        </div>
+        <div class="input-group">
+          <label>張裕葡萄酒禮盒出現在幾筆訂單？</label>
+          <input type="number" id="s3-q3" placeholder="輸入數字" />
+        </div>
+        <div class="input-group">
+          <label>劍南春52度出現在幾筆訂單？</label>
+          <input type="number" id="s3-q4" placeholder="輸入數字" />
+        </div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="s3-verify-btn" onclick="verifyStep3()">驗證答案</button>
-          <button class="show-answer-btn" id="s3-show-btn" style="display:none" onclick="showAnswer(3)">顯示答案</button>
+          <button class="btn btn-primary" onclick="verifyStep3()">確認並繼續</button>
         </div>
-
-        <div class="feedback-msg" id="s3-feedback"></div>
-      </div>
-
-      <div class="reveal-panel" id="s3-reveal">
-        <h4>全部共現商品頻次表（按次數排序）</h4>
-        <div class="table-wrap">
-          <table id="cooccur-table">
-            <thead><tr><th>排名</th><th>商品名稱</th><th>共現訂單數</th></tr></thead>
-            <tbody id="cooccur-tbody"></tbody>
-          </table>
-        </div>
-        <p style="font-size:.84rem;color:var(--gray-500);margin-top:8px;">
-          黃金搭檔（女士）遠遠領先其他商品，可見這兩款商品有很強的購買連動。
-        </p>
+        <div class="feedback-msg" id="fb-3"></div>
       </div>
     </div>
   </div>
 
   <!-- ========== STEP 4 ========== -->
-  <div class="step-card locked" id="step-card-4">
-    <div class="step-header locked-header" onclick="tryUnlockStep(4)">
+  <div class="step-card locked" id="step-4">
+    <div class="step-header" onclick="toggleStep(4)">
       <div class="step-badge">4</div>
       <div class="step-title-wrap">
-        <h2>計算支援度 (Support)</h2>
-        <div class="step-subtitle">兩商品同時出現佔全部訂單的比例</div>
+        <h2>計算支援度</h2>
+        <div class="step-subtitle">Support(X→Y) = |X∩Y| / N</div>
       </div>
       <div class="step-status" id="status-4">🔒</div>
       <div class="chevron">▼</div>
     </div>
-    <div class="step-body" id="body-4">
+    <div class="step-body">
       <div class="teaching-box">
-        <div class="teach-label">學習目標</div>
-        支援度（Support）衡量兩種商品「同時出現」在整體訂單中的頻率。
-        分母是<strong>全部訂單數 984</strong>（不是目標訂單數 34）。
-        最小支援度門檻 = 0.03，低於此值的商品對就不值得進一步分析。
+        <div class="teach-label">本步驟目標</div>
+        計算每個候選商品對目標商品的支援度。支援度代表「兩個商品同時出現」在所有訂單中的比例。
       </div>
-
       <div class="formula-card">
-        <div class="f-label">支援度公式</div>
-        <span class="f-var">Support</span>(X→Y) <span class="f-op">=</span>
-        <span class="f-var">|X∩Y|</span> <span class="f-op">/</span> <span class="f-var">N</span>
-        <div class="f-example">
-          範例：Support(兒童青少年 → 女士)<br>
-          = <span class="f-num">33</span> <span class="f-op">/</span> <span class="f-num">984</span>
-          = <span class="f-result">0.0335</span>
-        </div>
+        <div class="f-label">公式</div>
+        <span class="f-result">Support(X→Y)</span>
+        <span class="f-op"> = </span>
+        <span class="f-var">|X∩Y|</span>
+        <span class="f-op"> ÷ </span>
+        <span class="f-var">N</span><br>
+        <span style="font-size:.78rem; color:#C9B99A;">
+          |X∩Y| = 兩商品共同出現的訂單數 &nbsp;|&nbsp; N = 總訂單數（984）
+        </span>
       </div>
 
-      <div class="task-section">
-        <div class="task-label">你的任務</div>
-        <div class="task-question">請計算四種商品對「黃金搭檔（兒童青少年）」的支援度（小數第 4 位）：</div>
+      <!-- Interactive Tool -->
+      <div class="tool-box">
+        <div class="tool-box-label"><span class="tool-icon">🧮</span> 支援度計算機</div>
+        <p style="font-size:.82rem; color:var(--gray-500); margin-bottom:12px;">填入共現次數，點擊「計算」自動算出支援度。最小支援度門檻 = <strong>0.03</strong></p>
 
-        <div class="input-group">
-          <label>黃金搭檔（女士）：</label>
-          <input type="number" id="s4-q1" placeholder="如：0.0335" step="0.0001" />
-          <span class="input-icon" id="s4-q1-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>威士雅金絲燕窩：</label>
-          <input type="number" id="s4-q2" placeholder="如：0.0xxx" step="0.0001" />
-          <span class="input-icon" id="s4-q2-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>張裕葡萄酒禮盒：</label>
-          <input type="number" id="s4-q3" placeholder="如：0.0xxx" step="0.0001" />
-          <span class="input-icon" id="s4-q3-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>劍南春52度：</label>
-          <input type="number" id="s4-q4" placeholder="如：0.0xxx" step="0.0001" />
-          <span class="input-icon" id="s4-q4-icon"></span>
-        </div>
+        <div id="s4-calc-cards"></div>
 
-        <button class="hint-toggle" onclick="toggleHint('hint-4')">💡 顯示提示</button>
-        <div class="hint-content" id="hint-4">
-          用 Step 3 得到的共現訂單數除以 984（全部訂單數）。
-          例如：黃金搭檔女士的共現數 = 33，所以支援度 = 33 ÷ 984 = 0.0335。
-          答案保留 4 位小數。
-        </div>
+        <div class="summary-bar" id="s4-summary"></div>
+      </div>
 
+      <!-- Verification -->
+      <div class="verify-section">
+        <div class="verify-label">✏️ 輸入支援度（小數點後 4 位，誤差 ±0.001 可接受）</div>
+        <div class="input-group">
+          <label>黃金搭檔（女士）支援度：</label>
+          <input type="number" step="0.0001" id="s4-q1" placeholder="0.0000" />
+        </div>
+        <div class="input-group">
+          <label>威士雅金絲燕窩支援度：</label>
+          <input type="number" step="0.0001" id="s4-q2" placeholder="0.0000" />
+        </div>
+        <div class="input-group">
+          <label>張裕葡萄酒禮盒支援度：</label>
+          <input type="number" step="0.0001" id="s4-q3" placeholder="0.0000" />
+        </div>
+        <div class="input-group">
+          <label>劍南春52度支援度：</label>
+          <input type="number" step="0.0001" id="s4-q4" placeholder="0.0000" />
+        </div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="s4-verify-btn" onclick="verifyStep4()">驗證答案</button>
-          <button class="show-answer-btn" id="s4-show-btn" style="display:none" onclick="showAnswer(4)">顯示答案</button>
+          <button class="btn btn-primary" onclick="verifyStep4()">確認並繼續</button>
         </div>
-
-        <div class="feedback-msg" id="s4-feedback"></div>
-      </div>
-
-      <div class="reveal-panel" id="s4-reveal">
-        <h4>支援度計算結果（最小支援度 ≥ 0.03）</h4>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>商品</th><th>共現訂單數</th><th>支援度</th><th>≥ 0.03？</th></tr></thead>
-            <tbody id="s4-result-tbody"></tbody>
-          </table>
-        </div>
-        <p style="font-size:.84rem;color:var(--gray-500);margin-top:8px;">
-          只有「黃金搭檔（女士）」達到最小支援度門檻。其餘三種商品支援度不足，
-          但仍繼續分析信賴度以觀察其購買傾向。
-        </p>
+        <div class="feedback-msg" id="fb-4"></div>
       </div>
     </div>
   </div>
 
   <!-- ========== STEP 5 ========== -->
-  <div class="step-card locked" id="step-card-5">
-    <div class="step-header locked-header" onclick="tryUnlockStep(5)">
+  <div class="step-card locked" id="step-5">
+    <div class="step-header" onclick="toggleStep(5)">
       <div class="step-badge">5</div>
       <div class="step-title-wrap">
-        <h2>計算信賴度 (Confidence)</h2>
-        <div class="step-subtitle">買了目標商品的人，有多少比例也買了另一種？</div>
+        <h2>計算信賴度</h2>
+        <div class="step-subtitle">Confidence(X→Y) = |X∩Y| / |X|</div>
       </div>
       <div class="step-status" id="status-5">🔒</div>
       <div class="chevron">▼</div>
     </div>
-    <div class="step-body" id="body-5">
+    <div class="step-body">
       <div class="teaching-box">
-        <div class="teach-label">學習目標</div>
-        信賴度（Confidence）衡量「在購買 X 的訂單中，有多少比例同時購買了 Y」。
-        分母是<strong>目標商品訂單數 34</strong>（不是全部訂單 984）。
-        最小信賴度門檻 = 0.4，代表至少 40% 的目標訂單也有購買該商品。
+        <div class="teach-label">本步驟目標</div>
+        計算信賴度：在「含目標商品 X」的訂單中，有多少比例「也含 Y」？
+        信賴度越高，代表關聯性越強。
       </div>
-
       <div class="formula-card">
-        <div class="f-label">信賴度公式</div>
-        <span class="f-var">Confidence</span>(X→Y) <span class="f-op">=</span>
-        <span class="f-var">|X∩Y|</span> <span class="f-op">/</span> <span class="f-var">|X|</span>
-        <div class="f-example">
-          範例：Confidence(兒童青少年 → 女士)<br>
-          = <span class="f-num">33</span> <span class="f-op">/</span> <span class="f-num">34</span>
-          = <span class="f-result">0.9706</span>
-        </div>
+        <div class="f-label">公式</div>
+        <span class="f-result">Confidence(X→Y)</span>
+        <span class="f-op"> = </span>
+        <span class="f-var">|X∩Y|</span>
+        <span class="f-op"> ÷ </span>
+        <span class="f-var">|X|</span><br>
+        <span style="font-size:.78rem; color:#C9B99A;">
+          |X| = 包含目標商品 X 的訂單數（34）
+        </span>
       </div>
 
-      <div class="task-section">
-        <div class="task-label">你的任務</div>
-        <div class="task-question">請計算四種商品的信賴度（小數第 4 位）：</div>
+      <!-- Interactive Tool -->
+      <div class="tool-box">
+        <div class="tool-box-label"><span class="tool-icon">🎯</span> 信賴度計算機</div>
+        <p style="font-size:.82rem; color:var(--gray-500); margin-bottom:12px;">填入共現次數，點擊「計算」自動算出信賴度。最小信賴度門檻 = <strong>0.4</strong></p>
 
-        <div class="input-group">
-          <label>黃金搭檔（女士）：</label>
-          <input type="number" id="s5-q1" placeholder="如：0.9706" step="0.0001" />
-          <span class="input-icon" id="s5-q1-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>威士雅金絲燕窩：</label>
-          <input type="number" id="s5-q2" placeholder="如：0.xxxx" step="0.0001" />
-          <span class="input-icon" id="s5-q2-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>張裕葡萄酒禮盒：</label>
-          <input type="number" id="s5-q3" placeholder="如：0.xxxx" step="0.0001" />
-          <span class="input-icon" id="s5-q3-icon"></span>
-        </div>
-        <div class="input-group">
-          <label>劍南春52度：</label>
-          <input type="number" id="s5-q4" placeholder="如：0.xxxx" step="0.0001" />
-          <span class="input-icon" id="s5-q4-icon"></span>
-        </div>
+        <div id="s5-calc-cards"></div>
 
-        <button class="hint-toggle" onclick="toggleHint('hint-5')">💡 顯示提示</button>
-        <div class="hint-content" id="hint-5">
-          用 Step 3 得到的共現訂單數除以 34（目標商品的訂單數）。
-          注意：分母跟支援度不同！支援度分母是 984，信賴度分母是 34。
-        </div>
+        <div class="summary-bar" id="s5-summary"></div>
+      </div>
 
+      <!-- Verification -->
+      <div class="verify-section">
+        <div class="verify-label">✏️ 輸入信賴度（小數點後 4 位，誤差 ±0.001 可接受）</div>
+        <div class="input-group">
+          <label>黃金搭檔（女士）信賴度：</label>
+          <input type="number" step="0.0001" id="s5-q1" placeholder="0.0000" />
+        </div>
+        <div class="input-group">
+          <label>威士雅金絲燕窩信賴度：</label>
+          <input type="number" step="0.0001" id="s5-q2" placeholder="0.0000" />
+        </div>
+        <div class="input-group">
+          <label>張裕葡萄酒禮盒信賴度：</label>
+          <input type="number" step="0.0001" id="s5-q3" placeholder="0.0000" />
+        </div>
+        <div class="input-group">
+          <label>劍南春52度信賴度：</label>
+          <input type="number" step="0.0001" id="s5-q4" placeholder="0.0000" />
+        </div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="s5-verify-btn" onclick="verifyStep5()">驗證答案</button>
-          <button class="show-answer-btn" id="s5-show-btn" style="display:none" onclick="showAnswer(5)">顯示答案</button>
+          <button class="btn btn-primary" onclick="verifyStep5()">確認並繼續</button>
         </div>
-
-        <div class="feedback-msg" id="s5-feedback"></div>
-      </div>
-
-      <div class="reveal-panel" id="s5-reveal">
-        <h4>支援度 + 信賴度完整表格（最小信賴度 ≥ 0.4）</h4>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>商品</th><th>Support</th><th>≥0.03</th><th>Confidence</th><th>≥0.4</th></tr></thead>
-            <tbody id="s5-result-tbody"></tbody>
-          </table>
-        </div>
-        <p style="font-size:.84rem;color:var(--gray-500);margin-top:8px;">
-          注意：劍南春52度的信賴度只有 0.2059，低於門檻，
-          而威士雅金絲燕窩 (0.5882) 和張裕葡萄酒禮盒 (0.4706) 信賴度超過門檻，
-          但支援度不足，所以不算關聯性商品。
-        </p>
+        <div class="feedback-msg" id="fb-5"></div>
       </div>
     </div>
   </div>
 
   <!-- ========== STEP 6 ========== -->
-  <div class="step-card locked" id="step-card-6">
-    <div class="step-header locked-header" onclick="tryUnlockStep(6)">
+  <div class="step-card locked" id="step-6">
+    <div class="step-header" onclick="toggleStep(6)">
       <div class="step-badge">6</div>
       <div class="step-title-wrap">
-        <h2>判斷關聯性商品</h2>
-        <div class="step-subtitle">同時滿足最小支援度和最小信賴度</div>
+        <h2>判斷關聯商品</h2>
+        <div class="step-subtitle">同時滿足最小支持度 ≥ 0.03 AND 最小信賴度 ≥ 0.4</div>
       </div>
       <div class="step-status" id="status-6">🔒</div>
       <div class="chevron">▼</div>
     </div>
-    <div class="step-body" id="body-6">
+    <div class="step-body">
       <div class="teaching-box">
-        <div class="teach-label">學習目標</div>
-        最後，我們要根據最小支持度（≥ 0.03）和最小信賴度（≥ 0.4）
-        兩個門檻，判斷哪些商品是「黃金搭檔（兒童青少年）」的關聯性商品。
-        必須<strong>同時</strong>滿足兩個條件才算通過！
+        <div class="teach-label">本步驟目標</div>
+        綜合前兩步的計算結果，判斷哪些商品同時達到最小支援度（≥0.03）和最小信賴度（≥0.4）。
+        只有兩個條件都滿足的商品，才是「關聯商品」。
       </div>
 
-      <!-- Summary table -->
-      <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:6px;font-weight:600;">四種商品的支援度與信賴度一覽：</p>
-      <div class="table-wrap" style="margin-bottom:18px;">
-        <table>
-          <thead>
-            <tr>
-              <th>商品</th>
-              <th>Support</th>
-              <th>≥ 0.03</th>
-              <th>Confidence</th>
-              <th>≥ 0.40</th>
-              <th>兩項都達標</th>
-            </tr>
-          </thead>
-          <tbody id="s6-summary-tbody"></tbody>
-        </table>
-      </div>
+      <!-- Interactive Tool -->
+      <div class="tool-box">
+        <div class="tool-box-label"><span class="tool-icon">⚖️</span> 綜合判定表</div>
+        <p style="font-size:.82rem; color:var(--gray-500); margin-bottom:12px;">
+          先自己用切換按鈕（✓/✗）判斷，再點「自動判定」驗證你的答案！
+        </p>
 
-      <div class="task-section">
-        <div class="task-label">你的任務</div>
-        <div class="task-question">以下哪些商品是「黃金搭檔（兒童青少年）」的關聯性商品？（可多選）</div>
-
-        <div class="checkbox-group" id="s6-checkbox-group">
-          <div class="check-item" onclick="toggleCheck(this)">
-            <input type="checkbox" id="s6-c1" value="黃金搭檔（女士）" />
-            <label for="s6-c1">黃金搭檔（女士）</label>
-          </div>
-          <div class="check-item" onclick="toggleCheck(this)">
-            <input type="checkbox" id="s6-c2" value="威士雅金絲燕窩" />
-            <label for="s6-c2">威士雅金絲燕窩</label>
-          </div>
-          <div class="check-item" onclick="toggleCheck(this)">
-            <input type="checkbox" id="s6-c3" value="張裕葡萄酒禮盒" />
-            <label for="s6-c3">張裕葡萄酒禮盒</label>
-          </div>
-          <div class="check-item" onclick="toggleCheck(this)">
-            <input type="checkbox" id="s6-c4" value="劍南春52度" />
-            <label for="s6-c4">劍南春52度</label>
-          </div>
+        <div class="table-wrap">
+          <table class="judge-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;">商品名稱</th>
+                <th>共現次數</th>
+                <th>支援度</th>
+                <th>信賴度</th>
+                <th>支援度≥0.03?</th>
+                <th>信賴度≥0.4?</th>
+                <th>關聯商品?</th>
+              </tr>
+            </thead>
+            <tbody id="s6-judge-tbody"></tbody>
+          </table>
         </div>
 
         <div class="btn-row">
-          <button class="btn btn-primary" id="s6-verify-btn" onclick="verifyStep6()">驗證答案</button>
+          <button class="btn btn-accent btn-sm" onclick="autoJudge()">自動判定</button>
+          <button class="btn btn-ghost btn-sm" onclick="resetJudge()">重設</button>
         </div>
-
-        <div class="feedback-msg" id="s6-feedback"></div>
       </div>
 
-      <!-- Celebration -->
-      <div id="celebration">
-        <div class="confetti-container" id="confetti-container"></div>
-        <div class="celebration-title">恭喜完成！</div>
-        <div class="celebration-sub">你已成功完成商品關聯分析的所有步驟！</div>
-
-        <div class="conclusion-box">
-          <h4>最終結論</h4>
-          <p>
-            在本次分析中，目標商品「黃金搭檔（兒童青少年）」在 984 筆訂單中出現於 34 筆（3.46%）。
-            在這 34 筆訂單中，只有<strong>「黃金搭檔（女士）」</strong>同時滿足最小支援度（0.0335 ≥ 0.03）
-            與最小信賴度（0.9706 ≥ 0.40）兩項門檻。
-          </p>
-          <p style="margin-top:8px;">
-            其他三種商品（威士雅金絲燕窩、張裕葡萄酒禮盒、劍南春52度）雖然在某些訂單中共現，
-            但或信賴度夠高而支援度不足，或兩者均未達標，因此不構成關聯性商品。
-          </p>
+      <!-- Verification -->
+      <div class="verify-section">
+        <div class="verify-label">✏️ 選出符合條件的關聯商品（可多選）</div>
+        <div class="checkbox-group" id="s6-checkboxes"></div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="verifyStep6()">提交答案</button>
         </div>
-
-        <div class="biz-rec">
-          <h5>商業應用建議</h5>
-          <ul style="padding-left:16px;line-height:1.8;font-size:.88rem;">
-            <li><strong>貨架擺放</strong>：將「黃金搭檔（兒童青少年）」和「黃金搭檔（女士）」相鄰陳列，
-              方便顧客一次找到兩件。</li>
-            <li><strong>促銷組合</strong>：設計「兒童青少年 + 女士」的家庭套裝組合，享有優惠價格。</li>
-            <li><strong>精準推薦</strong>：當顧客加入「兒童青少年」至購物車時，自動推薦「女士」版本。</li>
-            <li><strong>庫存管理</strong>：兩款商品的進貨量應同步規劃，避免其中一款缺貨影響組合銷售。</li>
-          </ul>
-        </div>
-
-        <div class="btn-row" style="justify-content:center;margin-top:20px;">
-          <button class="btn btn-primary" onclick="resetAll()">重新開始</button>
-        </div>
+        <div class="feedback-msg" id="fb-6"></div>
       </div>
     </div>
   </div>
 
-</div><!-- end main-wrap -->
+  <!-- ========== CELEBRATION ========== -->
+  <div id="celebration">
+    <div class="confetti-container" id="confetti-wrap"></div>
+    <div class="celebration-title">🎉 分析完成！</div>
+    <div class="celebration-sub">你已完成所有步驟，成功找出關聯商品！</div>
+    <div class="conclusion-box">
+      <h4>分析結論</h4>
+      <p>
+        目標商品：<strong>黃金搭檔（兒童青少年）</strong>（共出現在 34 筆訂單中）<br><br>
+        在 984 筆訂單中，唯一同時滿足最小支援度（≥ 0.03）
+        與最小信賴度（≥ 0.4）的關聯商品為：
+      </p>
+      <div style="margin:12px 0; padding:12px 14px; background:white; border-radius:8px; border:2px solid var(--green);">
+        <span style="font-size:1.1rem; font-weight:800; color:var(--green-dark);">✅ 黃金搭檔（女士）</span>
+        <span class="pill pill-green" style="margin-left:8px;">Support = 0.0335</span>
+        <span class="pill pill-amber" style="margin-left:4px;">Confidence = 0.9706</span>
+      </div>
+    </div>
+    <div class="biz-rec">
+      <h5>業務應用建議</h5>
+      在購買「黃金搭檔（兒童青少年）」的顧客中，有高達 <strong>97.06%</strong> 的訂單同時包含「黃金搭檔（女士）」。
+      建議在推薦系統或商品陳列中，將這兩件商品配對推薦，例如：買兒童版即推薦女士版，提高連帶銷售率。
+    </div>
+    <div class="btn-row" style="justify-content:center; margin-top:20px;">
+      <button class="btn btn-primary" onclick="restartAll()">重新開始</button>
+    </div>
+  </div>
 
-<footer>商品關聯分析互動教學 · 物流管理課程</footer>
+</div><!-- /main-wrap -->
+
+<footer>商品關聯分析互動教學 &nbsp;|&nbsp; Apriori Algorithm Demo &nbsp;|&nbsp; 最小支援度 0.03 &nbsp;|&nbsp; 最小信賴度 0.4</footer>
 
 <script>
-// ============================================================
-// Embedded order data
-// ============================================================
+// ===== Embedded Data =====
 const RAW_ORDERS = {"ON2021090400013":["威士雅西洋參片","華味亨果丹(餅)果乾系列山楂餅","白貓去油高效洗潔精"],"ON2021090400081":["名創優品（MINISO） 植物花萃手霜","波力海苔 原味"],"ON2021090400110":["威士雅西洋參片","康得4.5高耐熱湯煲","丹芭碧海洋精華洗手液"],"ON2021090400127":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090400191":["嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090400313":["喜之郎優酪果凍爽","趣多多 香濃巧克力味香脆曲奇","得力中性筆（12支）","丹芭碧海洋精華洗手液"],"ON2021090400319":["好麗友 呀！土豆 薯條【番茄醬味】","白貓經典配方洗潔精"],"ON2021090400329":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090400556":["龍士達小號印花紙巾盒L-1223","老乾媽風味豆豉","康師傅茉莉蜜茶","九陽豆漿機JYDZ-16M"],"ON2021090400562":["張裕葡萄酒禮盒","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090400743":["威士雅多維蛋白質粉","雀巢咖啡 即溶即溶咖啡奶香 30條","利仁電餅鐺BC-2008A","廣博固體膠"],"ON2021090400894":["潛力 美術拼盤490粒插珠拼圖","名創優品（MINISO） 植物花萃手霜","格力新一代節能煲GD-305A","愛普愛家cp158加濕器"],"ON2021090401026":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090401064":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021090401175":["心相印優選手帕紙C1910","心相印面巾紙400張"],"ON2021090401184":["真彩米奇印章水彩筆（36色）","雀巢咖啡 即溶即溶咖啡奶香 30條","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090401258":["潛力 美術拼盤490粒插珠拼圖","丹芭碧海洋精華洗手液"],"ON2021090401373":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090401428":["強生嬰兒牛奶霜","飄柔焗油精華護髮素","可口可樂","康師傅桶面（鮮蝦）","大豫竹牛肉麵 幹吃面"],"ON2021090401484":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精"],"ON2021090401753":["白貓去油高效洗潔精","愛普愛家電水壺2158銅","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090401776":["旺仔QQ糖23g 橡皮糖","全棉時代（PurCotton）袋裝純水濕巾10片","康師傅茉莉蜜茶","華味亨果丹(餅)果乾系列山楂餅","格力新一代節能煲GD-305A","ORION/好麗友 蘑古力"],"ON2021090401805":["美汁源果粒橙","波力海苔 原味","愛普愛家cp158加濕器"],"ON2021090401884":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090402296":["心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090402523":["ORION/好麗友 蘑古力"],"ON2021090402544":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精"],"ON2021090402856":["張裕葡萄酒禮盒","威士雅金絲燕窩"],"ON2021090402908":["力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090403185":["聽雨軒中性筆（12支）","卡夫億滋閑趣餅乾","廣博16K60頁特種紙軟抄6本裝"],"ON2021090403345":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090403595":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090403600":["喜之郎什錦果肉果凍","萬基阿膠禮盒","利仁電餅鐺BC-2008A","護舒寶絲薄日用護翼"],"ON2021090403820":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力封箱膠帶","得力12號訂書釘0012"],"ON2021090403919":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090403951":["波力海苔 原味"],"ON2021090404079":["張裕葡萄酒禮盒","威士雅金絲燕窩"],"ON2021090404087":["喜之郎什錦果肉果凍","潛力 美術拼盤490粒插珠拼圖","白貓去油高效洗潔精"],"ON2021090404445":["強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090404450":["旺仔QQ糖23g 橡皮糖","天堂傘(吉祥如意)312E","美的YJ407E自動電飯煲","龍士達分格微波飯盒L-1181"],"ON2021090404545":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090404706":["威士雅多維蛋白質粉","天堂傘(吉祥如意)312E","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090404881":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090404958":["趣多多 香濃巧克力味香脆曲奇","好麗友 呀！土豆 薯條【番茄醬味】","格力新一代節能煲GD-305A"],"ON2021090405004":["上好佳 硬質糖果120g/袋","潔成清潔球6只裝"],"ON2021090405480":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090405566":["威士雅西洋參片","ORION/好麗友 蘑古力"],"ON2021090405833":["萬基洋參含片","上海藥皂","利仁電餅鐺BC-2008A","潔成清潔球6只裝","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090406235":["POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090406310":["彩虹蚊香片（檸檬）"],"ON2021090406348":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090406511":["維達捲筒紙V4322","農夫山泉","可口可樂","冠生園蜂蜜"],"ON2021090406571":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090406812":["海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090407083":["萬基阿膠禮盒","聽雨軒中性筆（12支）","潛力 美術拼盤490粒插珠拼圖","飄柔長髮垂順護髮素","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090407158":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021090407788":["雅潔皂盒","名創優品（MINISO） 植物花萃手霜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090407947":["喜之郎VC果凍爽","威士雅多維蛋白質粉","飄柔長髮垂順護髮素"],"ON2021090407973":["強生嬰兒牛奶霜","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090407988":["名創優品（MINISO） 植物花萃手霜","康得4.5高耐熱湯煲","護舒寶絲薄日用護翼","陳克明高筋精細麵條"],"ON2021090408195":["夏士蓮修護焗油洗髮水","強生嬰兒清潤霜","羅萊家紡純棉被套床單床上四件套","護舒寶絲薄日用護翼"],"ON2021090408211":["天堂傘318E","冠生園蜂蜜","ORION/好麗友 蘑古力"],"ON2021090408344":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090408448":["威士雅多維蛋白質粉","雀巢咖啡 即溶即溶咖啡奶香 30條","利仁電餅鐺BC-2008A","嘉士利早餐餅","7653得力無線裝訂本"],"ON2021090408473":["威士雅金絲燕窩","強生嬰兒牛奶霜","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090408522":["康師傅桶面（鮮蝦）","嘉士利 香薄趣芝麻薄脆餅乾","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090408566":["九陽豆漿機JYDZ-16M","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090408584":["維達捲筒紙V4322","力士恒久嫩膚香皂","潔柔 face 面子可濕水面巾紙180抽","嘉士利早餐餅","得力中性筆（12支）","奧利奧 巧克力味夾心餅乾"],"ON2021090408850":["兒童益智電動玩具軌道玩具車","愛普愛家cp158加濕器"],"ON2021090409068":["溜溜梅 雪梅","好滋味五連包（紅燒牛肉）","好麗友 呀！土豆 薯條【番茄醬味】","顧大嫂重慶酸辣粉"],"ON2021090409252":["天堂傘(吉祥如意)312E","農夫山泉","陳克明高筋精細麵條","白貓經典配方洗潔精","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090409541":["雀巢咖啡 即溶即溶咖啡奶香 30條","龍士達小號印花紙巾盒L-1223","陳克明高筋精細麵條"],"ON2021090409614":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090409816":["維達捲筒紙V4322","陳克明高筋精細麵條"],"ON2021090500076":["夏士蓮控油長效洗髮水","上海硫磺皂","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090500085":["強生嬰兒清潤霜","飄柔長髮垂順護髮素","名創優品（MINISO） 植物花萃手霜","溜溜梅 雪梅","樂事 無限薯片","康師傅桶面（鮮蝦）","康得4.5高耐熱湯煲","金鑼 臺式原味小烤腸 肉粒多","嘉士利早餐餅","好滋味五連包（紅燒牛肉）","波力海苔 原味"],"ON2021090500175":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090500201":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精"],"ON2021090500208":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素"],"ON2021090500231":["名創優品（MINISO） 植物花萃手霜","羅萊家紡純棉被套床單床上四件套","廣博固體膠","白貓經典配方洗潔精","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090500400":["隆力奇蛇油護手霜","隆力奇蛇油SOD蜜"],"ON2021090500449":["名創優品（MINISO） 植物花萃手霜","龍士達小號印花紙巾盒L-1223"],"ON2021090500450":["全棉時代（PurCotton）袋裝純水濕巾10片","丹芭碧海洋精華洗手液","白貓去油高效洗潔精"],"ON2021090500471":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021090500505":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021090500511":["威猛先生廚房多用清潔劑","力士恒久嫩膚香皂","好吃點 香脆核桃餅","大豫竹牛肉麵 幹吃面"],"ON2021090500758":["張裕葡萄酒禮盒","養生堂天然維生素E軟膠囊","五糧液（福祿壽喜）","威士雅金絲燕窩","隆力奇蛇油護手霜","隆力奇蛇油SOD蜜","劍南春52度"],"ON2021090500960":["金鑼 臺式原味小烤腸 肉粒多","顧大嫂重慶酸辣粉"],"ON2021090501050":["維達捲筒紙V4322"],"ON2021090501198":["力士恒久嫩膚香皂","潔成清潔球6只裝","丹芭碧海洋精華洗手液"],"ON2021090501312":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090501315":["康得4.5高耐熱湯煲","白貓經典配方洗潔精","愛普愛家cp158加濕器"],"ON2021090501355":["養生堂天然維生素E軟膠囊","萬基金裝壯骨粉","天堂傘(吉祥如意)312E","格力新一代節能煲GD-305A"],"ON2021090501581":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090501582":["養生堂天然維生素E軟膠囊","廚師樂味精","白貓去油高效洗潔精","愛普愛家cp158加濕器"],"ON2021090501584":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090501824":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精"],"ON2021090501889":["趣多多 香濃巧克力味香脆曲奇","名創優品（MINISO） 植物花萃手霜","廣博16K60頁特種紙軟抄6本裝","愛普愛家cp158加濕器"],"ON2021090502181":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090502255":["名創優品（MINISO） 植物花萃手霜","嘉士利通心餅","奧妙淨藍全效洗衣粉","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090502525":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090502545":["羅萊家紡純棉被套床單床上四件套","康師傅隨心杯速食麵（香辣牛肉）","卡夫億滋閑趣餅乾"],"ON2021090502634":["力士恒久嫩膚香皂","康師傅桶面（鮮蝦）","兒童益智電動玩具軌道玩具車","陳克明高筋精細麵條"],"ON2021090502635":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021090502766":["雅潔皂盒","雀巢咖啡 即溶即溶咖啡奶香 30條","愛普愛家cp158加濕器"],"ON2021090502851":["威士雅多維蛋白質粉","好吃點 香脆核桃餅","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090502965":["強生嬰兒清潤霜","名創優品（MINISO） 植物花萃手霜","格力新一代節能煲GD-305A","丹巴碧亮白護手霜","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090503031":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090503206":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090503357":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090503617":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】","卜珂 曲奇"],"ON2021090503735":["隆力奇蛇油護手霜","隆力奇蛇油膏"],"ON2021090503812":["心相印優選手帕紙C1910","藍月亮洗手液"],"ON2021090503817":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090503855":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090504110":["萬基阿膠禮盒","上海藥皂","強生嬰兒清潤霜","冠生園蜂蜜","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090504215":["華味亨果丹(餅)果乾系列山楂餅","白貓經典配方洗潔精"],"ON2021090504743":["夏士蓮修護焗油洗髮水","隆力奇蛇油護手霜","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090504807":["嘉士利通心餅"],"ON2021090505001":["雲南白藥金口健牙膏","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090505049":["真彩米奇印章水彩筆（36色）","卡夫億滋閑趣餅乾"],"ON2021090505151":["璐瑤足浴盆","利仁電餅鐺BC-2008A","格力新一代節能煲GD-305A","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090505204":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090505241":["萬基洋參含片","龍士達小號印花紙巾盒L-1223","卡夫億滋閑趣餅乾","潔柔 face 面子可濕水面巾紙180抽","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","白貓去油高效洗潔精"],"ON2021090505308":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","奧妙淨藍全效洗衣粉"],"ON2021090505358":["全棉時代（PurCotton）袋裝純水濕巾10片","飄柔焗油精華護髮素","名創優品（MINISO） 植物花萃手霜","愛普愛家cp158加濕器"],"ON2021090505371":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090505489":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090505515":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090505535":["飄柔長髮垂順護髮素","波力海苔 原味"],"ON2021090505610":["力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090505700":["天堂傘(吉祥如意)312E","康師傅桶面（鮮蝦）","康師傅隨心杯速食麵（香辣牛肉）"],"ON2021090505882":["雀巢咖啡 即溶即溶咖啡奶香 30條","強生嬰兒牛奶霜","名創優品（MINISO） 植物花萃手霜","廣博固體膠"],"ON2021090506004":["維達捲筒紙V4322","華味亨果丹(餅)果乾系列山楂餅","廣博固體膠"],"ON2021090506094":["萬基阿膠禮盒","名創優品（MINISO） 植物花萃手霜","冠生園蜂蜜","兒童益智電動玩具軌道玩具車"],"ON2021090506450":["真彩米奇印章水彩筆（36色）","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090506454":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090506651":["雅潔皂盒","強生嬰兒清潤霜","護舒寶絲薄日用護翼"],"ON2021090506711":["聽雨軒中性筆（12支）","上海硫磺皂"],"ON2021090506737":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090506838":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090506952":["喜之郎優酪果凍爽","農夫山泉","華味亨果丹(餅)果乾系列山楂餅","兒童益智電動玩具軌道玩具車","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090507281":["強生嬰兒牛奶霜","可口可樂","康師傅茉莉蜜茶","兒童益智電動玩具軌道玩具車","奧妙淨藍全效洗衣粉"],"ON2021090507350":["龍士達小號印花紙巾盒L-1223","力士恒久嫩膚香皂","康師傅桶面（鮮蝦）","嘉士利通心餅"],"ON2021090507450":["夏士蓮修護焗油洗髮水","隆力奇蛇油SOD蜜","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090507479":["飄柔長髮垂順護髮素","華味亨果丹(餅)果乾系列山楂餅","廣博固體膠","丹芭碧海洋精華洗手液","超人電須刀SA855"],"ON2021090507480":["丹芭碧海洋精華洗手液"],"ON2021090507580":["龍士達小號印花紙巾盒L-1223","護舒寶絲薄日用護翼","奧妙淨藍全效洗衣粉"],"ON2021090508035":["雀巢咖啡 即溶即溶咖啡奶香 30條","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090508102":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090508302":["緣依娜乳木果潤手霜","一輕鬆舒解片","名創優品（MINISO） 植物花萃手霜","得力無線裝訂本10本裝"],"ON2021090508648":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090508665":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）"],"ON2021090508757":["丹巴碧亮白護手霜","陳克明高筋精細麵條","愛普愛家電水壺2158銅","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090508824":["萬基金裝壯骨粉","好麗友 呀！土豆 薯條【番茄醬味】","丹芭碧海洋精華洗手液","大豫竹牛肉麵 幹吃面"],"ON2021090508899":["強生嬰兒清潤霜","兒童益智電動玩具軌道玩具車","陳克明高筋精細麵條"],"ON2021090508951":["上海硫磺皂","趣多多 香濃巧克力味香脆曲奇","華味亨果丹(餅)果乾系列山楂餅","彩虹蚊香片（檸檬）"],"ON2021090508988":["天堂傘(吉祥如意)312E","農夫山泉","格力新一代節能煲GD-305A","陳克明高筋精細麵條","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090509008":["雪碧","天堂傘(吉祥如意)312E","強生嬰兒清潤霜","ORION/好麗友 蘑古力"],"ON2021090600065":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","顧大嫂重慶酸辣粉","卜珂 曲奇"],"ON2021090600207":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090600212":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090600286":["強生嬰兒牛奶霜","璐瑤足浴盆","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090600315":["天樂文具盒（顏色隨機）","得力無線裝訂本10本裝"],"ON2021090600345":["強生嬰兒牛奶霜","好麗友 呀！土豆 薯條【番茄醬味】","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090600558":["維達捲筒紙V4322","璐瑤足浴盆"],"ON2021090600660":["天堂傘318E","璐瑤足浴盆","兒童益智電動玩具軌道玩具車","丹巴碧亮白護手霜"],"ON2021090600698":["名創優品（MINISO） 植物花萃手霜","冠生園蜂蜜","白貓去油高效洗潔精"],"ON2021090600821":["聽雨軒中性筆（12支）","黃金搭檔（兒童青少年）","廣博16K60頁特種紙軟抄6本裝"],"ON2021090600875":["旺仔QQ糖23g 橡皮糖","卡夫億滋閑趣餅乾","得力無線裝訂本10本裝","得力封箱膠帶"],"ON2021090600985":["強生嬰兒清潤霜","力士恒久嫩膚香皂","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090601015":["名創優品（MINISO） 植物花萃手霜","璐瑤足浴盆","康得4.5高耐熱湯煲","白貓去油高效洗潔精"],"ON2021090601137":["隆力奇蛇油護手霜","隆力奇蛇油SOD蜜"],"ON2021090601170":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090601247":["喜之郎優酪果凍爽","喜之郎什錦果肉果凍","名創優品（MINISO） 植物花萃手霜"],"ON2021090601288":["雪碧","雀巢咖啡 即溶即溶咖啡奶香 30條","卡夫億滋閑趣餅乾","得力中性筆（12支）"],"ON2021090601309":["天堂傘318E","丹巴碧亮白護手霜","愛普愛家電水壺2158銅"],"ON2021090601318":["雅潔皂盒","旺仔QQ糖23g 橡皮糖","得力中性筆（12支）"],"ON2021090601531":["天樂文具盒（顏色隨機）"],"ON2021090601533":["維達捲筒紙V4322","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090601614":["龍士達分格微波飯盒L-1181","潔成清潔球6只裝","護舒寶絲薄日用護翼","丹巴碧亮白護手霜","愛普愛家電水壺2158銅"],"ON2021090601734":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090601774":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090601866":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021090601985":["羅萊家紡純棉被套床單床上四件套","格力新一代節能煲GD-305A"],"ON2021090602054":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090602301":["名創優品（MINISO） 植物花萃手霜","龍士達小號印花紙巾盒L-1223","康師傅茉莉蜜茶","九陽豆漿機JYDZ-16M"],"ON2021090602329":["名創優品（MINISO） 植物花萃手霜","好麗友 呀！土豆 薯條【番茄醬味】","冠生園蜂蜜"],"ON2021090602343":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090602450":["趣多多 香濃巧克力味香脆曲奇"],"ON2021090602631":["羅萊家紡純棉被套床單床上四件套","陳克明高筋精細麵條"],"ON2021090602652":["龍士達小號印花紙巾盒L-1223","冠生園蜂蜜","格力新一代節能煲GD-305A"],"ON2021090602656":["養生堂天然維生素E軟膠囊","格力新一代節能煲GD-305A","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090602658":["康師傅茉莉蜜茶","丹芭碧海洋精華洗手液","白貓去油高效洗潔精"],"ON2021090602745":["康師傅隨心杯速食麵（香辣牛肉）","卡夫億滋閑趣餅乾","得力中性筆（12支）"],"ON2021090602912":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322"],"ON2021090602963":["雅潔皂盒","廣博16K60頁特種紙軟抄6本裝","ORION/好麗友 蘑古力"],"ON2021090602985":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","威士雅多維蛋白質粉","劍南春52度","黃金搭檔（女士）"],"ON2021090603213":["美的YJ407E自動電飯煲","康師傅隨心杯速食麵（香辣牛肉）","護舒寶絲薄日用護翼","格力新一代節能煲GD-305A"],"ON2021090603237":["威士雅壯骨粉","威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090603327":["張裕葡萄酒禮盒","劍南春52度"],"ON2021090603331":["潔成清潔球6只裝","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090603525":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090603719":["利仁電餅鐺BC-2008A","格力新一代節能煲GD-305A","兒童益智電動玩具軌道玩具車"],"ON2021090604049":["雪碧","威猛先生潔廁液","龍士達小號印花紙巾盒L-1223"],"ON2021090604173":["上好佳 硬質糖果120g/袋","波力海苔 原味","白貓經典配方洗潔精"],"ON2021090604300":["強生嬰兒牛奶霜","波力海苔 原味"],"ON2021090604334":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090604417":["益而高套裝釘書機","得力12號訂書釘0012"],"ON2021090604551":["黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090604554":["雀巢咖啡 即溶即溶咖啡奶香 30條","可口可樂","康師傅茉莉蜜茶","嘉士利早餐餅","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090604615":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090605003":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090605043":["真彩米奇印章水彩筆（36色）","農夫山泉","利仁電餅鐺BC-2008A","白貓經典配方洗潔精"],"ON2021090605093":["益而高套裝釘書機","天樂文具盒（顏色隨機）","強生嬰兒清潤霜","強生嬰兒牛奶霜","飄柔長髮垂順護髮素","潔柔 face 面子可濕水面巾紙180抽","格力新一代節能煲GD-305A","得力無線裝訂本10本裝","得力12號訂書釘0012","白貓去油高效洗潔精","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090605106":["喜之郎VC果凍爽","護舒寶絲薄日用護翼","白貓經典配方洗潔精"],"ON2021090605115":["可口可樂","華味亨果丹(餅)果乾系列山楂餅","丹芭碧海洋精華洗手液","超人電須刀SA855","奧妙淨藍全效洗衣粉"],"ON2021090605118":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】","卜珂 曲奇"],"ON2021090605154":["格力新一代節能煲GD-305A","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090605178":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090605221":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090605350":["趣多多 香濃巧克力味香脆曲奇","九陽豆漿機JYDZ-16M"],"ON2021090605533":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）"],"ON2021090605557":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090605560":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090605628":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090605641":["心相印優選手帕紙C1910","強生嬰兒清潤霜","龍士達分格微波飯盒L-1181","格力新一代節能煲GD-305A"],"ON2021090605726":["羅萊家紡純棉被套床單床上四件套","陳克明高筋精細麵條"],"ON2021090605771":["萬基金裝壯骨粉","陳克明高筋精細麵條","波力海苔 原味"],"ON2021090605778":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090605883":["康師傅隨心杯速食麵（香辣牛肉）","愛普愛家電水壺2158銅","ventry乳膠枕"],"ON2021090605887":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090605904":["強生嬰兒清潤霜","名創優品（MINISO） 植物花萃手霜","康得4.5高耐熱湯煲","嘉士利早餐餅"],"ON2021090606017":["飄柔焗油精華護髮素","兒童益智電動玩具軌道玩具車","超人電須刀SA855"],"ON2021090606028":["龍士達小號印花紙巾盒L-1223","波力海苔 原味","白貓去油高效洗潔精"],"ON2021090606106":["萬基金裝壯骨粉","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090606203":["龍士達小號印花紙巾盒L-1223","華味亨果丹(餅)果乾系列山楂餅","廣博16K60頁特種紙軟抄6本裝"],"ON2021090606327":["白貓經典配方洗潔精","ORION/好麗友 蘑古力"],"ON2021090606605":["夏士蓮修護焗油洗髮水","上海硫磺皂","愛普愛家cp158加濕器"],"ON2021090606849":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090606974":["農夫山泉","美汁源果粒橙","康師傅隨心杯速食麵（香辣牛肉）","白貓經典配方洗潔精","ORION/好麗友 蘑古力"],"ON2021090607004":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素"],"ON2021090607035":["利仁電餅鐺BC-2008A","好吃點 香脆核桃餅","廣博16K60頁特種紙軟抄6本裝","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090607121":["雀巢咖啡 即溶即溶咖啡奶香 30條","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","兒童益智電動玩具軌道玩具車","白貓經典配方洗潔精"],"ON2021090607346":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090607438":["旺仔QQ糖23g 橡皮糖","陳克明高筋精細麵條"],"ON2021090607470":["全棉時代（PurCotton） 嬰兒濕巾 80片","名創優品（MINISO） 植物花萃手霜","利仁電餅鐺BC-2008A","嘉士利早餐餅","華味亨果丹(餅)果乾系列山楂餅"],"ON2021090607530":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090607564":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090607734":["威士雅多維蛋白質粉","護舒寶絲薄日用護翼","得力中性筆（12支）","愛普愛家電水壺2158銅"],"ON2021090607865":["飄柔焗油精華護髮素","護舒寶絲薄日用護翼","得力中性筆（12支）","奧妙淨藍全效洗衣粉"],"ON2021090608021":["上好佳 硬質糖果120g/袋","廣博16K60頁特種紙軟抄6本裝","得力封箱膠帶"],"ON2021090608106":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度"],"ON2021090608354":["雪碧","護舒寶絲薄日用護翼","ORION/好麗友 蘑古力"],"ON2021090608482":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090608499":["雅潔皂盒","格力新一代節能煲GD-305A","彩虹蚊香片（檸檬）"],"ON2021090608690":["上海硫磺皂","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","廣博固體膠"],"ON2021090608733":["夏士蓮多效護奍洗髮水","喜之郎VC果凍爽","威猛先生潔廁液","力士恒久嫩膚香皂","廣博16K60頁特種紙軟抄6本裝"],"ON2021090608886":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090608888":["雀巢咖啡 即溶即溶咖啡奶香 30條","得力中性筆（12支）"],"ON2021090609011":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090609052":["夏士蓮修護焗油洗髮水","隆力奇蛇油護手霜","隆力奇蛇油SOD蜜","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090609177":["張裕葡萄酒禮盒","威士雅金絲燕窩"],"ON2021090609477":["強生嬰兒清潤霜","陳克明高筋精細麵條"],"ON2021090609543":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090609703":["雙匯火腿腸 泡面拍檔","溜溜梅 雪梅","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090609775":["天堂傘(吉祥如意)312E","強生嬰兒清潤霜","護舒寶絲薄日用護翼","ORION/好麗友 蘑古力"],"ON2021090609944":["冠生園蜂蜜","福滿堂32CM無油煙炒鍋","愛普愛家電水壺2158銅"],"ON2021090700057":["龍士達小號印花紙巾盒L-1223","康師傅茉莉蜜茶","九陽豆漿機JYDZ-16M"],"ON2021090700117":["護舒寶絲薄日用護翼","丹芭碧海洋精華洗手液","白貓經典配方洗潔精"],"ON2021090700123":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090700417":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090700452":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩"],"ON2021090700528":["聽雨軒中性筆（12支）","強生嬰兒牛奶霜","嘉士利早餐餅","愛普愛家cp158加濕器"],"ON2021090700550":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322"],"ON2021090700582":["格力新一代節能煲GD-305A","福滿堂32CM無油煙炒鍋"],"ON2021090700621":["真彩米奇印章水彩筆（36色）","雀巢咖啡 即溶即溶咖啡奶香 30條","廚師樂味精","彩虹蚊香片（檸檬）"],"ON2021090700634":["緣依娜乳木果潤手霜","威士雅多維蛋白質粉","九陽豆漿機JYDZ-16M","廣博固體膠","冠生園蜂蜜"],"ON2021090700641":["美的YJ407E自動電飯煲","璐瑤足浴盆","康得4.5高耐熱湯煲","兒童益智電動玩具軌道玩具車"],"ON2021090700965":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090700974":["強生嬰兒清潤霜","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090701051":["雪碧","維達捲筒紙V4322","廣博16K60頁特種紙軟抄6本裝"],"ON2021090701058":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090701095":["雪碧","雀巢咖啡 即溶即溶咖啡奶香 30條","璐瑤足浴盆","得力中性筆（12支）"],"ON2021090701107":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090701147":["心相印優選手帕紙C1910","心相印面巾紙400張"],"ON2021090701302":["聽雨軒中性筆（12支）","強生嬰兒牛奶霜","兒童益智電動玩具軌道玩具車"],"ON2021090701319":["雲南白藥金口健牙膏","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090701390":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油","冠生園蜂蜜"],"ON2021090701393":["喜之郎什錦果肉果凍","威士雅西洋參片","樂事 無限薯片","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090701427":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090701437":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021090701539":["潔成清潔球6只裝","嘉士利 香薄趣芝麻薄脆餅乾","冠生園蜂蜜","彩虹蚊香片（檸檬）"],"ON2021090701562":["名創優品（MINISO） 植物花萃手霜","龍士達小號印花紙巾盒L-1223","卡夫億滋閑趣餅乾","嘉士利 香薄趣芝麻薄脆餅乾","護舒寶絲薄日用護翼"],"ON2021090701613":["強生嬰兒牛奶霜","白貓經典配方洗潔精"],"ON2021090701642":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","威士雅多維蛋白質粉","劍南春52度","黃金搭檔（女士）"],"ON2021090701829":["真彩米奇印章水彩筆（36色）","雪碧","旺仔QQ糖23g 橡皮糖","卡夫億滋閑趣餅乾","陳克明高筋精細麵條"],"ON2021090701905":["九陽豆漿機JYDZ-16M","嘉士利早餐餅"],"ON2021090701923":["美的YJ407E自動電飯煲","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090701952":["養生堂天然維生素E軟膠囊","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090702022":["天堂傘(吉祥如意)312E","康師傅茉莉蜜茶","格力新一代節能煲GD-305A"],"ON2021090702078":["喜之郎VC果凍爽","上好佳 硬質糖果120g/袋","廣博16K60頁特種紙軟抄6本裝","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090702101":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090702189":["九陽豆漿機JYDZ-16M","格力新一代節能煲GD-305A","兒童益智電動玩具軌道玩具車"],"ON2021090702202":["喜之郎什錦果肉果凍","威士雅西洋參片","嘉士利通心餅","護舒寶絲薄日用護翼","ORION/好麗友 蘑古力"],"ON2021090702258":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021090702290":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021090702328":["龍士達小號印花紙巾盒L-1223","白貓去油高效洗潔精"],"ON2021090702605":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090702758":["強生嬰兒牛奶霜","龍士達分格微波飯盒L-1181","利仁電餅鐺BC-2008A","力士恒久嫩膚香皂","卡夫億滋閑趣餅乾","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090702873":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090702874":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","冠生園蜂蜜"],"ON2021090702967":["力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090702981":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090703016":["雪碧","維達捲筒紙V4322","旺仔QQ糖23g 橡皮糖","廣博16K60頁特種紙軟抄6本裝"],"ON2021090703017":["天堂傘(吉祥如意)312E","雀巢咖啡 即溶即溶咖啡奶香 30條","康師傅茉莉蜜茶","廣博16K60頁特種紙軟抄6本裝"],"ON2021090703091":["藍月亮洗手液","護舒寶絲薄日用護翼"],"ON2021090703170":["康得4.5高耐熱湯煲","嘉士利通心餅","ventry乳膠枕"],"ON2021090703285":["張裕葡萄酒禮盒","劍南春52度"],"ON2021090703305":["雪碧","維達捲筒紙V4322","廣博16K60頁特種紙軟抄6本裝"],"ON2021090703369":["旺仔QQ糖23g 橡皮糖","波力海苔 原味"],"ON2021090703585":["龍士達分格微波飯盒L-1181"],"ON2021090703590":["天樂文具盒（顏色隨機）","得力無線裝訂本10本裝"],"ON2021090703645":["心相印優選手帕紙C1910","藍月亮洗手液"],"ON2021090703850":["真彩米奇印章水彩筆（36色）","得力中性筆（12支）","ORION/好麗友 蘑古力"],"ON2021090703904":["名創優品（MINISO） 植物花萃手霜","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090704023":["飄柔長髮垂順護髮素"],"ON2021090704056":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090704218":["喜之郎優酪果凍爽","威士雅多維蛋白質粉","萬基金裝壯骨粉"],"ON2021090704225":["溜溜梅 雪梅","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090704279":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090704421":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021090704443":["好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090704513":["真彩米奇印章水彩筆（36色）","喜之郎什錦果肉果凍"],"ON2021090704515":["天樂文具盒（顏色隨機）"],"ON2021090704547":["雪碧","萬基洋參含片","天堂傘(吉祥如意)312E","廣博固體膠"],"ON2021090704732":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322"],"ON2021090704883":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021090705008":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090705019":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度"],"ON2021090705095":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090705110":["護舒寶絲薄日用護翼","ORION/好麗友 蘑古力"],"ON2021090705140":["威士雅壯骨粉","威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090705182":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090705271":["好麗友 呀！土豆 薯條【番茄醬味】","冠生園蜂蜜"],"ON2021090705441":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090705527":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090705651":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090705661":["威士雅金絲燕窩","萬基阿膠禮盒","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090705665":["喜之郎VC果凍爽","萬基阿膠禮盒"],"ON2021090705694":["利仁電餅鐺BC-2008A","力士恒久嫩膚香皂","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","彩虹蚊香片（檸檬）"],"ON2021090705770":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090705772":["得力封箱膠帶","超人電須刀SA855","奧利奧 巧克力味夾心餅乾"],"ON2021090705884":["一輕鬆舒解片","強生嬰兒清潤霜","九陽電磁爐JYC-22F","廣博固體膠"],"ON2021090705888":["維達捲筒紙V4322","名創優品（MINISO） 植物花萃手霜","潔成清潔球6只裝"],"ON2021090705993":["康師傅桶面（鮮蝦）","潔柔 face 面子可濕水面巾紙180抽"],"ON2021090706025":["雅潔皂盒","龍士達小號印花紙巾盒L-1223","丹芭碧海洋精華洗手液","廚師樂味精"],"ON2021090706046":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021090706108":["羅萊家紡純棉被套床單床上四件套","龍士達小號印花紙巾盒L-1223","丹芭碧海洋精華洗手液"],"ON2021090706285":["強生嬰兒清潤霜","龍士達小號印花紙巾盒L-1223","康師傅茉莉蜜茶","冠生園蜂蜜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090706311":["威猛先生潔廁液","天堂傘(吉祥如意)312E","潛力 美術拼盤490粒插珠拼圖","璐瑤足浴盆"],"ON2021090706361":["強生嬰兒牛奶霜","名創優品（MINISO） 植物花萃手霜"],"ON2021090706430":["兒童益智電動玩具軌道玩具車","得力封箱膠帶","波力海苔 原味","ORION/好麗友 蘑古力"],"ON2021090706483":["聽雨軒中性筆（12支）"],"ON2021090706507":["張裕葡萄酒禮盒","威士雅壯骨粉","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090706650":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精"],"ON2021090706705":["福滿堂32CM無油煙炒鍋","丹芭碧海洋精華洗手液"],"ON2021090706764":["威士雅多維蛋白質粉","飄柔長髮垂順護髮素","華味亨果丹(餅)果乾系列山楂餅"],"ON2021090706787":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090706848":["夏士蓮多效護奍洗髮水","上海藥皂","羅萊家紡純棉被套床單床上四件套","龍士達小號印花紙巾盒L-1223","九陽豆漿機JYDZ-16M"],"ON2021090706883":["名創優品（MINISO） 植物花萃手霜","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090707113":["康師傅桶面（鮮蝦）","冠生園蜂蜜","福滿堂32CM無油煙炒鍋"],"ON2021090707150":["名創優品（MINISO） 植物花萃手霜","九陽豆漿機JYDZ-16M","護舒寶絲薄日用護翼"],"ON2021090707340":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090707584":["龍士達小號印花紙巾盒L-1223","嘉士利 香薄趣芝麻薄脆餅乾","廣博16K60頁特種紙軟抄6本裝"],"ON2021090707695":["強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090707741":["喜之郎VC果凍爽","飄柔去屑洗髮水蘭花長效清爽家庭裝1L","好麗友 呀！土豆 薯條【番茄醬味】","好吃點 香脆核桃餅","白貓去油高效洗潔精"],"ON2021090707844":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090707856":["強生嬰兒清潤霜","廣博固體膠"],"ON2021090707901":["養生堂天然維生素E軟膠囊","威猛先生潔廁液","萬基洋參含片","飄柔長髮垂順護髮素","卡夫億滋閑趣餅乾"],"ON2021090707920":["卡夫億滋閑趣餅乾","得力封箱膠帶"],"ON2021090708000":["上海藥皂","卡夫億滋閑趣餅乾","奧妙淨藍全效洗衣粉"],"ON2021090708079":["喜之郎什錦果肉果凍","名創優品（MINISO） 植物花萃手霜","廚師樂味精"],"ON2021090708199":["聽雨軒中性筆（12支）","天堂傘(吉祥如意)312E","卡夫億滋閑趣餅乾","丹芭碧海洋精華洗手液"],"ON2021090708202":["潔成清潔球6只裝","護舒寶絲薄日用護翼","ORION/好麗友 蘑古力"],"ON2021090708365":["雪碧","名創優品（MINISO） 植物花萃手霜","護舒寶絲薄日用護翼"],"ON2021090708382":["心相印優選手帕紙C2110","心相印面巾紙400張","上海藥皂","藍月亮洗手液"],"ON2021090708388":["龍士達小號印花紙巾盒L-1223","卡夫億滋閑趣餅乾","ORION/好麗友 蘑古力"],"ON2021090708421":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090708422":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090708443":["樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多"],"ON2021090708845":["心相印優選手帕紙C1910","藍月亮洗手液"],"ON2021090708853":["康師傅桶面（鮮蝦）"],"ON2021090708920":["華味亨果丹(餅)果乾系列山楂餅","得力中性筆（12支）","奧妙淨藍全效洗衣粉"],"ON2021090708950":["璐瑤足浴盆","康得4.5高耐熱湯煲","白貓經典配方洗潔精"],"ON2021090709119":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多"],"ON2021090709139":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090709208":["強生嬰兒牛奶霜","康師傅茉莉蜜茶","白貓經典配方洗潔精"],"ON2021090709240":["卜珂 曲奇","奧妙淨藍全效洗衣粉","ventry乳膠枕"],"ON2021090709385":["名創優品（MINISO） 植物花萃手霜","嘉士利早餐餅","好吃點 香脆核桃餅","丹芭碧海洋精華洗手液"],"ON2021090709420":["威猛先生潔廁液","華味亨果丹(餅)果乾系列山楂餅"],"ON2021090709440":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021090709503":["威士雅壯骨粉","威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090709588":["旺仔QQ糖23g 橡皮糖","農夫山泉","護舒寶絲薄日用護翼","廣博16K60頁特種紙軟抄6本裝","白貓經典配方洗潔精"],"ON2021090709652":["夏士蓮修護焗油洗髮水","上海硫磺皂","力士水潤絲滑潤發素","奧妙淨藍全效洗衣粉"],"ON2021090709694":["名創優品（MINISO） 植物花萃手霜","護舒寶絲薄日用護翼","彩虹蚊香片（檸檬）"],"ON2021090709788":["海天金標生抽","海天高級紅燒醬油"],"ON2021090709806":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090709907":["雀巢咖啡 即溶即溶咖啡奶香 30條","龍士達小號印花紙巾盒L-1223","陳克明高筋精細麵條"],"ON2021090800036":["力士恒久嫩膚香皂","康師傅茉莉蜜茶","丹芭碧海洋精華洗手液"],"ON2021090800067":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021090800102":["雲南白藥金口健牙膏","威士雅西洋參片","全棉時代（PurCotton）袋裝純水濕巾10片","白貓經典配方洗潔精","奧妙淨藍全效洗衣粉","愛普愛家電水壺2158銅","阿道夫(ADOLPH)心悅洗護套盒","ventry乳膠枕","ORION/好麗友 蘑古力"],"ON2021090800196":["益而高套裝釘書機","聽雨軒中性筆（12支）","天樂文具盒（顏色隨機）","得力彩色迴紋針0038"],"ON2021090800252":["強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090800474":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090800523":["張裕葡萄酒禮盒","威士雅金絲燕窩"],"ON2021090800545":["力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090800581":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090800732":["張裕葡萄酒禮盒","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090800752":["喜之郎什錦果肉果凍","陳克明高筋精細麵條","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090800805":["天堂傘318E","農夫山泉","隆力奇蛇油護手霜","隆力奇蛇油SOD蜜","嘉士利 香薄趣芝麻薄脆餅乾","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090800817":["康師傅桶面（鮮蝦）","福滿堂32CM無油煙炒鍋","得力無線裝訂本10本裝"],"ON2021090800840":["真彩米奇印章水彩筆（36色）","雪碧","強生嬰兒清潤霜"],"ON2021090800863":["雲南白藥金口健牙膏","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090800906":["利仁電餅鐺BC-2008A","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090800916":["喜之郎優酪果凍爽","強生嬰兒牛奶霜"],"ON2021090800928":["天堂傘(吉祥如意)312E","護舒寶絲薄日用護翼"],"ON2021090801000":["喜之郎優酪果凍爽","好麗友 呀！土豆 薯條【番茄醬味】","丹芭碧海洋精華洗手液"],"ON2021090801001":["維達捲筒紙V4322","名創優品（MINISO） 植物花萃手霜"],"ON2021090801030":["強生嬰兒清潤霜","康師傅隨心杯速食麵（香辣牛肉）","ORION/好麗友 蘑古力"],"ON2021090801078":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090801093":["名創優品（MINISO） 植物花萃手霜","卡夫億滋閑趣餅乾","格力新一代節能煲GD-305A","愛普愛家cp158加濕器"],"ON2021090801102":["溜溜梅 雪梅","好滋味五連包（紅燒牛肉）","好麗友 呀！土豆 薯條【番茄醬味】","顧大嫂重慶酸辣粉"],"ON2021090801110":["天堂傘(吉祥如意)312E","護舒寶絲薄日用護翼","冠生園蜂蜜","福滿堂32CM無油煙炒鍋"],"ON2021090801123":["心相印優選手帕紙C1910","心相印面巾紙400張"],"ON2021090801242":["旺仔QQ糖23g 橡皮糖","萬基阿膠禮盒","聽雨軒中性筆（12支）","天堂傘(吉祥如意)312E","雀巢咖啡 即溶即溶咖啡奶香 30條","卡夫億滋閑趣餅乾","丹芭碧海洋精華洗手液"],"ON2021090801246":["緣依娜乳木果潤手霜","嘉士利 香薄趣芝麻薄脆餅乾","冠生園蜂蜜","超人電須刀SA855"],"ON2021090801321":["力士恒久嫩膚香皂","陳克明高筋精細麵條"],"ON2021090801400":["緣依娜乳木果潤手霜","威士雅多維蛋白質粉","得力中性筆（12支）","波力海苔 原味","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090801404":["真彩米奇印章水彩筆（36色）","華味亨果丹(餅)果乾系列山楂餅","得力中性筆（12支）"],"ON2021090801441":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021090801460":["張裕葡萄酒禮盒","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090801542":["格力新一代節能煲GD-305A","丹芭碧海洋精華洗手液"],"ON2021090801548":["養生堂天然維生素E軟膠囊","喜之郎什錦果肉果凍","好吃點 香脆核桃餅","格力新一代節能煲GD-305A"],"ON2021090801602":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090801631":["奧利奧 巧克力味夾心餅乾"],"ON2021090801644":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090801731":["益而高套裝釘書機","天樂文具盒（顏色隨機）"],"ON2021090801845":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021090801855":["羅萊家紡純棉被套床單床上四件套","好麗友 呀！土豆 薯條【番茄醬味】","波力海苔 原味","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090801903":["雙匯火腿腸 泡面拍檔","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090801977":["緣依娜乳木果潤手霜","聽雨軒中性筆（12支）","強生嬰兒清潤霜","康師傅隨心杯速食麵（香辣牛肉）","康得4.5高耐熱湯煲"],"ON2021090802071":["雀巢咖啡 即溶即溶咖啡奶香 30條"],"ON2021090802093":["璐瑤足浴盆","康得4.5高耐熱湯煲","潔成清潔球6只裝"],"ON2021090802115":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天陳醋"],"ON2021090802121":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090802180":["名創優品（MINISO） 植物花萃手霜","利仁電餅鐺BC-2008A","卡夫億滋閑趣餅乾","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090802400":["心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090802437":["夏士蓮修護焗油洗髮水","上海硫磺皂","力士水潤絲滑潤發素","奧妙淨藍全效洗衣粉"],"ON2021090802515":["張裕葡萄酒禮盒","威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090802520":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090802541":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090802705":["嘉士利 香薄趣芝麻薄脆餅乾","格力新一代節能煲GD-305A","愛普愛家電水壺2158銅"],"ON2021090802837":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090803024":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090803105":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天陳醋"],"ON2021090803136":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021090803158":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021090803190":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素"],"ON2021090803317":["旺仔QQ糖23g 橡皮糖","得力中性筆（12支）","丹巴碧亮白護手霜","奧妙淨藍全效洗衣粉"],"ON2021090803321":["嘉士利 香薄趣芝麻薄脆餅乾","護舒寶絲薄日用護翼","丹芭碧海洋精華洗手液","白貓經典配方洗潔精"],"ON2021090803323":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090803364":["康師傅茉莉蜜茶","海天特辣黃豆醬","白貓經典配方洗潔精","奧妙淨藍全效洗衣粉"],"ON2021090803371":["雀巢咖啡 即溶即溶咖啡奶香 30條","老乾媽風味豆豉","好麗友 呀！土豆 薯條【番茄醬味】","愛普愛家cp158加濕器"],"ON2021090803373":["卡夫億滋閑趣餅乾"],"ON2021090803414":["維達捲筒紙V4322","威猛先生潔廁液"],"ON2021090803441":["龍士達分格微波飯盒L-1181"],"ON2021090803458":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090803503":["威士雅多維蛋白質粉","萬基金裝壯骨粉","強生嬰兒清潤霜"],"ON2021090803505":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090803510":["心相印優選手帕紙C1910","藍月亮洗手液"],"ON2021090803608":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精"],"ON2021090803688":["張裕葡萄酒禮盒","劍南春52度"],"ON2021090803701":["張裕葡萄酒禮盒","威士雅金絲燕窩"],"ON2021090803779":["喜之郎優酪果凍爽","得力中性筆（12支）","波力海苔 原味","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090803854":["旺仔QQ糖23g 橡皮糖","萬基阿膠禮盒","名創優品（MINISO） 植物花萃手霜","九陽電磁爐JYC-22F","陳克明高筋精細麵條"],"ON2021090804112":["旺仔QQ糖23g 橡皮糖","飄柔長髮垂順護髮素","格力新一代節能煲GD-305A"],"ON2021090804211":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090804332":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090804348":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090804376":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021090804382":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090804484":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力中性筆（12支）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090804534":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090804668":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090804827":["雅潔皂盒","趣多多 香濃巧克力味香脆曲奇","愛普愛家電水壺2158銅"],"ON2021090804870":["雅潔皂盒","得力中性筆（12支）","丹芭碧海洋精華洗手液","彩虹蚊香片（檸檬）"],"ON2021090805226":["卡夫億滋閑趣餅乾","潔成清潔球6只裝"],"ON2021090805349":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090805360":["雪碧","溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）"],"ON2021090805443":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090805448":["張裕葡萄酒禮盒","養生堂天然維生素E軟膠囊","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090805450":["金鑼 臺式原味小烤腸 肉粒多","顧大嫂重慶酸辣粉"],"ON2021090805476":["雪碧","好麗友 呀！土豆 薯條【番茄醬味】","丹芭碧海洋精華洗手液"],"ON2021090805533":["迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090805550":["維達捲筒紙V4322","名創優品（MINISO） 植物花萃手霜","潔成清潔球6只裝","ORION/好麗友 蘑古力"],"ON2021090805660":["養生堂天然維生素E軟膠囊","強生嬰兒牛奶霜"],"ON2021090805792":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090805934":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090805970":["溜溜梅 雪梅","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090806015":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090806065":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090806086":["強生嬰兒牛奶霜","羅萊家紡純棉被套床單床上四件套","利仁電餅鐺BC-2008A","九陽豆漿機JYDZ-16M","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090806095":["強生嬰兒牛奶霜","7653得力無線裝訂本"],"ON2021090806104":["聽雨軒中性筆（12支）","天堂傘(吉祥如意)312E","愛普愛家cp158加濕器"],"ON2021090806180":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）"],"ON2021090806205":["雙匯火腿腸 泡面拍檔","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090806217":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090806247":["天堂傘318E","名創優品（MINISO） 植物花萃手霜","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090806329":["養生堂天然維生素E軟膠囊","心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322"],"ON2021090806413":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090806445":["名創優品（MINISO） 植物花萃手霜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090806463":["康師傅隨心杯速食麵（香辣牛肉）","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021090806540":["真彩米奇印章水彩筆（36色）","農夫山泉","白貓經典配方洗潔精"],"ON2021090806551":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090806665":["真彩米奇印章水彩筆（36色）","雪碧","可口可樂","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090806719":["雲南白藥金口健牙膏","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090806858":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090806915":["強生嬰兒牛奶霜","波力海苔 原味","愛普愛家電水壺2158銅"],"ON2021090806972":["雪碧","飄柔長髮垂順護髮素","冠生園蜂蜜"],"ON2021090807015":["威猛先生潔廁液","羅萊家紡純棉被套床單床上四件套","龍士達小號印花紙巾盒L-1223","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090807146":["萬基洋參含片","聽雨軒中性筆（12支）","利仁電餅鐺BC-2008A","ventry乳膠枕"],"ON2021090807201":["天堂傘(吉祥如意)312E","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090807241":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090807252":["緣依娜乳木果潤手霜","養生堂天然維生素E軟膠囊","威士雅西洋參片","潔成清潔球6只裝","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090807565":["海天特辣黃豆醬","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090807582":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】","卜珂 曲奇"],"ON2021090807604":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090807640":["養生堂天然維生素E軟膠囊","威士雅多維蛋白質粉","龍士達小號印花紙巾盒L-1223","九陽電磁爐JYC-22F","嘉士利 香薄趣芝麻薄脆餅乾","得力中性筆（12支）"],"ON2021090807675":["旺仔QQ糖23g 橡皮糖"],"ON2021090807691":["嘉士利通心餅","廣博固體膠"],"ON2021090807706":["飄柔長髮垂順護髮素","藍月亮洗手液"],"ON2021090807715":["聽雨軒中性筆（12支）","趣多多 香濃巧克力味香脆曲奇","璐瑤足浴盆","華味亨果丹(餅)果乾系列山楂餅"],"ON2021090807781":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021090807819":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090808027":["雅潔皂盒","喜之郎什錦果肉果凍","陳克明高筋精細麵條","愛普愛家電水壺2158銅"],"ON2021090808080":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】","卜珂 曲奇"],"ON2021090808144":["夏士蓮修護焗油洗髮水","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜","力士水潤絲滑潤發素"],"ON2021090808188":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090808315":["護舒寶絲薄日用護翼","丹芭碧海洋精華洗手液","ORION/好麗友 蘑古力"],"ON2021090808465":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090808604":["雅潔皂盒","上好佳 硬質糖果120g/袋","利仁電餅鐺BC-2008A"],"ON2021090808607":["威猛先生潔廁液","強生嬰兒清潤霜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090808637":["潔柔 face 面子可濕水面巾紙180抽","白貓去油高效洗潔精"],"ON2021090808666":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021090808844":["隆力奇蛇油護手霜","隆力奇蛇油SOD蜜"],"ON2021090808855":["張裕葡萄酒禮盒","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090809085":["飄柔長髮垂順護髮素","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090809220":["天堂傘(吉祥如意)312E","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","得力中性筆（12支）"],"ON2021090809301":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090809309":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力中性筆（12支）"],"ON2021090809355":["維達捲筒紙V4322","威士雅金絲燕窩","得力中性筆（12支）"],"ON2021090809452":["雅潔皂盒","海天老抽豉油","廣博16K60頁特種紙軟抄6本裝"],"ON2021090809518":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090809555":["璐瑤足浴盆","利仁電餅鐺BC-2008A","格力新一代節能煲GD-305A","得力封箱膠帶","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090809681":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021090809723":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090809836":["農夫山泉","卡夫億滋閑趣餅乾"],"ON2021090809874":["天堂傘318E","康師傅隨心杯速食麵（香辣牛肉）","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090809875":["名創優品（MINISO） 植物花萃手霜","丹芭碧海洋精華洗手液","白貓去油高效洗潔精"],"ON2021090809923":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021090809955":["喜之郎什錦果肉果凍","威士雅多維蛋白質粉","格力新一代節能煲GD-305A"],"ON2021090809957":["好麗友 呀！土豆 薯條【番茄醬味】","彩虹蚊香片（檸檬）"],"ON2021090900038":["名創優品（MINISO） 植物花萃手霜","護舒寶絲薄日用護翼","得力中性筆（12支）","7653得力無線裝訂本"],"ON2021090900088":["溜溜梅 雪梅","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090900120":["天堂傘(吉祥如意)312E","強生嬰兒清潤霜","利仁電餅鐺BC-2008A"],"ON2021090900139":["瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090900290":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090900308":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090900312":["強生嬰兒牛奶霜","康師傅茉莉蜜茶","丹巴碧亮白護手霜","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090900353":["黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090900364":["龍士達小號印花紙巾盒L-1223","海天高級紅燒醬油","格力新一代節能煲GD-305A"],"ON2021090900383":["張裕葡萄酒禮盒","養生堂天然維生素E軟膠囊","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度"],"ON2021090900403":["威士雅西洋參片","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090900404":["樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多"],"ON2021090900433":["喜之郎優酪果凍爽","威士雅多維蛋白質粉","老乾媽風味豆豉","大豫竹牛肉麵 幹吃面"],"ON2021090900524":["威士雅多維蛋白質粉","老乾媽風味豆豉","廣博16K60頁特種紙軟抄6本裝","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090900530":["真彩米奇印章水彩筆（36色）","萬基阿膠禮盒","強生嬰兒牛奶霜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021090900620":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090900715":["上好佳 硬質糖果120g/袋","名創優品（MINISO） 植物花萃手霜","7653得力無線裝訂本"],"ON2021090900780":["雪碧","喜之郎什錦果肉果凍","雀巢咖啡 即溶即溶咖啡奶香 30條","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090900789":["瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","丹巴碧亮白護手霜","波力海苔 原味"],"ON2021090900830":["真彩米奇印章水彩筆（36色）","緣依娜乳木果潤手霜","丹芭碧海洋精華洗手液"],"ON2021090900865":["瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","丹巴碧亮白護手霜","波力海苔 原味"],"ON2021090900895":["萬基阿膠禮盒","利仁電餅鐺BC-2008A","護舒寶絲薄日用護翼"],"ON2021090900919":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090900950":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090901002":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力中性筆（12支）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090901005":["雀巢咖啡 即溶即溶咖啡奶香 30條","龍士達小號印花紙巾盒L-1223","陳克明高筋精細麵條"],"ON2021090901016":["康師傅桶面（鮮蝦）","康師傅隨心杯速食麵（香辣牛肉）","嘉士利早餐餅"],"ON2021090901055":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090901091":["雅潔皂盒"],"ON2021090901140":["飄柔去屑洗髮水蘭花長效清爽家庭裝1L","冠生園蜂蜜","丹巴碧亮白護手霜"],"ON2021090901179":["真彩米奇印章水彩筆（36色）","萬基阿膠禮盒","名創優品（MINISO） 植物花萃手霜"],"ON2021090901185":["威士雅多維蛋白質粉","潛力 美術拼盤490粒插珠拼圖"],"ON2021090901202":["威士雅多維蛋白質粉","天堂傘(吉祥如意)312E","嘉士利早餐餅"],"ON2021090901248":["華味亨果丹(餅)果乾系列山楂餅","陳克明高筋精細麵條","愛普愛家cp158加濕器"],"ON2021090901254":["旺仔QQ糖23g 橡皮糖","康師傅茉莉蜜茶","廣博16K60頁特種紙軟抄6本裝","愛普愛家cp158加濕器","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090901285":["黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090901371":["康得4.5高耐熱湯煲","九陽豆漿機JYDZ-16M","格力新一代節能煲GD-305A","兒童益智電動玩具軌道玩具車","愛普愛家電水壺2158銅"],"ON2021090901374":["心相印優選手帕紙C1910"],"ON2021090901508":["養生堂天然維生素E軟膠囊"],"ON2021090901559":["美的YJ407E自動電飯煲"],"ON2021090901663":["隆力奇蛇油護手霜","隆力奇蛇油SOD蜜"],"ON2021090901718":["康師傅隨心杯速食麵（香辣牛肉）","卡夫億滋閑趣餅乾","嘉士利 香薄趣芝麻薄脆餅乾","得力封箱膠帶"],"ON2021090901795":["張裕葡萄酒禮盒","劍南春52度"],"ON2021090901806":["旺仔QQ糖23g 橡皮糖","潔成清潔球6只裝","嘉士利早餐餅"],"ON2021090901814":["雅潔皂盒","威士雅金絲燕窩","丹芭碧海洋精華洗手液"],"ON2021090901851":["上海藥皂","潔柔 face 面子可濕水面巾紙180抽"],"ON2021090902070":["美汁源果粒橙","力士恒久嫩膚香皂","格力新一代節能煲GD-305A","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090902077":["威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090902096":["龍士達分格微波飯盒L-1181","康師傅茉莉蜜茶"],"ON2021090902120":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090902133":["兒童益智電動玩具軌道玩具車","愛普愛家電水壺2158銅"],"ON2021090902182":["真彩米奇印章水彩筆（36色）","養生堂天然維生素E軟膠囊","九陽豆漿機JYDZ-16M"],"ON2021090902300":["強生嬰兒清潤霜","嘉士利 香薄趣芝麻薄脆餅乾","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090902368":["維達捲筒紙V4322","潔柔 face 面子可濕水面巾紙180抽","潔成清潔球6只裝","白貓去油高效洗潔精"],"ON2021090902410":["威士雅西洋參片","天堂傘(吉祥如意)312E","雀巢咖啡 即溶即溶咖啡奶香 30條","廣博16K60頁特種紙軟抄6本裝"],"ON2021090902412":["聽雨軒中性筆（12支）","兒童益智電動玩具軌道玩具車","廚師樂味精","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090902530":["真彩米奇印章水彩筆（36色）","雪碧"],"ON2021090902710":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090902763":["真彩米奇印章水彩筆（36色）","卡夫億滋閑趣餅乾","好麗友 呀！土豆 薯條【番茄醬味】","ventry乳膠枕"],"ON2021090902812":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）"],"ON2021090902845":["夏士蓮多效護奍洗髮水","海天特辣黃豆醬","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090903002":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","顧大嫂重慶酸辣粉"],"ON2021090903011":["夏士蓮修護焗油洗髮水","隆力奇蛇油SOD蜜","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090903035":["真彩米奇印章水彩筆（36色）","九陽豆漿機JYDZ-16M","潔成清潔球6只裝"],"ON2021090903041":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090903095":["萬基洋參含片","廣博16K60頁特種紙軟抄6本裝"],"ON2021090903107":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090903119":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度"],"ON2021090903163":["維達捲筒紙V4322","飄柔長髮垂順護髮素","康師傅桶面（鮮蝦）","康得4.5高耐熱湯煲","潔柔 face 面子可濕水面巾紙180抽","白貓去油高效洗潔精"],"ON2021090903200":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090903517":["雲南白藥金口健牙膏","上海硫磺皂","璐瑤足浴盆","佳潔士動感超潔牙刷","白貓經典配方洗潔精","ORION/好麗友 蘑古力"],"ON2021090903534":["喜之郎優酪果凍爽","卡夫億滋閑趣餅乾","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090903541":["隆力奇蛇油膏","龍士達小號印花紙巾盒L-1223","嘉士利 香薄趣芝麻薄脆餅乾","護舒寶絲薄日用護翼"],"ON2021090903556":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090903562":["璐瑤足浴盆","潔柔 face 面子可濕水面巾紙180抽","廣博固體膠"],"ON2021090903588":["喜之郎優酪果凍爽","萬基阿膠禮盒","強生嬰兒清潤霜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021090903630":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","威士雅多維蛋白質粉","劍南春52度","黃金搭檔（女士）"],"ON2021090903660":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090903766":["真彩米奇印章水彩筆（36色）","全棉時代（PurCotton）袋裝純水濕巾10片","老乾媽風味豆豉"],"ON2021090903824":["海天老抽豉油","海天金標生抽"],"ON2021090903847":["真彩米奇印章水彩筆（36色）","上海藥皂","璐瑤足浴盆","兒童益智電動玩具軌道玩具車"],"ON2021090903856":["力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090903903":["威猛先生潔廁液","護舒寶絲薄日用護翼","丹巴碧亮白護手霜"],"ON2021090903911":["旺仔QQ糖23g 橡皮糖","萬基金裝壯骨粉","白貓去油高效洗潔精","愛普愛家電水壺2158銅"],"ON2021090903935":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）"],"ON2021090904000":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素"],"ON2021090904009":["維達捲筒紙V4322","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090904032":["威猛先生潔廁液","海天陳醋","廣博16K60頁特種紙軟抄6本裝","白貓去油高效洗潔精"],"ON2021090904125":["心相印優選手帕紙C1910","心相印面巾紙400張","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090904150":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090904221":["雀巢咖啡 即溶即溶咖啡奶香 30條","廣博固體膠","波力海苔 原味","ventry乳膠枕"],"ON2021090904321":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090904438":["護舒寶絲薄日用護翼","白貓經典配方洗潔精"],"ON2021090904453":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090904555":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）"],"ON2021090904671":["康得4.5高耐熱湯煲","潔柔 face 面子可濕水面巾紙180抽","白貓去油高效洗潔精"],"ON2021090904761":["雲南白藥金口健牙膏","上海硫磺皂","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090904776":["真彩米奇印章水彩筆（36色）","萬基阿膠禮盒","名創優品（MINISO） 植物花萃手霜","奧利奧 巧克力味夾心餅乾"],"ON2021090904850":["張裕葡萄酒禮盒","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090904876":["雲南白藥金口健牙膏","全棉時代（PurCotton）袋裝純水濕巾10片","全棉時代（PurCotton） 嬰兒濕巾 80片","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021090904961":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021090904998":["威士雅西洋參片","陳克明高筋精細麵條","ORION/好麗友 蘑古力"],"ON2021090905015":["養生堂天然維生素E軟膠囊","九陽豆漿機JYDZ-16M"],"ON2021090905073":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021090905087":["喜之郎優酪果凍爽","福滿堂32CM無油煙炒鍋","大豫竹牛肉麵 幹吃面"],"ON2021090905116":["益而高套裝釘書機","得力12號訂書釘0012"],"ON2021090905132":["上海硫磺皂","強生嬰兒牛奶霜","兒童益智電動玩具軌道玩具車"],"ON2021090905227":["好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090905337":["心相印優選手帕紙C1910","心相印面巾紙400張"],"ON2021090905338":["海天金標生抽","海天高級紅燒醬油"],"ON2021090905449":["名創優品（MINISO） 植物花萃手霜","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","波力海苔 原味"],"ON2021090905551":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322"],"ON2021090905554":["維達捲筒紙V4322","威士雅多維蛋白質粉","強生嬰兒清潤霜"],"ON2021090905559":["真彩米奇印章水彩筆（36色）","飄柔去屑洗髮水蘭花長效清爽家庭裝1L","康師傅桶面（鮮蝦）","廣博16K60頁特種紙軟抄6本裝"],"ON2021090905565":["龍士達分格微波飯盒L-1181","陳克明高筋精細麵條","北京同仁堂 菊花茶 杭菊菊花茶","白貓去油高效洗潔精","7653得力無線裝訂本"],"ON2021090905570":["雀巢咖啡 即溶即溶咖啡奶香 30條","美汁源果粒橙","冠生園蜂蜜"],"ON2021090905762":["維達捲筒紙V4322","格力新一代節能煲GD-305A","超人電須刀SA855","卜珂 曲奇"],"ON2021090905773":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090905825":["強生嬰兒清潤霜","華味亨果丹(餅)果乾系列山楂餅","波力海苔 原味"],"ON2021090905858":["得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090905859":["金鑼 臺式原味小烤腸 肉粒多","顧大嫂重慶酸辣粉"],"ON2021090905863":["羅萊家紡純棉被套床單床上四件套"],"ON2021090905880":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021090906033":["雙匯火腿腸 泡面拍檔","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090906052":["隆力奇蛇油護手霜","隆力奇蛇油SOD蜜"],"ON2021090906074":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021090906089":["旺仔QQ糖23g 橡皮糖","潛力 美術拼盤490粒插珠拼圖","九陽豆漿機JYDZ-16M","華味亨果丹(餅)果乾系列山楂餅"],"ON2021090906122":["雙匯火腿腸 泡面拍檔","金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090906130":["心相印優選手帕紙C2110","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090906153":["龍士達小號印花紙巾盒L-1223","廣博固體膠","波力海苔 原味","白貓去油高效洗潔精"],"ON2021090906184":["全棉時代（PurCotton）袋裝純水濕巾10片","全棉時代（PurCotton） 嬰兒濕巾 80片","丹芭碧海洋精華洗手液","白貓去油高效洗潔精"],"ON2021090906321":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021090906459":["張裕葡萄酒禮盒","養生堂天然維生素E軟膠囊","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090906502":["張裕葡萄酒禮盒","劍南春52度"],"ON2021090906514":["波力海苔 原味"],"ON2021090906539":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021090906577":["上海硫磺皂","九陽豆漿機JYDZ-16M"],"ON2021090906608":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090906654":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素"],"ON2021090906655":["維達捲筒紙V4322","聽雨軒中性筆（12支）","康師傅桶面（鮮蝦）","福滿堂32CM無油煙炒鍋","丹巴碧亮白護手霜"],"ON2021090906701":["真彩米奇印章水彩筆（36色）","利仁電餅鐺BC-2008A","得力無線裝訂本10本裝"],"ON2021090907052":["雅潔皂盒","好麗友 呀！土豆 薯條【番茄醬味】","卜珂 曲奇"],"ON2021090907141":["喜之郎什錦果肉果凍"],"ON2021090907196":["雪碧","龍士達分格微波飯盒L-1181","彩虹蚊香片（檸檬）"],"ON2021090907279":["喜之郎VC果凍爽","聽雨軒中性筆（12支）","全棉時代（PurCotton）袋裝純水濕巾10片","廣博固體膠"],"ON2021090907310":["冠生園蜂蜜","福滿堂32CM無油煙炒鍋","彩虹蚊香片（檸檬）"],"ON2021090907343":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液","潔成清潔球6只裝"],"ON2021090907355":["威士雅壯骨粉","好吃點 香脆核桃餅","廣博16K60頁特種紙軟抄6本裝","白貓去油高效洗潔精"],"ON2021090907360":["緣依娜乳木果潤手霜","萬基阿膠禮盒","農夫山泉"],"ON2021090907368":["喜之郎優酪果凍爽","強生嬰兒牛奶霜","璐瑤足浴盆"],"ON2021090907376":["養生堂天然維生素E軟膠囊","天堂傘(吉祥如意)312E","強生嬰兒清潤霜","龍士達小號印花紙巾盒L-1223","九陽豆漿機JYDZ-16M"],"ON2021090907585":["龍士達小號印花紙巾盒L-1223","康師傅隨心杯速食麵（香辣牛肉）","嘉士利 香薄趣芝麻薄脆餅乾","波力海苔 原味","白貓去油高效洗潔精"],"ON2021090907653":["夏士蓮多效護奍洗髮水","聽雨軒中性筆（12支）","白貓去油高效洗潔精"],"ON2021090907755":["夏士蓮多效護奍洗髮水","喜之郎什錦果肉果凍","旺仔QQ糖23g 橡皮糖","雀巢咖啡 即溶即溶咖啡奶香 30條","強生嬰兒牛奶霜","飄柔長髮垂順護髮素","康師傅桶面（鮮蝦）","冠生園蜂蜜","格力新一代節能煲GD-305A","丹巴碧亮白護手霜","彩虹蚊香片（檸檬）","奧妙淨藍全效洗衣粉"],"ON2021090907858":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","顧大嫂重慶酸辣粉"],"ON2021090907890":["龍士達小號印花紙巾盒L-1223","利仁電餅鐺BC-2008A","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021090907898":["康師傅桶面（鮮蝦）","冠生園蜂蜜","得力無線裝訂本10本裝"],"ON2021090907935":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021090908005":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090908030":["強生嬰兒清潤霜","農夫山泉","康師傅隨心杯速食麵（香辣牛肉）","兒童益智電動玩具軌道玩具車"],"ON2021090908086":["萬基阿膠禮盒","潔柔 face 面子可濕水面巾紙180抽","陳克明高筋精細麵條","ORION/好麗友 蘑古力"],"ON2021090908088":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090908111":["上海硫磺皂","白貓經典配方洗潔精"],"ON2021090908122":["天堂傘(吉祥如意)312E","嘉士利 香薄趣芝麻薄脆餅乾","護舒寶絲薄日用護翼"],"ON2021090908141":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021090908150":["好麗友 呀！土豆 薯條【番茄醬味】","ORION/好麗友 蘑古力"],"ON2021090908191":["張裕葡萄酒禮盒","威士雅金絲燕窩","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090908193":["真彩米奇印章水彩筆（36色）","威猛先生潔廁液","雀巢咖啡 即溶即溶咖啡奶香 30條"],"ON2021090908220":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021090908233":["兒童益智電動玩具軌道玩具車","波力海苔 原味"],"ON2021090908255":["強生嬰兒牛奶霜","卡夫億滋閑趣餅乾"],"ON2021090908313":["利仁電餅鐺BC-2008A","好麗友 呀！土豆 薯條【番茄醬味】","彩虹蚊香片（檸檬）","波力海苔 原味"],"ON2021090908336":["康師傅茉莉蜜茶","白貓經典配方洗潔精"],"ON2021090908371":["心相印優選手帕紙C1910","藍月亮洗手液"],"ON2021090908433":["龍士達小號印花紙巾盒L-1223","康師傅茉莉蜜茶","冠生園蜂蜜"],"ON2021090908535":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021090908550":["雪碧","雀巢咖啡 即溶即溶咖啡奶香 30條"],"ON2021090908554":["龍士達小號印花紙巾盒L-1223","力士恒久嫩膚香皂","康得4.5高耐熱湯煲"],"ON2021090908634":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090908711":["璐瑤足浴盆","丹芭碧海洋精華洗手液"],"ON2021090908773":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021090908778":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅多維蛋白質粉"],"ON2021090908809":["華味亨果丹(餅)果乾系列山楂餅","好麗友 呀！土豆 薯條【番茄醬味】","丹芭碧海洋精華洗手液"],"ON2021090908819":["雪碧","得力中性筆（12支）","奧利奧 巧克力味夾心餅乾"],"ON2021090908864":["萬基金裝壯骨粉","名創優品（MINISO） 植物花萃手霜","九陽豆漿機JYDZ-16M","華味亨果丹(餅)果乾系列山楂餅"],"ON2021090908866":["威士雅西洋參片","丹芭碧海洋精華洗手液"],"ON2021090908997":["飄柔焗油精華護髮素","璐瑤足浴盆","康得4.5高耐熱湯煲","潔成清潔球6只裝","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021090909016":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021090909031":["真彩米奇印章水彩筆（36色）","雪碧","喜之郎VC果凍爽","彩虹蚊香片（檸檬）","ORION/好麗友 蘑古力"],"ON2021090909066":["卡夫億滋閑趣餅乾","好麗友 呀！土豆 薯條【番茄醬味】","愛普愛家cp158加濕器"],"ON2021090909107":["心相印優選手帕紙C2110","威士雅多維蛋白質粉","陳克明高筋精細麵條","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090909110":["真彩米奇印章水彩筆（36色）","九陽豆漿機JYDZ-16M","潔成清潔球6只裝","彩虹蚊香片（檸檬）"],"ON2021090909129":["龍士達小號印花紙巾盒L-1223","力士恒久嫩膚香皂"],"ON2021090909185":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021090909200":["金鑼 臺式原味小烤腸 肉粒多","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021090909277":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多"],"ON2021090909339":["威士雅西洋參片","華味亨果丹(餅)果乾系列山楂餅","得力無線裝訂本10本裝"],"ON2021090909404":["名創優品（MINISO） 植物花萃手霜","九陽豆漿機JYDZ-16M","護舒寶絲薄日用護翼"],"ON2021090909458":["威士雅西洋參片","潔成清潔球6只裝"],"ON2021090909551":["強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090909553":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090909599":["強生嬰兒牛奶霜","名創優品（MINISO） 植物花萃手霜","隆力奇蛇油SOD蜜"],"ON2021090909606":["康師傅茉莉蜜茶","嘉士利早餐餅","兒童益智電動玩具軌道玩具車"],"ON2021090909763":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021090909765":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021090909814":["康師傅茉莉蜜茶","嘉士利早餐餅","兒童益智電動玩具軌道玩具車","Q蒂多層蛋糕摩卡巧克力味"],"ON2021090909886":["心相印優選手帕紙C2110","威士雅西洋參片","利仁電餅鐺BC-2008A","ventry乳膠枕"],"ON2021091000001":["強生嬰兒清潤霜","農夫山泉","康師傅茉莉蜜茶","ORION/好麗友 蘑古力"],"ON2021091000006":["雪碧","聽雨軒中性筆（12支）","強生嬰兒牛奶霜","好吃點 香脆核桃餅"],"ON2021091000039":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷"],"ON2021091000107":["潔成清潔球6只裝"],"ON2021091000202":["夏士蓮修護焗油洗髮水","上海硫磺皂","力士水潤絲滑潤發素","奧妙淨藍全效洗衣粉"],"ON2021091000210":["強生嬰兒清潤霜","華味亨果丹(餅)果乾系列山楂餅","波力海苔 原味"],"ON2021091000222":["萬基金裝壯骨粉","潛力 美術拼盤490粒插珠拼圖","名創優品（MINISO） 植物花萃手霜","九陽豆漿機JYDZ-16M"],"ON2021091000238":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021091000300":["雲南白藥金口健牙膏"],"ON2021091000340":["聽雨軒中性筆（12支）","強生嬰兒清潤霜"],"ON2021091000393":["夏士蓮多效護奍洗髮水"],"ON2021091000396":["維達捲筒紙V4322","冠生園蜂蜜","得力無線裝訂本10本裝"],"ON2021091000427":["威士雅多維蛋白質粉","趣多多 香濃巧克力味香脆曲奇","潔柔 face 面子可濕水面巾紙180抽"],"ON2021091000501":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021091000651":["康師傅桶面（鮮蝦）"],"ON2021091000672":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091000673":["萬基洋參含片","天堂傘(吉祥如意)312E","羅萊家紡純棉被套床單床上四件套","潔柔 face 面子可濕水面巾紙180抽"],"ON2021091000683":["張裕葡萄酒禮盒","五糧液（福祿壽喜）"],"ON2021091000734":["雪碧","大豫竹牛肉麵 幹吃面"],"ON2021091000735":["利仁電餅鐺BC-2008A","好麗友 呀！土豆 薯條【番茄醬味】","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021091000767":["天堂傘(吉祥如意)312E","康得4.5高耐熱湯煲","嘉士利 香薄趣芝麻薄脆餅乾","護舒寶絲薄日用護翼"],"ON2021091000784":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）"],"ON2021091000798":["聽雨軒中性筆（12支）","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","ORION/好麗友 蘑古力"],"ON2021091000834":["雅潔皂盒","ORION/好麗友 蘑古力"],"ON2021091000887":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012","奧利奧 巧克力味夾心餅乾"],"ON2021091000933":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","顧大嫂重慶酸辣粉"],"ON2021091001019":["養生堂天然維生素E軟膠囊","九陽豆漿機JYDZ-16M","冠生園蜂蜜"],"ON2021091001079":["雲南白藥金口健牙膏","夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","上海硫磺皂","力士水潤絲滑潤發素","佳潔士動感超潔牙刷","白貓經典配方洗潔精"],"ON2021091001096":["雅潔皂盒","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091001157":["夏士蓮多效護奍洗髮水","萬基阿膠禮盒","雀巢咖啡 即溶即溶咖啡奶香 30條","璐瑤足浴盆","得力中性筆（12支）","愛普愛家cp158加濕器"],"ON2021091001159":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021091001218":["隆力奇蛇油護手霜","隆力奇蛇油SOD蜜"],"ON2021091001260":["張裕葡萄酒禮盒","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021091001293":["利仁電餅鐺BC-2008A","力士恒久嫩膚香皂","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021091001299":["夏士蓮修護焗油洗髮水","隆力奇蛇油護手霜","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","超人電須刀SA855","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021091001396":["隆力奇蛇油護手霜","隆力奇蛇油膏"],"ON2021091001399":["璐瑤足浴盆","潔柔 face 面子可濕水面巾紙180抽"],"ON2021091001467":["全棉時代（PurCotton）袋裝純水濕巾10片","潛力 美術拼盤490粒插珠拼圖","名創優品（MINISO） 植物花萃手霜"],"ON2021091001518":["真彩米奇印章水彩筆（36色）","萬基阿膠禮盒","丹巴碧亮白護手霜","愛普愛家cp158加濕器"],"ON2021091001555":["萬基阿膠禮盒","全棉時代（PurCotton）袋裝純水濕巾10片","九陽豆漿機JYDZ-16M","嘉士利 香薄趣芝麻薄脆餅乾","ORION/好麗友 蘑古力"],"ON2021091001573":["名創優品（MINISO） 植物花萃手霜","丹芭碧海洋精華洗手液","彩虹蚊香片（檸檬）","ventry乳膠枕"],"ON2021091001684":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021091001730":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021091001756":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021091001850":["黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021091001867":["夏士蓮修護焗油洗髮水","夏士蓮控油長效洗髮水","雀巢咖啡 即溶即溶咖啡奶香 30條","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021091001917":["名創優品（MINISO） 植物花萃手霜","好麗友 呀！土豆 薯條【番茄醬味】","兒童益智電動玩具軌道玩具車","彩虹蚊香片（檸檬）"],"ON2021091001996":["養生堂天然維生素E軟膠囊","喜之郎優酪果凍爽","嘉士利早餐餅","嘉士利 香薄趣芝麻薄脆餅乾","華味亨果丹(餅)果乾系列山楂餅","丹芭碧海洋精華洗手液","白貓去油高效洗潔精"],"ON2021091002003":["華味亨果丹(餅)果乾系列山楂餅","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091002215":["冠生園蜂蜜","丹芭碧海洋精華洗手液","彩虹蚊香片（檸檬）"],"ON2021091002218":["好麗友 呀！土豆 薯條【番茄醬味】","白貓去油高效洗潔精","愛普愛家電水壺2158銅"],"ON2021091002222":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋","陳克明高筋精細麵條"],"ON2021091002302":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021091002356":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021091002378":["海天金標生抽","海天高級紅燒醬油"],"ON2021091002414":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","冠生園蜂蜜"],"ON2021091002430":["威士雅西洋參片","可口可樂","卡夫億滋閑趣餅乾"],"ON2021091002461":["維達捲筒紙V4322","天堂傘(吉祥如意)312E","廣博16K60頁特種紙軟抄6本裝"],"ON2021091002688":["養生堂天然維生素E軟膠囊","雪碧","嘉士利通心餅","護舒寶絲薄日用護翼"],"ON2021091002740":["丹芭碧海洋精華洗手液"],"ON2021091002870":["趣多多 香濃巧克力味香脆曲奇","力士恒久嫩膚香皂","康師傅茉莉蜜茶","康得4.5高耐熱湯煲","迪迪龍可手提嬰兒奶瓶收納箱"],"ON2021091003023":["華味亨果丹(餅)果乾系列山楂餅","卜珂 曲奇"],"ON2021091003079":["威猛先生廚房多用清潔劑","天堂傘(吉祥如意)312E","雀巢咖啡 即溶即溶咖啡奶香 30條","飄柔長髮垂順護髮素","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021091003081":["雀巢咖啡 即溶即溶咖啡奶香 30條","農夫山泉","龍士達分格微波飯盒L-1181","力士恒久嫩膚香皂"],"ON2021091003130":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力彩色迴紋針0038","得力12號訂書釘0012"],"ON2021091003135":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）"],"ON2021091003173":["真彩米奇印章水彩筆（36色）","龍士達小號印花紙巾盒L-1223"],"ON2021091003204":["潛力 美術拼盤490粒插珠拼圖","龍士達分格微波飯盒L-1181","丹芭碧海洋精華洗手液","廚師樂味精"],"ON2021091003234":["維達捲筒紙V4322","雀巢咖啡 即溶即溶咖啡奶香 30條","冠生園蜂蜜"],"ON2021091003256":["萬基金裝壯骨粉","丹芭碧海洋精華洗手液"],"ON2021091003292":["嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021091003308":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021091003387":["雀巢咖啡 即溶即溶咖啡奶香 30條"],"ON2021091003424":["維達捲筒紙V4322","飄柔長髮垂順護髮素","嘉士利早餐餅","華味亨果丹(餅)果乾系列山楂餅","奧利奧 巧克力味夾心餅乾"],"ON2021091003445":["格力新一代節能煲GD-305A"],"ON2021091003452":["聽雨軒中性筆（12支）","雀巢咖啡 即溶即溶咖啡奶香 30條","兒童益智電動玩具軌道玩具車"],"ON2021091003456":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021091003558":["真彩米奇印章水彩筆（36色）","強生嬰兒清潤霜","龍士達小號印花紙巾盒L-1223","九陽豆漿機JYDZ-16M","兒童益智電動玩具軌道玩具車"],"ON2021091003569":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021091003662":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091003702":["萬基阿膠禮盒","力士恒久嫩膚香皂"],"ON2021091003704":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度"],"ON2021091003734":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力封箱膠帶","得力12號訂書釘0012"],"ON2021091003845":["真彩米奇印章水彩筆（36色）","龍士達小號印花紙巾盒L-1223","波力海苔 原味","白貓去油高效洗潔精"],"ON2021091003852":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021091004021":["隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021091004051":["海天金標生抽","海天高級紅燒醬油"],"ON2021091004104":["養生堂天然維生素E軟膠囊","潛力 美術拼盤490粒插珠拼圖","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","愛普愛家電水壺2158銅","Q蒂多層蛋糕摩卡巧克力味"],"ON2021091004198":["威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021091004210":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021091004337":["潔柔 face 面子可濕水面巾紙180抽","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091004543":["維達捲筒紙V4322","康得4.5高耐熱湯煲","好麗友 呀！土豆 薯條【番茄醬味】","白貓去油高效洗潔精"],"ON2021091004653":["農夫山泉","利仁電餅鐺BC-2008A","好麗友 呀！土豆 薯條【番茄醬味】","ORION/好麗友 蘑古力"],"ON2021091004665":["喜之郎優酪果凍爽","卡夫億滋閑趣餅乾","華味亨果丹(餅)果乾系列山楂餅"],"ON2021091004763":["益而高套裝釘書機","天樂文具盒（顏色隨機）"],"ON2021091004775":["維達捲筒紙V4322","威士雅西洋參片","天堂傘318E","強生嬰兒清潤霜","康師傅隨心杯速食麵（香辣牛肉）","迪迪龍可手提嬰兒奶瓶收納箱","陳克明高筋精細麵條","愛普愛家電水壺2158銅","ventry乳膠枕","ORION/好麗友 蘑古力"],"ON2021091004887":["威士雅金絲燕窩","聽雨軒中性筆（12支）","天堂傘(吉祥如意)312E","飄柔長髮垂順護髮素"],"ON2021091004982":["旺仔QQ糖23g 橡皮糖","名創優品（MINISO） 植物花萃手霜","得力12號訂書釘0012","波力海苔 原味"],"ON2021091004991":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091005005":["飄柔長髮垂順護髮素","老乾媽風味豆豉","丹巴碧亮白護手霜"],"ON2021091005111":["萬基阿膠禮盒","康師傅桶面（鮮蝦）","兒童益智電動玩具軌道玩具車","陳克明高筋精細麵條","7653得力無線裝訂本"],"ON2021091005156":["趣多多 香濃巧克力味香脆曲奇","卡夫億滋閑趣餅乾","丹芭碧海洋精華洗手液","超人電須刀SA855"],"ON2021091005213":["喜之郎什錦果肉果凍","波力海苔 原味"],"ON2021091005220":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021091005231":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021091005281":["名創優品（MINISO） 植物花萃手霜","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091005332":["好吃點 香脆核桃餅","廣博16K60頁特種紙軟抄6本裝","白貓去油高效洗潔精"],"ON2021091005335":["璐瑤足浴盆","廣博固體膠"],"ON2021091005381":["溜溜梅 雪梅","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091005409":["夏士蓮修護焗油洗髮水","隆力奇蛇油護手霜","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021091005418":["飄柔長髮垂順護髮素","大豫竹牛肉麵 幹吃面"],"ON2021091005445":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021091005532":["天堂傘318E","卡夫億滋閑趣餅乾","愛普愛家電水壺2158銅"],"ON2021091005543":["真彩米奇印章水彩筆（36色）","雪碧","康師傅茉莉蜜茶","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021091005659":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021091005666":["張裕葡萄酒禮盒","威士雅金絲燕窩","黃金搭檔（女士）"],"ON2021091005701":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力無線裝訂本10本裝","得力12號訂書釘0012"],"ON2021091005848":["溜溜梅 雪梅","嘉士利威化餅（椰味）"],"ON2021091005851":["名創優品（MINISO） 植物花萃手霜"],"ON2021091005955":["喜之郎VC果凍爽","好吃點 香脆核桃餅"],"ON2021091005994":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021091005995":["好麗友 呀！土豆 薯條【番茄醬味】"],"ON2021091006073":["雪碧","康得4.5高耐熱湯煲","嘉士利通心餅"],"ON2021091006136":["康得4.5高耐熱湯煲","護舒寶絲薄日用護翼","丹芭碧海洋精華洗手液","愛普愛家電水壺2158銅"],"ON2021091006206":["趣多多 香濃巧克力味香脆曲奇","華味亨果丹(餅)果乾系列山楂餅","彩虹蚊香片（檸檬）"],"ON2021091006207":["溜溜梅 雪梅","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）"],"ON2021091006219":["名創優品（MINISO） 植物花萃手霜","康師傅茉莉蜜茶","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓","陳克明高筋精細麵條"],"ON2021091006300":["上海藥皂","龍士達小號印花紙巾盒L-1223","康師傅桶面（鮮蝦）","彩虹蚊香片（檸檬）","波力海苔 原味","白貓去油高效洗潔精"],"ON2021091006337":["真彩米奇印章水彩筆（36色）","農夫山泉","羅萊家紡純棉被套床單床上四件套","康師傅桶面（鮮蝦）"],"ON2021091006355":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","璐瑤足浴盆","利仁電餅鐺BC-2008A","力士水潤絲滑潤發素","廣博固體膠","ORION/好麗友 蘑古力"],"ON2021091006362":["華味亨果丹(餅)果乾系列山楂餅","廣博固體膠","兒童益智電動玩具軌道玩具車"],"ON2021091006436":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021091006505":["POHHN小牛大奶牛巧克力威化餅乾"],"ON2021091006516":["黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021091006525":["聽雨軒中性筆（12支）","名創優品（MINISO） 植物花萃手霜","丹芭碧海洋精華洗手液","白貓去油高效洗潔精"],"ON2021091006558":["樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多"],"ON2021091006727":["白貓去油高效洗潔精"],"ON2021091006803":["力士恒久嫩膚香皂","丹芭碧海洋精華洗手液","大豫竹牛肉麵 幹吃面"],"ON2021091006899":["威士雅多維蛋白質粉","天堂傘(吉祥如意)312E","護舒寶絲薄日用護翼","ORION/好麗友 蘑古力"],"ON2021091007027":["夏士蓮修護焗油洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露"],"ON2021091007031":["益而高套裝釘書機","得力12號訂書釘0012"],"ON2021091007140":["真彩米奇印章水彩筆（36色）","夏士蓮多效護奍洗髮水","天堂傘318E","波力海苔 原味"],"ON2021091007190":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021091007230":["益而高套裝釘書機","聽雨軒中性筆（12支）","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021091007257":["真彩米奇印章水彩筆（36色）","威猛先生潔廁液","雀巢咖啡 即溶即溶咖啡奶香 30條"],"ON2021091007411":["聽雨軒中性筆（12支）","趣多多 香濃巧克力味香脆曲奇","迪迪龍可手提嬰兒奶瓶收納箱","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021091007422":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021091007453":["力士恒久嫩膚香皂","潔柔 face 面子可濕水面巾紙180抽","白貓去油高效洗潔精"],"ON2021091007517":["康師傅茉莉蜜茶","康得4.5高耐熱湯煲","大豫竹牛肉麵 幹吃面"],"ON2021091007560":["雪碧","雀巢咖啡 即溶即溶咖啡奶香 30條","嘉士利威化餅（椰味）"],"ON2021091007702":["康得4.5高耐熱湯煲","九陽豆漿機JYDZ-16M","嘉士利早餐餅"],"ON2021091007729":["潔成清潔球6只裝","嘉士利 香薄趣芝麻薄脆餅乾"],"ON2021091007815":["力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021091007906":["天樂文具盒（顏色隨機）"],"ON2021091007924":["心相印優選手帕紙C1910","心相印面巾紙400張","藍月亮洗手液"],"ON2021091007976":["雀巢咖啡 即溶即溶咖啡奶香 30條","璐瑤足浴盆","老乾媽風味豆豉","嘉士利通心餅","護舒寶絲薄日用護翼","北京同仁堂 菊花茶 杭菊菊花茶"],"ON2021091008001":["卡夫億滋閑趣餅乾","愛普愛家電水壺2158銅"],"ON2021091008011":["九陽電磁爐JYC-22F","廣博固體膠","兒童益智電動玩具軌道玩具車"],"ON2021091008055":["海天老抽豉油","海天金標生抽","海天高級紅燒醬油","海天陳醋"],"ON2021091008099":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力12號訂書釘0012"],"ON2021091008155":["藍月亮洗手液","潔成清潔球6只裝","廣博16K60頁特種紙軟抄6本裝"],"ON2021091008166":["羅萊家紡純棉被套床單床上四件套","利仁電餅鐺BC-2008A","康得4.5高耐熱湯煲","華味亨果丹(餅)果乾系列山楂餅","波力海苔 原味","白貓去油高效洗潔精","ORION/好麗友 蘑古力"],"ON2021091008174":["兒童益智電動玩具軌道玩具車","白貓經典配方洗潔精"],"ON2021091008253":["真彩米奇印章水彩筆（36色）","可口可樂","嘉士利早餐餅","POHHN小牛大奶牛巧克力威化餅乾"],"ON2021091008270":["利仁電餅鐺BC-2008A","嘉士利 香薄趣芝麻薄脆餅乾","奧利奧 巧克力味夾心餅乾"],"ON2021091008366":["真彩米奇印章水彩筆（36色）","喜之郎VC果凍爽","聽雨軒中性筆（12支）"],"ON2021091008402":["上好佳 硬質糖果120g/袋"],"ON2021091008495":["聽雨軒中性筆（12支）","嘉士利早餐餅","瘋酥酥糕點小點心 一品蛋酥 原味蔓越莓"],"ON2021091008533":["一輕鬆舒解片","雀巢咖啡 即溶即溶咖啡奶香 30條","得力中性筆（12支）"],"ON2021091008536":["雀巢咖啡 即溶即溶咖啡奶香 30條","飄柔焗油精華護髮素","名創優品（MINISO） 植物花萃手霜","九陽豆漿機JYDZ-16M"],"ON2021091008538":["雅潔皂盒","璐瑤足浴盆","護舒寶絲薄日用護翼","得力中性筆（12支）"],"ON2021091008540":["海天特辣黃豆醬","海天老抽豉油","海天金標生抽","海天高級紅燒醬油"],"ON2021091008544":["夏士蓮修護焗油洗髮水","夏士蓮多效護奍洗髮水","力士水潤絲滑潤發素","力士恒久嫩膚沐浴露","奧妙淨藍全效洗衣粉"],"ON2021091008547":["雀巢咖啡 即溶即溶咖啡奶香 30條","潔柔 face 面子可濕水面巾紙180抽","好滋味五連包（紅燒牛肉）","Q蒂多層蛋糕摩卡巧克力味"],"ON2021091008563":["張裕葡萄酒禮盒","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）","黃金搭檔（兒童青少年）"],"ON2021091008581":["雪碧","璐瑤足浴盆","格力新一代節能煲GD-305A"],"ON2021091008702":["張裕葡萄酒禮盒","養生堂天然維生素E軟膠囊","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021091008718":["旺仔QQ糖23g 橡皮糖","雀巢咖啡 即溶即溶咖啡奶香 30條","康師傅茉莉蜜茶"],"ON2021091008761":["萬基洋參含片","老乾媽風味豆豉","嘉士利 香薄趣芝麻薄脆餅乾","超人電須刀SA855"],"ON2021091008815":["張裕葡萄酒禮盒","養生堂天然維生素E軟膠囊","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","黃金搭檔（女士）"],"ON2021091008830":["威士雅多維蛋白質粉","聽雨軒中性筆（12支）","璐瑤足浴盆"],"ON2021091008924":["廣博16K60頁特種紙軟抄6本裝","愛普愛家cp158加濕器"],"ON2021091008927":["丹巴碧亮白護手霜","白貓經典配方洗潔精","愛普愛家電水壺2158銅"],"ON2021091008953":["雪碧","天堂傘(吉祥如意)312E","廣博固體膠"],"ON2021091008959":["心相印優選手帕紙C1910","藍月亮洗手液","潔成清潔球6只裝"],"ON2021091008979":["真彩米奇印章水彩筆（36色）","護舒寶絲薄日用護翼"],"ON2021091009109":["喜之郎什錦果肉果凍","藍月亮洗手液"],"ON2021091009204":["張裕葡萄酒禮盒","五糧液（福祿壽喜）","威士雅金絲燕窩","劍南春52度","冠生園蜂蜜"],"ON2021091009331":["羅萊家紡純棉被套床單床上四件套","廣博固體膠","福滿堂32CM無油煙炒鍋","廚師樂味精"],"ON2021091009351":["心相印優選手帕紙C2110","心相印優選手帕紙C1910","心相印面巾紙400張","維達捲筒紙V4322","藍月亮洗手液"],"ON2021091009412":["心相印優選手帕紙C2110","心相印面巾紙400張"],"ON2021091009442":["張裕葡萄酒禮盒","劍南春52度"],"ON2021091009481":["強生嬰兒牛奶霜","兒童益智電動玩具軌道玩具車","白貓經典配方洗潔精"],"ON2021091009501":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021091009612":["益而高套裝釘書機","天樂文具盒（顏色隨機）","得力彩色迴紋針0038","得力12號訂書釘0012"],"ON2021091009632":["上海硫磺皂","強生嬰兒牛奶霜","隆力奇蛇油護手霜","隆力奇蛇油膏","隆力奇蛇油SOD蜜"],"ON2021091009664":["雲南白藥金口健牙膏","佳潔士動感超潔牙刷"],"ON2021091009675":["心相印優選手帕紙C2110","心相印面巾紙400張","藍月亮洗手液"],"ON2021091009735":["雲南白藥金口健牙膏","上海硫磺皂","佳潔士動感超潔牙刷","白貓經典配方洗潔精","阿道夫(ADOLPH)心悅洗護套盒"],"ON2021091009755":["真彩米奇印章水彩筆（36色）","龍士達小號印花紙巾盒L-1223","九陽豆漿機JYDZ-16M","兒童益智電動玩具軌道玩具車"],"ON2021091009831":["溜溜梅 雪梅","樂事 無限薯片","金鑼 臺式原味小烤腸 肉粒多","嘉士利威化餅（椰味）","好滋味五連包（紅燒牛肉）","顧大嫂重慶酸辣粉"],"ON2021091009910":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）","好麗友 呀！土豆 薯條【番茄醬味】","卜珂 曲奇"],"ON2021091009917":["溜溜梅 雪梅","樂事 無限薯片","嘉士利威化餅（椰味）"],"ON2021091009997":["威士雅金絲燕窩","黃金搭檔（女士）"]};
 
-// ============================================================
-// Pre-computed answers (derived from RAW_ORDERS at init time)
-// ============================================================
-const TARGET_PRODUCT = "黃金搭檔（兒童青少年）";
-let TOTAL_ORDERS, TOTAL_PRODUCTS, TARGET_ORDERS, CO_COUNTS;
-
-function initData() {
-  TOTAL_ORDERS = Object.keys(RAW_ORDERS).length;
-
-  const allProducts = new Set();
-  for (const products of Object.values(RAW_ORDERS)) {
-    for (const p of products) allProducts.add(p);
-  }
-  TOTAL_PRODUCTS = allProducts.size;
-
-  TARGET_ORDERS = Object.entries(RAW_ORDERS)
-    .filter(([, prods]) => prods.includes(TARGET_PRODUCT))
-    .map(([oid]) => oid)
-    .sort();
-
-  CO_COUNTS = {};
-  for (const oid of TARGET_ORDERS) {
-    for (const p of RAW_ORDERS[oid]) {
-      if (p !== TARGET_PRODUCT) {
-        CO_COUNTS[p] = (CO_COUNTS[p] || 0) + 1;
-      }
-    }
+// ===== Build flat records from order dict =====
+// records: [{order, product}, ...]
+const RECORDS = [];
+for (const [orderId, products] of Object.entries(RAW_ORDERS)) {
+  for (const product of products) {
+    RECORDS.push({ order: orderId, product });
   }
 }
 
-// Products of interest
-const POI = [
-  "黃金搭檔（女士）",
-  "威士雅金絲燕窩",
-  "張裕葡萄酒禮盒",
-  "劍南春52度"
+// ===== Constants =====
+const TARGET_PRODUCT = "黃金搭檔（兒童青少年）";
+const MIN_SUPPORT = 0.03;
+const MIN_CONFIDENCE = 0.4;
+const TOTAL_ORDERS = Object.keys(RAW_ORDERS).length; // 984
+
+// Target orders: orders containing target product
+const TARGET_ORDERS = Object.keys(RAW_ORDERS).filter(k => RAW_ORDERS[k].includes(TARGET_PRODUCT));
+// TARGET_ORDERS.length == 34
+
+// Top 4 associated products (excluding target itself)
+const ASSOC_PRODS = [
+  { name: "黃金搭檔（女士）",   count: 33 },
+  { name: "威士雅金絲燕窩",     count: 20 },
+  { name: "張裕葡萄酒禮盒",     count: 16 },
+  { name: "劍南春52度",         count: 7  }
 ];
 
-// Track state
-const stepState = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
-const wrongAttempts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+// ===== Progress State =====
+let completedSteps = 0;
 
-// ============================================================
-// Initialization
-// ============================================================
-document.addEventListener("DOMContentLoaded", () => {
-  initData();
-  buildPreviewTable();
-  buildCooccurTable();
-  buildOrderList();
-  buildS4ResultTable();
-  buildS5ResultTable();
-  buildS6SummaryTable();
-  updateProgress();
-  updatePanelSection(1);
-});
-
-// Build the first 20 rows preview table
-function buildPreviewTable() {
-  const tbody = document.getElementById("preview-tbody");
-  let rowCount = 0;
-  let idx = 1;
-  for (const [oid, products] of Object.entries(RAW_ORDERS)) {
-    for (const p of products) {
-      if (rowCount >= 20) break;
-      const tr = document.createElement("tr");
-      tr.className = rowCount % 2 === 1 ? "row-alt" : "";
-      tr.innerHTML = `<td>${idx}</td><td style="font-family:monospace;font-size:.8rem">${oid}</td><td>${p}</td>`;
-      tbody.appendChild(tr);
-      rowCount++;
-      idx++;
-    }
-    if (rowCount >= 20) break;
-  }
-}
-
-// Build co-occurrence frequency table
-function buildCooccurTable() {
-  const tbody = document.getElementById("cooccur-tbody");
-  const sorted = Object.entries(CO_COUNTS).sort((a, b) => b[1] - a[1]);
-  sorted.forEach(([product, count], i) => {
-    const tr = document.createElement("tr");
-    tr.className = i % 2 === 1 ? "row-alt" : "";
-    tr.innerHTML = `<td>${i + 1}</td><td>${product}</td><td><strong>${count}</strong></td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-// Build order ID list chips
-function buildOrderList() {
-  const container = document.getElementById("order-list");
-  TARGET_ORDERS.forEach(oid => {
-    const chip = document.createElement("span");
-    chip.className = "order-chip";
-    chip.textContent = oid;
-    container.appendChild(chip);
-  });
-}
-
-// Build Step 4 result table
-function buildS4ResultTable() {
-  const tbody = document.getElementById("s4-result-tbody");
-  POI.forEach(p => {
-    const cnt = CO_COUNTS[p] || 0;
-    const sup = cnt / TOTAL_ORDERS;
-    const meets = sup >= 0.03;
-    const tr = document.createElement("tr");
-    tr.className = meets ? "meet-threshold" : "no-threshold";
-    tr.innerHTML = `
-      <td>${p}</td>
-      <td>${cnt}</td>
-      <td>${sup.toFixed(4)}</td>
-      <td>${meets ? "<span class=\"pill pill-green\">✓ 達標</span>" : "<span class=\"pill pill-red\">✗ 不足</span>"}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-// Build Step 5 result table
-function buildS5ResultTable() {
-  const tbody = document.getElementById("s5-result-tbody");
-  POI.forEach(p => {
-    const cnt = CO_COUNTS[p] || 0;
-    const sup = cnt / TOTAL_ORDERS;
-    const conf = cnt / TARGET_ORDERS.length;
-    const supOk = sup >= 0.03;
-    const confOk = conf >= 0.4;
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${p}</td>
-      <td>${sup.toFixed(4)}</td>
-      <td>${supOk ? "<span class=\"pill pill-green\">✓</span>" : "<span class=\"pill pill-red\">✗</span>"}</td>
-      <td>${conf.toFixed(4)}</td>
-      <td>${confOk ? "<span class=\"pill pill-green\">✓</span>" : "<span class=\"pill pill-red\">✗</span>"}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-// Build Step 6 summary table
-function buildS6SummaryTable() {
-  const tbody = document.getElementById("s6-summary-tbody");
-  POI.forEach(p => {
-    const cnt = CO_COUNTS[p] || 0;
-    const sup = cnt / TOTAL_ORDERS;
-    const conf = cnt / TARGET_ORDERS.length;
-    const supOk = sup >= 0.03;
-    const confOk = conf >= 0.4;
-    const bothOk = supOk && confOk;
-    const tr = document.createElement("tr");
-    tr.className = bothOk ? "meet-threshold" : "";
-    tr.innerHTML = `
-      <td><strong>${p}</strong></td>
-      <td>${sup.toFixed(4)}</td>
-      <td>${supOk ? "<span class=\"pill pill-green\">✓</span>" : "<span class=\"pill pill-red\">✗</span>"}</td>
-      <td>${conf.toFixed(4)}</td>
-      <td>${confOk ? "<span class=\"pill pill-green\">✓</span>" : "<span class=\"pill pill-red\">✗</span>"}</td>
-      <td>${bothOk ? "<span class=\"pill pill-green\">✓ 關聯</span>" : "<span class=\"pill pill-red\">✗</span>"}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-// ============================================================
-// Progress
-// ============================================================
-function updateProgress() {
-  const done = Object.values(stepState).filter(Boolean).length;
-  document.getElementById("progress-label").textContent = `步驟 ${done} / 6`;
-  document.getElementById("progress-fill").style.width = `${(done / 6) * 100}%`;
+function updateProgress(n) {
+  completedSteps = n;
+  document.getElementById("progress-label").textContent = `步驟 ${n} / 6`;
+  document.getElementById("progress-fill").style.width = `${(n / 6) * 100}%`;
   for (let i = 1; i <= 6; i++) {
     const dot = document.getElementById(`dot-${i}`);
-    dot.classList.remove("active", "done");
-    if (stepState[i]) dot.classList.add("done");
-    else {
-      // Find the current active step
-      const isActive = !stepState[i] && (i === 1 || stepState[i - 1]);
-      if (isActive) dot.classList.add("active");
-    }
-  }
-  // Update side panel
-  const current = Math.min(done + 1, 6);
-  updatePanelSection(current);
-}
-
-function updatePanelSection(stepNum) {
-  for (let i = 1; i <= 6; i++) {
-    const el = document.getElementById(`panel-${i}`);
-    if (el) el.classList.toggle("active", i === stepNum);
+    dot.className = "progress-dot" + (i < n ? " done" : i === n ? " active" : "");
   }
 }
 
-// ============================================================
-// Step toggle (open/close card body)
-// ============================================================
+// ===== Step Toggle =====
 function toggleStep(n) {
-  if (n > 1 && !stepState[n - 1] && !stepState[n]) return; // locked
-  const card = document.getElementById(`step-card-${n}`);
-  card.classList.toggle("open");
+  const card = document.getElementById(`step-${n}`);
+  if (card.classList.contains("locked")) return;
+  const isOpen = card.classList.contains("open");
+  // Close all
+  document.querySelectorAll(".step-card.open").forEach(c => c.classList.remove("open"));
+  if (!isOpen) card.classList.add("open");
 }
 
-function tryUnlockStep(n) {
-  if (stepState[n - 1] || n === 1) {
-    toggleStep(n);
-  }
-  // else: locked, do nothing
+// ===== Unlock Step =====
+function unlockStep(n) {
+  const card = document.getElementById(`step-${n}`);
+  card.classList.remove("locked");
+  // Scroll and open
+  setTimeout(() => {
+    card.classList.add("active", "open");
+    card.scrollIntoView({ behavior: "smooth", block: "start" });
+    updateSidePanel(n);
+  }, 400);
 }
 
-// ============================================================
-// Hint toggle
-// ============================================================
-function toggleHint(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle("visible");
-  const btn = el.previousElementSibling;
-  btn.textContent = el.classList.contains("visible") ? "💡 隱藏提示" : "💡 顯示提示";
-}
-
-// ============================================================
-// Collapsible
-// ============================================================
-function toggleCollapsible(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle("open");
-  const btn = el.previousElementSibling;
-  btn.textContent = el.classList.contains("open") ? "收合訂單清單 ▲" : "展開訂單清單 ▼";
-}
-
-// ============================================================
-// Complete a step: show checkmark, unlock next, scroll
-// ============================================================
-function completeStep(n) {
-  stepState[n] = true;
-  const card = document.getElementById(`step-card-${n}`);
-  card.classList.remove("locked", "active");
-  card.classList.add("completed");
-
-  const status = document.getElementById(`status-${n}`);
-  status.innerHTML = "<span class=\"check-pop\">✅</span>";
-
-  // Show reveal panel
-  const reveal = document.getElementById(`s${n}-reveal`);
-  if (reveal) reveal.classList.add("visible");
-
-  // Unlock next step
-  if (n < 6) {
-    const nextCard = document.getElementById(`step-card-${n + 1}`);
-    nextCard.classList.remove("locked");
-    nextCard.querySelector(".step-header").classList.remove("locked-header");
-    const nextStatus = document.getElementById(`status-${n + 1}`);
-    nextStatus.textContent = "";
-    // Auto-open next step after short delay
-    setTimeout(() => {
-      nextCard.classList.add("open", "active");
-      nextCard.scrollIntoView({ behavior: "smooth", block: "start" });
-      updatePanelSection(n + 1);
-    }, 600);
-  } else {
-    // Final step
-    setTimeout(() => {
-      document.getElementById("celebration").classList.add("visible");
-      launchConfetti();
-    }, 500);
-  }
-
-  updateProgress();
-}
-
-// ============================================================
-// Feedback helpers
-// ============================================================
-function showFeedback(id, type, message) {
-  const el = document.getElementById(id);
-  el.className = `feedback-msg ${type} visible`;
-  el.innerHTML = `<span>${type === "success" ? "✅" : "❌"}</span> ${message}`;
-}
-function hideFeedback(id) {
-  document.getElementById(id).className = "feedback-msg";
-}
-
-function markInput(inputId, correct) {
-  const el = document.getElementById(inputId);
-  const icon = document.getElementById(`${inputId}-icon`);
-  el.classList.remove("correct", "wrong");
-  el.classList.add(correct ? "correct" : "wrong");
-  if (icon) icon.textContent = correct ? "✓" : "✗";
-  if (correct) el.disabled = true;
-}
-
-// ============================================================
-// Show answer buttons
-// ============================================================
-function showAnswer(step) {
-  const actions = {
-    1: () => {
-      const q1 = document.getElementById("s1-q1");
-      const q2 = document.getElementById("s1-q2");
-      q1.value = TOTAL_ORDERS;
-      q2.value = TOTAL_PRODUCTS;
-    },
-    2: () => { document.getElementById("s2-q1").value = TARGET_ORDERS.length; },
-    3: () => {
-      const ids = ["s3-q1","s3-q2","s3-q3","s3-q4"];
-      POI.forEach((p, i) => { document.getElementById(ids[i]).value = CO_COUNTS[p] || 0; });
-    },
-    4: () => {
-      const ids = ["s4-q1","s4-q2","s4-q3","s4-q4"];
-      POI.forEach((p, i) => {
-        document.getElementById(ids[i]).value = ((CO_COUNTS[p] || 0) / TOTAL_ORDERS).toFixed(4);
-      });
-    },
-    5: () => {
-      const ids = ["s5-q1","s5-q2","s5-q3","s5-q4"];
-      POI.forEach((p, i) => {
-        document.getElementById(ids[i]).value = ((CO_COUNTS[p] || 0) / TARGET_ORDERS.length).toFixed(4);
-      });
-    }
-  };
-  if (actions[step]) actions[step]();
-}
-
-// ============================================================
-// Step 1 Verify
-// ============================================================
-function verifyStep1() {
-  const q1 = parseInt(document.getElementById("s1-q1").value);
-  const q2 = parseInt(document.getElementById("s1-q2").value);
-
-  const q1Correct = q1 === TOTAL_ORDERS;
-  const q2Correct = q2 === TOTAL_PRODUCTS;
-
-  markInput("s1-q1", q1Correct);
-  markInput("s1-q2", q2Correct);
-
-  if (!q1Correct || !q2Correct) {
-    wrongAttempts[1]++;
-    const hints = [];
-    if (!q1Correct) hints.push(`訂單數答案有誤`);
-    if (!q2Correct) hints.push(`商品種數答案有誤`);
-    showFeedback("s1-feedback", "error", `${hints.join("；")}，請再試一次！`);
-    if (wrongAttempts[1] >= 2) document.getElementById("s1-show-btn").style.display = "";
-  } else {
-    showFeedback("s1-feedback", "success", `完全正確！資料共 ${TOTAL_ORDERS} 筆訂單，${TOTAL_PRODUCTS} 種商品。`);
-    document.getElementById("s1-verify-btn").disabled = true;
-    setTimeout(() => completeStep(1), 700);
-  }
-}
-
-// ============================================================
-// Step 2 Verify
-// ============================================================
-function verifyStep2() {
-  const q1 = parseInt(document.getElementById("s2-q1").value);
-  const correct = q1 === TARGET_ORDERS.length;
-  markInput("s2-q1", correct);
-
-  if (!correct) {
-    wrongAttempts[2]++;
-    showFeedback("s2-feedback", "error", "答案有誤，請再試一次！提示：先篩選商品名稱再計算不重複訂單數。");
-    if (wrongAttempts[2] >= 2) document.getElementById("s2-show-btn").style.display = "";
-  } else {
-    showFeedback("s2-feedback", "success", `正確！「黃金搭檔（兒童青少年）」共出現在 ${TARGET_ORDERS.length} 筆訂單中。`);
-    document.getElementById("s2-verify-btn").disabled = true;
-    setTimeout(() => completeStep(2), 700);
-  }
-}
-
-// ============================================================
-// Step 3 Verify
-// ============================================================
-function verifyStep3() {
-  const ids = ["s3-q1","s3-q2","s3-q3","s3-q4"];
-  const answers = POI.map(p => CO_COUNTS[p] || 0);
-  const inputs = ids.map(id => parseInt(document.getElementById(id).value));
-  const results = inputs.map((v, i) => v === answers[i]);
-
-  ids.forEach((id, i) => markInput(id, results[i]));
-
-  if (results.every(Boolean)) {
-    showFeedback("s3-feedback", "success", "全部正確！你成功統計出所有共現頻次。");
-    document.getElementById("s3-verify-btn").disabled = true;
-    setTimeout(() => completeStep(3), 700);
-  } else {
-    wrongAttempts[3]++;
-    const wrong = POI.filter((_, i) => !results[i]);
-    showFeedback("s3-feedback", "error", `${wrong.join("、")} 的答案有誤，請再試一次。`);
-    if (wrongAttempts[3] >= 2) document.getElementById("s3-show-btn").style.display = "";
-  }
-}
-
-// ============================================================
-// Step 4 Verify (tolerance ±0.001)
-// ============================================================
-function verifyStep4() {
-  const ids = ["s4-q1","s4-q2","s4-q3","s4-q4"];
-  const answers = POI.map(p => (CO_COUNTS[p] || 0) / TOTAL_ORDERS);
-  const inputs = ids.map(id => parseFloat(document.getElementById(id).value));
-  const results = inputs.map((v, i) => !isNaN(v) && Math.abs(v - answers[i]) <= 0.001);
-
-  ids.forEach((id, i) => markInput(id, results[i]));
-
-  if (results.every(Boolean)) {
-    showFeedback("s4-feedback", "success", "全部正確！支援度計算完成。");
-    document.getElementById("s4-verify-btn").disabled = true;
-    setTimeout(() => completeStep(4), 700);
-  } else {
-    wrongAttempts[4]++;
-    showFeedback("s4-feedback", "error", "部分答案有誤（允許 ±0.001 誤差）。記得分母是全部訂單數 984！");
-    if (wrongAttempts[4] >= 2) document.getElementById("s4-show-btn").style.display = "";
-  }
-}
-
-// ============================================================
-// Step 5 Verify (tolerance ±0.001)
-// ============================================================
-function verifyStep5() {
-  const ids = ["s5-q1","s5-q2","s5-q3","s5-q4"];
-  const answers = POI.map(p => (CO_COUNTS[p] || 0) / TARGET_ORDERS.length);
-  const inputs = ids.map(id => parseFloat(document.getElementById(id).value));
-  const results = inputs.map((v, i) => !isNaN(v) && Math.abs(v - answers[i]) <= 0.001);
-
-  ids.forEach((id, i) => markInput(id, results[i]));
-
-  if (results.every(Boolean)) {
-    showFeedback("s5-feedback", "success", "全部正確！信賴度計算完成。");
-    document.getElementById("s5-verify-btn").disabled = true;
-    setTimeout(() => completeStep(5), 700);
-  } else {
-    wrongAttempts[5]++;
-    showFeedback("s5-feedback", "error", "部分答案有誤（允許 ±0.001 誤差）。記得分母是目標訂單數 34！");
-    if (wrongAttempts[5] >= 2) document.getElementById("s5-show-btn").style.display = "";
-  }
-}
-
-// ============================================================
-// Step 6 Verify (checkbox)
-// ============================================================
-function toggleCheck(item) {
-  const cb = item.querySelector("input[type=checkbox]");
-  cb.checked = !cb.checked;
-  item.classList.toggle("selected", cb.checked);
-}
-
-function verifyStep6() {
-  const correctAnswers = new Set(["黃金搭檔（女士）"]);
-  const items = document.querySelectorAll("#s6-checkbox-group .check-item");
-  let allCorrect = true;
-
-  items.forEach(item => {
-    const cb = item.querySelector("input[type=checkbox]");
-    const val = cb.value;
-    const checked = cb.checked;
-    const shouldBeChecked = correctAnswers.has(val);
-    item.classList.remove("correct-item", "wrong-item", "selected");
-
-    if (checked === shouldBeChecked) {
-      item.classList.add("correct-item");
-    } else {
-      item.classList.add("wrong-item");
-      allCorrect = false;
-    }
-  });
-
-  if (allCorrect) {
-    showFeedback("s6-feedback", "success", "完全正確！只有「黃金搭檔（女士）」同時達到支援度 ≥ 0.03 和信賴度 ≥ 0.40 兩項門檻。");
-    document.getElementById("s6-verify-btn").disabled = true;
-    setTimeout(() => completeStep(6), 700);
-  } else {
-    wrongAttempts[6]++;
-    showFeedback("s6-feedback", "error", "答案有誤！請檢查哪些商品同時滿足兩項門檻（支援度 ≥ 0.03 AND 信賴度 ≥ 0.40）。");
-  }
-}
-
-// ============================================================
-// Confetti animation
-// ============================================================
-function launchConfetti() {
-  const container = document.getElementById("confetti-container");
-  const colors = ["#8B6F47","#C4956A","#7A9E7E","#9B8AAE","#C17B7B","#F5EDE3","#E8F0E9"];
-  for (let i = 0; i < 40; i++) {
-    const piece = document.createElement("div");
-    piece.className = "confetti-piece";
-    const size = Math.random() * 8 + 4;
-    piece.style.cssText = `
-      left: ${Math.random() * 100}%;
-      width: ${size}px;
-      height: ${size}px;
-      background: ${colors[Math.floor(Math.random() * colors.length)]};
-      animation-duration: ${Math.random() * 2 + 1.5}s;
-      animation-delay: ${Math.random() * 1}s;
-      border-radius: ${Math.random() > 0.5 ? "50%" : "2px"};
-    `;
-    container.appendChild(piece);
-  }
-}
-
-// ============================================================
-// Side panel
-// ============================================================
+// ===== Side Panel =====
 function togglePanel() {
   document.getElementById("side-panel").classList.toggle("open");
   document.getElementById("panel-overlay").classList.toggle("open");
 }
-function closePanel() {
-  document.getElementById("side-panel").classList.remove("open");
-  document.getElementById("panel-overlay").classList.remove("open");
+function updateSidePanel(n) {
+  document.querySelectorAll(".panel-section").forEach(s => s.classList.remove("active"));
+  const ps = document.getElementById(`panel-s${n}`);
+  if (ps) ps.classList.add("active");
 }
 
-// ============================================================
-// Reset
-// ============================================================
-function resetAll() {
+// ===== STEP 1: Data Browser =====
+let s1FilteredRecords = [...RECORDS];
+
+function initStep1Table() {
+  renderTable1(RECORDS);
+}
+
+function renderTable1(rows) {
+  const tbody = document.getElementById("s1-tbody");
+  tbody.innerHTML = rows.slice(0, 2000).map((r, i) =>
+    `<tr class="${i % 2 ? "row-alt" : ""}">
+      <td>${i + 1}</td>
+      <td style="font-family:monospace; font-size:.8rem;">${r.order}</td>
+      <td>${r.product}</td>
+    </tr>`
+  ).join("");
+  document.getElementById("s1-count-info").textContent =
+    rows.length > 2000
+      ? `顯示前 2000 筆（共 ${rows.length.toLocaleString()} 筆）`
+      : `共 ${rows.length.toLocaleString()} 筆記錄`;
+}
+
+function filterTable1() {
+  const q = document.getElementById("s1-search").value.toLowerCase().trim();
+  const filtered = q ? RECORDS.filter(r =>
+    r.order.toLowerCase().includes(q) || r.product.toLowerCase().includes(q)
+  ) : RECORDS;
+  renderTable1(filtered);
+}
+
+function animateCount(elId, targetNum, suffix, callback) {
+  const el = document.getElementById(elId);
+  const chip = el.closest(".stat-chip");
+  let current = 0;
+  const step = Math.max(1, Math.floor(targetNum / 40));
+  const timer = setInterval(() => {
+    current = Math.min(current + step, targetNum);
+    el.textContent = current.toLocaleString() + (suffix || "");
+    if (current >= targetNum) {
+      clearInterval(timer);
+      chip.classList.add("revealed");
+      if (callback) callback();
+    }
+  }, 30);
+}
+
+function countOrders() {
+  document.getElementById("btn-count-orders").disabled = true;
+  animateCount("num-orders", TOTAL_ORDERS, "", () => {
+    // Pre-fill verification field
+    document.getElementById("s1-q1").value = TOTAL_ORDERS;
+    document.getElementById("s1-q1").classList.add("correct");
+  });
+}
+
+function countProducts() {
+  document.getElementById("btn-count-products").disabled = true;
+  const uniqueProducts = new Set(RECORDS.map(r => r.product)).size;
+  animateCount("num-products", uniqueProducts, "", () => {
+    document.getElementById("s1-q2").value = uniqueProducts;
+    document.getElementById("s1-q2").classList.add("correct");
+  });
+}
+
+function verifyStep1() {
+  const q1 = parseInt(document.getElementById("s1-q1").value);
+  const q2 = parseInt(document.getElementById("s1-q2").value);
+  const fb = document.getElementById("fb-1");
+  let ok = true;
+  const input1 = document.getElementById("s1-q1");
+  const input2 = document.getElementById("s1-q2");
+
+  input1.classList.remove("correct", "wrong");
+  input2.classList.remove("correct", "wrong");
+
+  if (q1 !== 984) { input1.classList.add("wrong"); ok = false; }
+  else input1.classList.add("correct");
+  if (q2 !== 132) { input2.classList.add("wrong"); ok = false; }
+  else input2.classList.add("correct");
+
+  if (ok) {
+    showFeedback(fb, "success", "✅ 正確！共 984 筆訂單，132 種商品。前往步驟 2 →");
+    document.getElementById("step-1").classList.remove("active");
+    document.getElementById("step-1").classList.add("completed");
+    document.getElementById("status-1").textContent = "✅";
+    updateProgress(1);
+    unlockStep(2);
+    initStep2();
+  } else {
+    showFeedback(fb, "error", "❌ 有答案不正確，請再試試，或先點擊工具按鈕查看結果！");
+  }
+}
+
+// ===== STEP 2 =====
+function initStep2() {
+  // Populate product select
+  const sel = document.getElementById("s2-product-select");
+  const products = [...new Set(RECORDS.map(r => r.product))].sort();
+  sel.innerHTML = "";
+  // Put target first
+  const opt = document.createElement("option");
+  opt.value = TARGET_PRODUCT;
+  opt.textContent = TARGET_PRODUCT;
+  sel.appendChild(opt);
+  products.filter(p => p !== TARGET_PRODUCT).forEach(p => {
+    const o = document.createElement("option");
+    o.value = p; o.textContent = p;
+    sel.appendChild(o);
+  });
+}
+
+function onProductChange() {
+  // Reset when product changes
+  document.getElementById("s2-result-info").style.display = "none";
+  document.getElementById("s2-table-wrap").style.display = "none";
+  document.getElementById("btn-dedup").style.display = "none";
+  document.getElementById("s2-dedup-result").style.display = "none";
+}
+
+function filterByProduct() {
+  const product = document.getElementById("s2-product-select").value;
+  const filtered = RECORDS.filter(r => r.product === product);
+
+  const infoEl = document.getElementById("s2-result-info");
+  infoEl.innerHTML = `篩選結果：<strong>${filtered.length}</strong> 筆記錄包含「${product}」`;
+  infoEl.style.display = "block";
+
+  const tbody = document.getElementById("s2-tbody");
+  tbody.innerHTML = filtered.map((r, i) =>
+    `<tr class="${i % 2 ? "row-alt" : ""}">
+      <td>${i + 1}</td>
+      <td style="font-family:monospace; font-size:.8rem;">${r.order}</td>
+      <td>${r.product}</td>
+    </tr>`
+  ).join("");
+
+  document.getElementById("s2-table-wrap").style.display = "block";
+  document.getElementById("btn-dedup").style.display = "inline-flex";
+  // Reset dedup
+  document.getElementById("s2-dedup-result").style.display = "none";
+}
+
+function dedupOrders() {
+  const product = document.getElementById("s2-product-select").value;
+  const orders = [...new Set(RECORDS.filter(r => r.product === product).map(r => r.order))];
+
+  const badge = document.getElementById("s2-dedup-badge");
+  badge.textContent = `✅ ${orders.length} 筆不重複訂單包含「${product}」`;
+
+  const chips = document.getElementById("s2-order-chips");
+  chips.innerHTML = orders.map(o =>
+    `<span class="order-chip">${o}</span>`
+  ).join("");
+
+  document.getElementById("s2-dedup-result").style.display = "block";
+
+  // If target product, pre-fill verification
+  if (product === TARGET_PRODUCT) {
+    document.getElementById("s2-q1").value = orders.length;
+    document.getElementById("s2-q1").classList.add("correct");
+  }
+}
+
+function verifyStep2() {
+  const q1 = parseInt(document.getElementById("s2-q1").value);
+  const fb = document.getElementById("fb-2");
+  const input1 = document.getElementById("s2-q1");
+  input1.classList.remove("correct", "wrong");
+
+  if (q1 === TARGET_ORDERS.length) {
+    input1.classList.add("correct");
+    showFeedback(fb, "success", `✅ 正確！共找到 ${TARGET_ORDERS.length} 筆包含目標商品的訂單。`);
+    document.getElementById("step-2").classList.remove("active");
+    document.getElementById("step-2").classList.add("completed");
+    document.getElementById("status-2").textContent = "✅";
+    updateProgress(2);
+    unlockStep(3);
+    initStep3();
+  } else {
+    showFeedback(fb, "error", `❌ 不正確，請先選擇「${TARGET_PRODUCT}」並篩選，再點「去重複統計」！`);
+  }
+}
+
+// ===== STEP 3 =====
+function initStep3() {
+  // nothing special needed on init
+}
+
+function expandAllRecords() {
+  const tbody = document.getElementById("s3-all-tbody");
+  // All records from target orders
+  const rows = RECORDS.filter(r => TARGET_ORDERS.includes(r.order));
+  tbody.innerHTML = rows.map((r, i) =>
+    `<tr class="${i % 2 ? "row-alt" : ""}">
+      <td>${i + 1}</td>
+      <td style="font-family:monospace; font-size:.8rem;">${r.order}</td>
+      <td>${r.product}</td>
+    </tr>`
+  ).join("");
+  document.getElementById("s3-all-records-wrap").style.display = "block";
+}
+
+function buildFreqTable() {
+  // Count product occurrences across target orders (per order, not per record)
+  const orderSets = {};
+  TARGET_ORDERS.forEach(o => { orderSets[o] = new Set(RAW_ORDERS[o]); });
+
+  const freq = {};
+  TARGET_ORDERS.forEach(o => {
+    orderSets[o].forEach(p => {
+      freq[p] = (freq[p] || 0) + 1;
+    });
+  });
+
+  // Sort descending
+  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+
+  const targetProds = new Set(ASSOC_PRODS.map(p => p.name));
+  targetProds.add(TARGET_PRODUCT);
+
+  const tbody = document.getElementById("s3-freq-tbody");
+  tbody.innerHTML = sorted.map(([name, count], i) => {
+    let tag = "";
+    if (name === TARGET_PRODUCT) tag = `<span class="tag-target">目標商品</span>`;
+    else if (targetProds.has(name)) tag = `<span class="tag-target" style="background:var(--green);">候選商品</span>`;
+
+    let rowClass = "";
+    if (name === TARGET_PRODUCT) rowClass = "highlight-row";
+
+    return `<tr class="${rowClass}">
+      <td>${i + 1}</td>
+      <td>${name}${tag}</td>
+      <td style="font-weight:600; text-align:center;">${count}</td>
+      <td>${tag}</td>
+    </tr>`;
+  }).join("");
+
+  document.getElementById("s3-freq-wrap").style.display = "block";
+
+  // Pre-fill verification
+  ASSOC_PRODS.forEach((p, i) => {
+    const input = document.getElementById(`s3-q${i + 1}`);
+    if (input) { input.value = p.count; input.classList.add("correct"); }
+  });
+}
+
+function verifyStep3() {
+  const answers = [33, 20, 16, 7];
+  const ids = ["s3-q1", "s3-q2", "s3-q3", "s3-q4"];
+  const fb = document.getElementById("fb-3");
+  let ok = true;
+  ids.forEach((id, i) => {
+    const input = document.getElementById(id);
+    input.classList.remove("correct", "wrong");
+    const val = parseInt(input.value);
+    if (val === answers[i]) input.classList.add("correct");
+    else { input.classList.add("wrong"); ok = false; }
+  });
+  if (ok) {
+    showFeedback(fb, "success", "✅ 完全正確！4 個商品的頻次都對了。前往計算支援度 →");
+    document.getElementById("step-3").classList.remove("active");
+    document.getElementById("step-3").classList.add("completed");
+    document.getElementById("status-3").textContent = "✅";
+    updateProgress(3);
+    unlockStep(4);
+    initStep4();
+  } else {
+    showFeedback(fb, "error", "❌ 有些數字不對，請點「生成頻次統計」查看結果！");
+  }
+}
+
+// ===== STEP 4: Support Calculator =====
+function initStep4() {
+  const container = document.getElementById("s4-calc-cards");
+  container.innerHTML = ASSOC_PRODS.map((p, i) => `
+    <div class="calc-card" id="s4-card-${i}">
+      <div class="prod-name">${p.name}</div>
+      <div class="calc-row">
+        <span class="calc-label">|X∩Y| =</span>
+        <input class="calc-field" id="s4-xy-${i}" type="number" value="${p.count}" />
+        <span>÷</span>
+        <span class="calc-label">N =</span>
+        <input class="calc-field readonly" id="s4-n-${i}" type="number" value="${TOTAL_ORDERS}" readonly />
+        <span>=</span>
+        <div class="calc-result" id="s4-res-${i}">?</div>
+        <button class="btn btn-accent btn-sm" onclick="calcSupport(${i})">計算</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function calcSupport(i) {
+  const xy = parseFloat(document.getElementById(`s4-xy-${i}`).value);
+  const n = parseFloat(document.getElementById(`s4-n-${i}`).value);
+  const res = document.getElementById(`s4-res-${i}`);
+  const val = xy / n;
+  res.textContent = val.toFixed(4);
+  res.className = "calc-result " + (val >= MIN_SUPPORT ? "green" : "red");
+
+  // Pre-fill verify input
+  const input = document.getElementById(`s4-q${i + 1}`);
+  if (input) { input.value = val.toFixed(4); input.classList.add("correct"); }
+
+  updateSupportSummary();
+}
+
+function updateSupportSummary() {
+  const counts = ASSOC_PRODS.filter((p, i) => {
+    const res = document.getElementById(`s4-res-${i}`);
+    return res && !isNaN(parseFloat(res.textContent)) && parseFloat(res.textContent) >= MIN_SUPPORT;
+  }).length;
+  const summary = document.getElementById("s4-summary");
+  summary.classList.add("visible");
+  summary.innerHTML = `${counts > 0 ? "✅" : "❌"} ${counts} 個商品達到最小支援度 ${MIN_SUPPORT}（結論：只有支援度≥0.03的商品才繼續評估信賴度）`;
+}
+
+function verifyStep4() {
+  const answers = ASSOC_PRODS.map(p => p.count / TOTAL_ORDERS);
+  const ids = ["s4-q1", "s4-q2", "s4-q3", "s4-q4"];
+  const fb = document.getElementById("fb-4");
+  let ok = true;
+  ids.forEach((id, i) => {
+    const input = document.getElementById(id);
+    input.classList.remove("correct", "wrong");
+    const val = parseFloat(input.value);
+    if (Math.abs(val - answers[i]) <= 0.001) input.classList.add("correct");
+    else { input.classList.add("wrong"); ok = false; }
+  });
+  if (ok) {
+    showFeedback(fb, "success", "✅ 全部正確！支援度計算完成。前往計算信賴度 →");
+    document.getElementById("step-4").classList.remove("active");
+    document.getElementById("step-4").classList.add("completed");
+    document.getElementById("status-4").textContent = "✅";
+    updateProgress(4);
+    unlockStep(5);
+    initStep5();
+  } else {
+    showFeedback(fb, "error", "❌ 有些數字不對，請使用計算機重新算一遍！");
+  }
+}
+
+// ===== STEP 5: Confidence Calculator =====
+const TARGET_COUNT = TARGET_ORDERS.length; // 34
+
+function initStep5() {
+  const container = document.getElementById("s5-calc-cards");
+  container.innerHTML = ASSOC_PRODS.map((p, i) => `
+    <div class="calc-card" id="s5-card-${i}">
+      <div class="prod-name">${p.name}</div>
+      <div class="calc-row">
+        <span class="calc-label">|X∩Y| =</span>
+        <input class="calc-field" id="s5-xy-${i}" type="number" value="${p.count}" />
+        <span>÷</span>
+        <span class="calc-label">|X| =</span>
+        <input class="calc-field readonly" id="s5-x-${i}" type="number" value="${TARGET_COUNT}" readonly />
+        <span>=</span>
+        <div class="calc-result" id="s5-res-${i}">?</div>
+        <button class="btn btn-accent btn-sm" onclick="calcConfidence(${i})">計算</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function calcConfidence(i) {
+  const xy = parseFloat(document.getElementById(`s5-xy-${i}`).value);
+  const x = parseFloat(document.getElementById(`s5-x-${i}`).value);
+  const res = document.getElementById(`s5-res-${i}`);
+  const val = xy / x;
+  res.textContent = val.toFixed(4);
+  res.className = "calc-result " + (val >= MIN_CONFIDENCE ? "green" : "red");
+
+  // Pre-fill verify input
+  const input = document.getElementById(`s5-q${i + 1}`);
+  if (input) { input.value = val.toFixed(4); input.classList.add("correct"); }
+
+  updateConfidenceSummary();
+}
+
+function updateConfidenceSummary() {
+  const counts = ASSOC_PRODS.filter((p, i) => {
+    const res = document.getElementById(`s5-res-${i}`);
+    return res && !isNaN(parseFloat(res.textContent)) && parseFloat(res.textContent) >= MIN_CONFIDENCE;
+  }).length;
+  const summary = document.getElementById("s5-summary");
+  summary.classList.add("visible");
+  summary.innerHTML = `${counts > 0 ? "✅" : "❌"} ${counts} 個商品達到最小信賴度 ${MIN_CONFIDENCE}`;
+}
+
+function verifyStep5() {
+  const answers = ASSOC_PRODS.map(p => p.count / TARGET_COUNT);
+  const ids = ["s5-q1", "s5-q2", "s5-q3", "s5-q4"];
+  const fb = document.getElementById("fb-5");
+  let ok = true;
+  ids.forEach((id, i) => {
+    const input = document.getElementById(id);
+    input.classList.remove("correct", "wrong");
+    const val = parseFloat(input.value);
+    if (Math.abs(val - answers[i]) <= 0.001) input.classList.add("correct");
+    else { input.classList.add("wrong"); ok = false; }
+  });
+  if (ok) {
+    showFeedback(fb, "success", "✅ 全部正確！信賴度計算完成。前往最終判定 →");
+    document.getElementById("step-5").classList.remove("active");
+    document.getElementById("step-5").classList.add("completed");
+    document.getElementById("status-5").textContent = "✅";
+    updateProgress(5);
+    unlockStep(6);
+    initStep6();
+  } else {
+    showFeedback(fb, "error", "❌ 有些數字不對，請使用計算機重新算一遍！");
+  }
+}
+
+// ===== STEP 6: Judge Table =====
+const judgeState = [null, null, null, null]; // per product: true/false/null
+
+function initStep6() {
+  const tbody = document.getElementById("s6-judge-tbody");
+  tbody.innerHTML = ASSOC_PRODS.map((p, i) => {
+    const sup = p.count / TOTAL_ORDERS;
+    const conf = p.count / TARGET_COUNT;
+    return `<tr id="s6-row-${i}">
+      <td class="prod-col">${p.name}</td>
+      <td>${p.count}</td>
+      <td>${sup.toFixed(4)}</td>
+      <td>${conf.toFixed(4)}</td>
+      <td>
+        <button class="toggle-btn" id="s6-sup-${i}" onclick="toggleJudge('sup', ${i})" title="點擊切換">?</button>
+      </td>
+      <td>
+        <button class="toggle-btn" id="s6-conf-${i}" onclick="toggleJudge('conf', ${i})" title="點擊切換">?</button>
+      </td>
+      <td>
+        <button class="toggle-btn" id="s6-final-${i}" onclick="toggleJudge('final', ${i})" title="點擊切換">?</button>
+      </td>
+    </tr>`;
+  }).join("");
+
+  // Checkboxes
+  const cbGroup = document.getElementById("s6-checkboxes");
+  cbGroup.innerHTML = ASSOC_PRODS.map((p, i) => `
+    <label class="check-item" id="s6-chk-wrap-${i}" onclick="toggleCheck(${i})">
+      <input type="checkbox" id="s6-chk-${i}" onclick="event.stopPropagation(); toggleCheck(${i})" />
+      <span>${p.name}</span>
+    </label>
+  `).join("");
+}
+
+function toggleJudge(type, idx) {
+  const btn = document.getElementById(`s6-${type}-${idx}`);
+  if (btn.textContent === "?") {
+    btn.textContent = "✓"; btn.className = "toggle-btn yes";
+  } else if (btn.className.includes("yes")) {
+    btn.textContent = "✗"; btn.className = "toggle-btn no";
+  } else {
+    btn.textContent = "?"; btn.className = "toggle-btn";
+  }
+  updateRowHighlight(idx);
+}
+
+function updateRowHighlight(idx) {
+  const finalBtn = document.getElementById(`s6-final-${idx}`);
+  const row = document.getElementById(`s6-row-${idx}`);
+  row.className = "";
+  if (finalBtn.className.includes("yes")) row.classList.add("assoc-row");
+  else if (finalBtn.className.includes("no")) row.classList.add("not-assoc-row");
+}
+
+function autoJudge() {
+  ASSOC_PRODS.forEach((p, i) => {
+    const sup = p.count / TOTAL_ORDERS;
+    const conf = p.count / TARGET_COUNT;
+    const supOk = sup >= MIN_SUPPORT;
+    const confOk = conf >= MIN_CONFIDENCE;
+    const isAssoc = supOk && confOk;
+
+    const setBtn = (id, val) => {
+      const btn = document.getElementById(id);
+      btn.textContent = val ? "✓" : "✗";
+      btn.className = "toggle-btn " + (val ? "yes" : "no");
+    };
+    setBtn(`s6-sup-${i}`, supOk);
+    setBtn(`s6-conf-${i}`, confOk);
+    setBtn(`s6-final-${i}`, isAssoc);
+    updateRowHighlight(i);
+
+    // Pre-check checkboxes for associated products
+    if (isAssoc) {
+      document.getElementById(`s6-chk-${i}`).checked = true;
+      document.getElementById(`s6-chk-wrap-${i}`).classList.add("selected");
+    }
+  });
+}
+
+function resetJudge() {
+  ASSOC_PRODS.forEach((p, i) => {
+    ["sup", "conf", "final"].forEach(type => {
+      const btn = document.getElementById(`s6-${type}-${i}`);
+      btn.textContent = "?"; btn.className = "toggle-btn";
+    });
+    document.getElementById(`s6-row-${i}`).className = "";
+    document.getElementById(`s6-chk-${i}`).checked = false;
+    document.getElementById(`s6-chk-wrap-${i}`).classList.remove("selected", "correct-item", "wrong-item");
+  });
+}
+
+function toggleCheck(idx) {
+  const cb = document.getElementById(`s6-chk-${idx}`);
+  const wrap = document.getElementById(`s6-chk-wrap-${idx}`);
+  cb.checked = !cb.checked;
+  wrap.classList.toggle("selected", cb.checked);
+}
+
+function verifyStep6() {
+  // Correct answer: only index 0 (黃金搭檔女士) is associated
+  const correctSet = new Set([0]);
+  const fb = document.getElementById("fb-6");
+  let ok = true;
+
+  ASSOC_PRODS.forEach((p, i) => {
+    const cb = document.getElementById(`s6-chk-${i}`);
+    const wrap = document.getElementById(`s6-chk-wrap-${i}`);
+    wrap.classList.remove("selected", "correct-item", "wrong-item");
+    const checked = cb.checked;
+    const shouldBe = correctSet.has(i);
+    if (checked === shouldBe) wrap.classList.add("correct-item");
+    else { wrap.classList.add("wrong-item"); ok = false; }
+  });
+
+  if (ok) {
+    showFeedback(fb, "success", "✅ 完全正確！你成功找出了關聯商品！");
+    document.getElementById("step-6").classList.remove("active");
+    document.getElementById("step-6").classList.add("completed");
+    document.getElementById("status-6").textContent = "✅";
+    updateProgress(6);
+    // Show celebration
+    setTimeout(() => {
+      document.getElementById("celebration").classList.add("visible");
+      document.getElementById("celebration").scrollIntoView({ behavior: "smooth" });
+      launchConfetti();
+    }, 600);
+  } else {
+    showFeedback(fb, "error", "❌ 有些選項不對。提示：同時滿足支援度 ≥ 0.03 AND 信賴度 ≥ 0.4 的才是關聯商品！");
+  }
+}
+
+// ===== Confetti =====
+function launchConfetti() {
+  const wrap = document.getElementById("confetti-wrap");
+  const colors = ["#C4956A", "#7A9E7E", "#9B8AAE", "#C17B7B", "#8B6F47", "#F5EDE3"];
+  for (let i = 0; i < 35; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+    piece.style.animationDelay = (Math.random() * 1.2) + "s";
+    piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+    piece.style.width = piece.style.height = (6 + Math.random() * 8) + "px";
+    wrap.appendChild(piece);
+  }
+  setTimeout(() => { wrap.innerHTML = ""; }, 5000);
+}
+
+// ===== Feedback Helper =====
+function showFeedback(el, type, msg) {
+  el.className = `feedback-msg visible ${type}`;
+  el.textContent = msg;
+}
+
+// ===== Restart =====
+function restartAll() {
   location.reload();
 }
+
+// ===== Init =====
+document.addEventListener("DOMContentLoaded", () => {
+  initStep1Table();
+  updateSidePanel(1);
+  updateProgress(0);
+});
 </script>
 </body>
 </html>
