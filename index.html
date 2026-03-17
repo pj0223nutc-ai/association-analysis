@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商品關聯分析 · Association Rule Analysis</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    /* ============================================================
+       CSS Custom Properties & Reset — Milk Tea Palette
+    ============================================================ */
+    :root {
+      /* Primary: warm brown/latte */
+      --primary: #8B6F47; --primary-dark: #6B5335; --primary-light: #F5EDE3;
+      --primary-glow: rgba(139,111,71,.25);
+
+      /* Kept as aliases so legacy --blue references work */
+      --blue: #8B6F47; --blue-dark: #6B5335; --blue-light: #F5EDE3; --blue-glow: rgba(139,111,71,.25);
+
+      /* Accent: caramel/honey */
+      --accent: #C4956A; --accent-dark: #A47B52; --accent-light: #FCEEE0;
+
+      /* Success: matcha green */
+      --green: #7A9E7E; --green-dark: #5E8062; --green-light: #E8F0E9;
+
+      /* Warning: golden honey */
+      --amber: #C4956A; --amber-dark: #A47B52; --amber-light: #FFF3E8;
+
+      /* Danger: rose/berry */
+      --red: #C17B7B; --red-dark: #A45D5D; --red-light: #F5E1E1;
+
+      /* Purple -> Taro purple */
+      --purple: #9B8AAE; --purple-dark: #7D6E92; --purple-light: #EDE7F3;
+
+      /* Teal -> Oolong */
+      --teal: #8FA88C; --teal-light: #E5EDE4;
+
+      /* Pink -> Rose milk */
+      --pink: #C4918E; --pink-light: #F5E5E3;
+
+      /* Grays: warm tones */
+      --gray-50:#FDFBF9;--gray-100:#F7F3EF;--gray-200:#EDE6DD;--gray-300:#D4C8BB;
+      --gray-400:#B5A596;--gray-500:#8C7B6B;--gray-600:#6B5D50;--gray-700:#4A3F34;
+      --gray-800:#332C24;--gray-900:#1F1A14;
+
+      --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+      --shadow-md:0 4px 16px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.07);
+      --shadow-lg:0 10px 40px rgba(0,0,0,.12),0 4px 12px rgba(0,0,0,.08);
+      --radius:14px; --radius-sm:8px;
+      --transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      background: var(--gray-50); color: var(--gray-800);
+      font-size: 14px; line-height: 1.6; min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F7F3EF; }
+    ::-webkit-scrollbar-thumb { background: #D4C8BB; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #B5A596; }
+
+    /* ============================================================
+       Hero Header
+    ============================================================ */
+    .hero {
+      background: linear-gradient(135deg, #3D2E1F 0%, #5C4433 50%, #4A3728 100%);
+      color: white; padding: 40px 32px 36px; position: relative; overflow: hidden;
+    }
+    /* Animated dot grid background */
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(255,245,230,.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      animation: gridFloat 20s linear infinite;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(196,149,106,.22) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(155,138,174,.18) 0%, transparent 50%);
+    }
+    @keyframes gridFloat { 0%{background-position:0 0} 100%{background-position:28px 28px} }
+    .hero-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+    .hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .hero-badge {
+      font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.1);
+      backdrop-filter: blur(8px); letter-spacing: .5px;
+    }
+    .hero h1 {
+      font-size: clamp(24px, 4vw, 38px); font-weight: 800; letter-spacing: -0.5px;
+      margin-bottom: 8px; line-height: 1.2;
+    }
+    .hero h1 span { color: #D4A76A; }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,.65); margin-bottom: 20px; }
+    .hero-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat-num { font-size: 22px; font-weight: 700; color: #D4A76A; }
+    .hero-stat-label { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 2px; }
+
+    /* ============================================================
+       Tab Navigation
+    ============================================================ */
+    .tab-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.95); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .tab-nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; gap: 0; padding: 0 16px; overflow-x: auto;
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 7px;
+      padding: 14px 20px; font-size: 13.5px; font-weight: 600;
+      color: var(--gray-500); background: none; border: none;
+      cursor: pointer; white-space: nowrap; position: relative;
+      transition: var(--transition); border-bottom: 3px solid transparent;
+      font-family: inherit;
+    }
+    .tab-btn .tab-icon { font-size: 16px; }
+    .tab-btn:hover { color: var(--primary); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-btn.active .tab-icon { transform: scale(1.1); }
+    .tab-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px;
+      background: var(--primary-light); color: var(--primary); min-width: 18px; text-align: center;
+    }
+    .tab-badge.new { background: var(--green-light); color: var(--green); }
+
+    /* ============================================================
+       Main Content
+    ============================================================ */
+    .main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 60px; }
+    .tab-panel { display: none; animation: fadeSlideIn .3s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       Card & Layout Components
+    ============================================================ */
+    .card {
+      background: white; border-radius: var(--radius);
+      box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200);
+      padding: 24px; margin-bottom: 20px;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; gap: 12px;
+    }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--gray-800); display: flex; align-items: center; gap: 8px; }
+    .card-title .icon { font-size: 18px; }
+    .card-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .grid-6 { display: grid; grid-template-columns: repeat(6,1fr); gap: 14px; }
+    @media(max-width:900px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: repeat(2,1fr); }
+      .grid-6 { grid-template-columns: repeat(3,1fr); }
+    }
+    @media(max-width:560px) {
+      .grid-3, .grid-6 { grid-template-columns: repeat(2,1fr); }
+      .hero { padding: 24px 16px; }
+      .tab-btn { padding: 12px 14px; font-size: 12px; }
+    }
+    section + section { margin-top: 4px; }
+
+    /* ============================================================
+       Upload Area
+    ============================================================ */
+    .upload-zone {
+      border: 2.5px dashed var(--gray-300); border-radius: var(--radius);
+      padding: 52px 24px; text-align: center; cursor: pointer;
+      transition: var(--transition); background: var(--gray-50);
+      position: relative; overflow: hidden;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--primary); background: var(--primary-light);
+      box-shadow: 0 0 0 4px rgba(139,111,71,.08);
+    }
+    .upload-zone.drag-over { transform: scale(1.01); }
+    .upload-icon { font-size: 52px; margin-bottom: 12px; display: block;
+      animation: bounce 2s ease-in-out infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    .upload-title { font-size: 18px; font-weight: 700; color: var(--gray-700); margin-bottom: 6px; }
+    .upload-sub { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
+    .format-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .format-badge {
+      padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+      border: 1.5px solid; cursor: pointer; transition: var(--transition);
+    }
+    .format-badge.xlsx { color: var(--green); border-color: var(--green); background: var(--green-light); }
+    .format-badge.csv  { color: var(--primary); border-color: var(--primary); background: var(--primary-light); }
+    .format-badge:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    #fileInput { display: none; }
+    .upload-hint { margin-top: 12px; font-size: 11px; color: var(--gray-400); }
+
+    /* ============================================================
+       Stat Cards (gradient)
+    ============================================================ */
+    .stat-card {
+      border-radius: var(--radius); padding: 18px 20px;
+      position: relative; overflow: hidden; color: white;
+      box-shadow: var(--shadow-md); transition: var(--transition);
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .stat-card::after {
+      content: attr(data-icon); position: absolute; right: 12px; top: 10px;
+      font-size: 36px; opacity: .25;
+    }
+    .stat-card.blue   { background: linear-gradient(135deg, #8B6F47, #C4A882); }
+    .stat-card.green  { background: linear-gradient(135deg, #7A9E7E, #A8C5AA); }
+    .stat-card.purple { background: linear-gradient(135deg, #9B8AAE, #C3B5D3); }
+    .stat-card.amber  { background: linear-gradient(135deg, #C4956A, #DEB68A); }
+    .stat-card.red    { background: linear-gradient(135deg, #C17B7B, #D9A5A5); }
+    .stat-card.teal   { background: linear-gradient(135deg, #8FA88C, #B5CDB3); }
+    .stat-card .stat-label { font-size: 11px; font-weight: 600; opacity: .8; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-card .stat-value { font-size: 28px; font-weight: 800; line-height: 1; }
+    .stat-card .stat-sub { font-size: 11px; opacity: .7; margin-top: 4px; }
+
+    /* ============================================================
+       Form Controls
+    ============================================================ */
+    .form-group { margin-bottom: 16px; }
+    .form-label { font-size: 12px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; display: block; letter-spacing: .3px; }
+    .form-control {
+      width: 100%; padding: 9px 12px; border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm); font-size: 13px; font-family: inherit;
+      color: var(--gray-800); background: white; transition: var(--transition);
+      outline: none;
+    }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,111,71,.12); }
+    select.form-control { cursor: pointer; }
+    .slider-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+    .slider-row input[type=range] { flex: 1; accent-color: var(--primary); cursor: pointer; }
+    .slider-val {
+      min-width: 54px; text-align: center; padding: 4px 8px;
+      background: var(--primary-light); color: var(--primary); border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 700;
+    }
+    .threshold-indicator {
+      display: flex; align-items: center; gap: 6px; font-size: 11px;
+      padding: 4px 10px; border-radius: 999px; font-weight: 600; width: fit-content; margin-top: 6px;
+    }
+    .threshold-indicator.strict { background: var(--red-light); color: var(--red); }
+    .threshold-indicator.moderate { background: var(--amber-light); color: var(--amber); }
+    .threshold-indicator.loose { background: var(--green-light); color: var(--green); }
+
+    /* ============================================================
+       Buttons
+    ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-size: 13.5px; font-weight: 700; cursor: pointer;
+      border: none; font-family: inherit; transition: var(--transition);
+      letter-spacing: .3px; text-decoration: none;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 2px 8px var(--primary-glow); }
+    .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 4px 16px var(--primary-glow); transform: translateY(-1px); }
+    .btn-success { background: var(--green); color: white; box-shadow: 0 2px 8px rgba(122,158,126,.25); }
+    .btn-success:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-outline { background: white; color: var(--gray-700); border: 1.5px solid var(--gray-300); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+    .btn-icon { padding: 8px; border-radius: var(--radius-sm); background: var(--gray-100); border: 1px solid var(--gray-200); cursor: pointer; font-size: 14px; transition: var(--transition); }
+    .btn-icon:hover { background: var(--primary-light); border-color: var(--primary); }
+    .loading-spinner {
+      width: 16px; height: 16px; border: 2.5px solid rgba(255,255,255,.35);
+      border-top-color: white; border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ============================================================
+       Data Preview Table
+    ============================================================ */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .data-table th {
+      background: var(--gray-50); padding: 10px 12px; text-align: left;
+      font-weight: 700; color: var(--gray-600); border-bottom: 1.5px solid var(--gray-200);
+      white-space: nowrap; position: sticky; top: 0; z-index: 1;
+    }
+    .data-table td {
+      padding: 8px 12px; border-bottom: 1px solid var(--gray-100);
+      max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--gray-50); }
+    .data-table th.sortable { cursor: pointer; user-select: none; }
+    .data-table th.sortable:hover { color: var(--primary); }
+    .sort-arrow { margin-left: 4px; opacity: .5; }
+    .sort-arrow.asc::after  { content: '↑'; }
+    .sort-arrow.desc::after { content: '↓'; }
+    .sort-arrow.none::after { content: '↕'; }
+
+    /* Result table highlight rows */
+    .row-hit   td { background: rgba(122,158,126,.06) !important; }
+    .row-miss  td { background: rgba(193,123,123,.04) !important; }
+    .row-partial td { background: white !important; }
+
+    /* Progress bar cells */
+    .prog-wrap { position: relative; background: var(--gray-100); border-radius: 4px; height: 18px; min-width: 80px; overflow: hidden; }
+    .prog-bar   { position: absolute; left: 0; top: 0; height: 100%; border-radius: 4px; transition: width .6s ease; }
+    .prog-label { position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--gray-700); }
+
+    /* ============================================================
+       CSS Bar Chart (horizontal)
+    ============================================================ */
+    .bar-chart { padding: 4px 0; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; position: relative; }
+    .bar-label { font-size: 12px; color: var(--gray-700); width: 140px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+    .bar-track  { flex: 1; height: 24px; background: var(--gray-100); border-radius: 6px; overflow: hidden; position: relative; }
+    .bar-fill {
+      height: 100%; border-radius: 6px; transition: width .8s cubic-bezier(0.4,0,0.2,1);
+      background: linear-gradient(90deg, #8B6F47, #C4A882);
+      display: flex; align-items: center; padding-left: 8px;
+    }
+    .bar-fill.highlight { background: linear-gradient(90deg, #7A9E7E, #A8C5AA); }
+    .bar-fill-val { font-size: 11px; font-weight: 700; color: white; white-space: nowrap; }
+    .bar-threshold-line {
+      position: absolute; top: 0; bottom: 0; width: 2px;
+      background: rgba(220,38,38,.6); z-index: 2;
+    }
+    .bar-threshold-line::after {
+      content: attr(data-label); position: absolute; top: -18px; left: 4px;
+      font-size: 10px; color: var(--red); font-weight: 600; white-space: nowrap;
+    }
+
+    /* ============================================================
+       SVG Scatter Plot
+    ============================================================ */
+    .scatter-container { position: relative; }
+    #scatterSvg { width: 100%; border-radius: var(--radius-sm); overflow: visible; }
+    .scatter-tooltip {
+      position: absolute; background: white; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px;
+      box-shadow: var(--shadow-lg); pointer-events: none; z-index: 50;
+      opacity: 0; transition: opacity .2s; min-width: 160px;
+    }
+    .scatter-tooltip.show { opacity: 1; }
+    .scatter-tooltip .tt-name { font-weight: 700; margin-bottom: 4px; color: var(--gray-800); }
+    .scatter-tooltip .tt-row { display: flex; justify-content: space-between; gap: 16px; color: var(--gray-600); }
+    .scatter-tooltip .tt-val { font-weight: 600; }
+
+    /* ============================================================
+       Mini Bar Chart (product frequency)
+    ============================================================ */
+    .mini-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .mini-bar-label { font-size: 12px; color: var(--gray-700); width: 120px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+    .mini-bar-track { flex: 1; height: 14px; background: var(--gray-100); border-radius: 99px; overflow: hidden; }
+    .mini-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #9B8AAE, #C3B5D3); }
+    .mini-bar-count { font-size: 11px; font-weight: 700; color: var(--gray-500); width: 30px; text-align: right; }
+
+    /* ============================================================
+       Heatmap (Cross Comparison)
+    ============================================================ */
+    .heatmap-wrap { overflow-x: auto; }
+    .heatmap-table { border-collapse: collapse; font-size: 12px; min-width: 400px; }
+    .heatmap-table th { padding: 8px 12px; font-weight: 700; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-200); white-space: nowrap; }
+    .heatmap-table td { padding: 6px 10px; border: 1px solid var(--gray-200); text-align: center; font-weight: 600; min-width: 80px; transition: var(--transition); cursor: default; }
+    .heatmap-table td:first-child { text-align: left; font-weight: 600; color: var(--gray-700); background: var(--gray-50); }
+    .heatmap-table td.universal { outline: 2px solid var(--green-dark); outline-offset: -2px; }
+    .heatmap-table .row-product { font-size: 12px; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ============================================================
+       Conclusion Callout
+    ============================================================ */
+    .callout {
+      border-radius: var(--radius); padding: 20px 24px; border-left: 4px solid;
+      margin-top: 20px; background: white; box-shadow: var(--shadow-sm);
+    }
+    .callout.info  { border-color: var(--primary); background: var(--primary-light); }
+    .callout.success { border-color: var(--green); background: var(--green-light); }
+    .callout.warning { border-color: var(--amber); background: var(--amber-light); }
+    .callout-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .callout p, .callout li { font-size: 13px; color: var(--gray-700); }
+    .callout ul { padding-left: 18px; margin-top: 6px; }
+    .callout li { margin-bottom: 4px; }
+
+    /* ============================================================
+       Tutorial / Teaching Cards
+    ============================================================ */
+    .tutorial-card {
+      background: white; border-radius: var(--radius); padding: 24px;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200);
+      margin-bottom: 16px; position: relative; overflow: hidden;
+    }
+    .tutorial-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+    }
+    .tutorial-card.blue::before   { background: var(--primary); }
+    .tutorial-card.green::before  { background: var(--green); }
+    .tutorial-card.purple::before { background: var(--purple); }
+    .tutorial-card.amber::before  { background: var(--amber); }
+    .tutorial-card.red::before    { background: var(--red); }
+    .tutorial-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .tutorial-icon { font-size: 28px; width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tutorial-icon.blue   { background: var(--primary-light); }
+    .tutorial-icon.green  { background: var(--green-light); }
+    .tutorial-icon.purple { background: var(--purple-light); }
+    .tutorial-icon.amber  { background: var(--amber-light); }
+    .tutorial-icon.red    { background: var(--red-light); }
+    .tutorial-card h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); }
+    .tutorial-card p  { font-size: 13px; color: var(--gray-600); line-height: 1.7; }
+    .formula-box {
+      background: var(--gray-900); color: #f8f8f2; border-radius: var(--radius-sm);
+      padding: 16px 20px; margin: 12px 0; font-family: 'Courier New', monospace;
+      font-size: 14px; line-height: 1.8; overflow-x: auto;
+    }
+    .formula-box .comment { color: #6272a4; }
+    .formula-box .keyword { color: #ff79c6; font-weight: 700; }
+    .formula-box .number  { color: #bd93f9; }
+    .formula-box .var     { color: #50fa7b; }
+    .example-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
+    .example-table th { background: var(--gray-100); padding: 7px 10px; font-weight: 700; border: 1px solid var(--gray-200); }
+    .example-table td { padding: 6px 10px; border: 1px solid var(--gray-200); }
+
+    /* ============================================================
+       History Panel
+    ============================================================ */
+    .history-panel {
+      background: white; border-radius: var(--radius); padding: 20px;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); margin-top: 24px;
+    }
+    .history-item {
+      display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100); font-size: 12.5px;
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); margin-top: 5px; flex-shrink: 0; }
+    .history-time { color: var(--gray-400); font-size: 11px; }
+    .history-detail { color: var(--gray-600); }
+    .history-tag {
+      display: inline-block; padding: 2px 8px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; margin-left: 6px;
+      background: var(--primary-light); color: var(--primary);
+    }
+
+    /* ============================================================
+       Toast Notifications
+    ============================================================ */
+    #toastContainer { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      min-width: 280px; max-width: 360px; padding: 14px 16px;
+      border-radius: var(--radius-sm); box-shadow: var(--shadow-lg);
+      display: flex; align-items: flex-start; gap: 10px; font-size: 13px;
+      animation: slideInRight .3s ease, fadeOut .3s ease 3.7s forwards;
+    }
+    @keyframes slideInRight { from{transform:translateX(100%);opacity:0} to{transform:translateX(0);opacity:1} }
+    @keyframes fadeOut      { from{opacity:1} to{opacity:0;transform:translateX(100%)} }
+    .toast.success { background: white; border-left: 4px solid var(--green); }
+    .toast.error   { background: white; border-left: 4px solid var(--red); }
+    .toast.info    { background: white; border-left: 4px solid var(--primary); }
+    .toast.warning { background: white; border-left: 4px solid var(--amber); }
+    .toast-icon { font-size: 18px; flex-shrink: 0; }
+    .toast-body .toast-title { font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
+    .toast-body .toast-msg   { color: var(--gray-500); font-size: 12px; }
+
+    /* ============================================================
+       Empty State
+    ============================================================ */
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-state .empty-icon { font-size: 56px; margin-bottom: 14px; opacity: .6; }
+    .empty-state h3 { font-size: 17px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
+    .empty-state p  { font-size: 13px; color: var(--gray-400); }
+
+    /* ============================================================
+       Tag / Badge / Chip
+    ============================================================ */
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .tag.green  { background: var(--green-light);  color: var(--green); }
+    .tag.red    { background: var(--red-light);    color: var(--red); }
+    .tag.blue   { background: var(--primary-light); color: var(--primary); }
+    .tag.amber  { background: var(--amber-light);  color: var(--amber); }
+    .tag.purple { background: var(--purple-light); color: var(--purple); }
+    .tag.gray   { background: var(--gray-100);     color: var(--gray-500); }
+
+    /* ============================================================
+       Checkbox group (Cross Comparison)
+    ============================================================ */
+    .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; max-height: 240px; overflow-y: auto; padding: 4px; }
+    .checkbox-item { display: flex; align-items: center; gap: 7px; padding: 7px 10px; border-radius: var(--radius-sm); border: 1.5px solid var(--gray-200); cursor: pointer; transition: var(--transition); }
+    .checkbox-item:hover { border-color: var(--primary); background: var(--primary-light); }
+    .checkbox-item input { accent-color: var(--primary); cursor: pointer; }
+    .checkbox-item label { font-size: 12.5px; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ============================================================
+       Search Box
+    ============================================================ */
+    .search-box { position: relative; }
+    .search-box input { padding-left: 34px; }
+    .search-box .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--gray-400); pointer-events: none; }
+
+    /* ============================================================
+       Section Divider
+    ============================================================ */
+    .section-title {
+      font-size: 15px; font-weight: 800; color: var(--gray-700);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+      letter-spacing: -.2px;
+    }
+    .section-title::after {
+      content: ''; flex: 1; height: 1.5px;
+      background: linear-gradient(to right, var(--gray-200), transparent);
+    }
+
+    /* ============================================================
+       Summary info row
+    ============================================================ */
+    .info-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 14px; }
+    .info-chip { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; background: var(--gray-100); font-size: 12.5px; font-weight: 600; color: var(--gray-600); }
+    .info-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ============================================================
+       Drill-down order table
+    ============================================================ */
+    .drill-header {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 14px 18px; background: var(--gray-50); border-radius: var(--radius-sm);
+      border: 1px solid var(--gray-200); margin-bottom: 14px;
+    }
+    .back-btn { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-sm); background: white; border: 1.5px solid var(--gray-300); font-size: 12.5px; font-weight: 700; cursor: pointer; transition: var(--transition); font-family: inherit; }
+    .back-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* ============================================================
+       Print styles
+    ============================================================ */
+    @media print {
+      .tab-nav, .hero, .upload-zone, .btn, #toastContainer, .history-panel { display: none !important; }
+      .tab-panel { display: block !important; }
+      .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================================
+     TOAST CONTAINER
+================================================================ -->
+<div id="toastContainer"></div>
+
+<!-- ================================================================
+     HERO HEADER
+================================================================ -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-badges">
+      <span class="hero-badge">📦 物流管理</span>
+      <span class="hero-badge">🔗 關聯規則挖掘</span>
+      <span class="hero-badge">📊 Support · Confidence · Lift</span>
+      <span class="hero-badge">✨ 5 大分析模組</span>
+    </div>
+    <h1>商品關聯 <span>分析系統</span></h1>
+    <p class="hero-sub">Product Association Rule Analysis &nbsp;·&nbsp; 上傳訂單資料即可一鍵探索購買規律</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num" id="heroOrders">—</div><div class="hero-stat-label">訂單筆數</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="heroProducts">—</div><div class="hero-stat-label">商品種類</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="heroAssoc">—</div><div class="hero-stat-label">已發現關聯</div></div>
+      <div class="hero-stat"><div class="hero-stat-num" id="heroRuns">0</div><div class="hero-stat-label">分析次數</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================================================================
+     TAB NAVIGATION
+================================================================ -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="switchTab('data')" id="tabBtn-data">
+      <span class="tab-icon">📁</span>資料管理
+    </button>
+    <button class="tab-btn" onclick="switchTab('analysis')" id="tabBtn-analysis">
+      <span class="tab-icon">🔍</span>關聯分析
+    </button>
+    <button class="tab-btn" onclick="switchTab('cross')" id="tabBtn-cross">
+      <span class="tab-icon">📊</span>交叉比較
+      <span class="tab-badge new">NEW</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('orders')" id="tabBtn-orders">
+      <span class="tab-icon">🧾</span>訂單明細
+      <span class="tab-badge new">NEW</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tutorial')" id="tabBtn-tutorial">
+      <span class="tab-icon">📚</span>教學說明
+    </button>
+  </div>
+</nav>
+
+<!-- ================================================================
+     MAIN CONTENT
+================================================================ -->
+<main class="main">
+
+  <!-- ============================================================
+       TAB 1: 資料管理
+  ============================================================ -->
+  <div class="tab-panel active" id="panel-data">
+
+    <!-- Upload card -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title"><span class="icon">📤</span>上傳資料檔案</div>
+          <div class="card-sub">支援 Excel (.xlsx) 和 CSV 格式，系統自動偵測標題列</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="clearData()">🗑️ 清除資料</button>
+      </div>
+      <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <span class="upload-icon">📂</span>
+        <div class="upload-title">拖曳檔案到此處，或點擊選取</div>
+        <div class="upload-sub">系統將自動搜尋含「訂單編號」的標題列</div>
+        <div class="format-badges">
+          <span class="format-badge xlsx">✓ .xlsx Excel</span>
+          <span class="format-badge csv">✓ .csv 逗號分隔</span>
+        </div>
+        <p class="upload-hint">檔案不會上傳至伺服器，所有分析在瀏覽器本地執行</p>
+      </div>
+      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFileSelect(event)">
+    </div>
+
+    <!-- Data summary (hidden until data loaded) -->
+    <div id="dataSummarySection" style="display:none;">
+      <div class="section-title">📈 資料概覽</div>
+      <div class="grid-6" id="summaryCards" style="margin-bottom:20px;"></div>
+
+      <div class="grid-2">
+        <!-- Raw data preview -->
+        <div class="card" style="grid-column: 1 / -1;">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><span class="icon">📋</span>原始資料預覽 <span class="tag blue" id="previewCount">0 筆</span></div>
+              <div class="card-sub">顯示前 50 列資料</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input class="form-control" id="previewSearch" placeholder="搜尋訂單或商品…" oninput="filterPreview()" style="width:220px;">
+              </div>
+            </div>
+          </div>
+          <div class="table-wrap" style="max-height:340px;">
+            <table class="data-table" id="previewTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:20px;">
+        <!-- Top products mini bar -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom:16px;"><span class="icon">🏆</span>商品出現頻率 Top 10</div>
+          <div id="topProductsBars"></div>
+        </div>
+        <!-- Stats overview -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom:16px;"><span class="icon">📊</span>每張訂單商品數分佈</div>
+          <div id="orderDistChart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" id="dataEmptyState">
+      <div class="empty-icon">📭</div>
+      <h3>尚未載入資料</h3>
+      <p>請上傳 Excel 或 CSV 檔案以開始分析</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TAB 2: 關聯分析
+  ============================================================ -->
+  <div class="tab-panel" id="panel-analysis">
+
+    <!-- Controls -->
+    <div class="grid-2" style="align-items:start;">
+      <div class="card">
+        <div class="card-title" style="margin-bottom:18px;"><span class="icon">⚙️</span>分析參數設定</div>
+
+        <div class="form-group">
+          <label class="form-label">目標商品（X）</label>
+          <div class="search-box" style="margin-bottom:6px;">
+            <span class="search-icon">🔍</span>
+            <input class="form-control" id="productSearch" placeholder="輸入關鍵字篩選…" oninput="filterProductSelect()" style="padding-left:34px;">
+          </div>
+          <select class="form-control" id="targetProduct" size="1" style="height:auto;">
+            <option value="">— 請先載入資料 —</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">支援度門檻 (Support ≥)</label>
+          <div class="slider-row">
+            <input type="range" id="supportSlider" min="0.001" max="0.5" step="0.001" value="0.03" oninput="syncSlider('support')">
+            <input type="number" class="form-control slider-val" id="supportInput" value="0.030" min="0.001" max="0.5" step="0.001" oninput="syncInput('support')" style="width:80px;padding:4px 8px;">
+          </div>
+          <div id="supportIndicator" class="threshold-indicator moderate">⚡ 適中</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">信賴度門檻 (Confidence ≥)</label>
+          <div class="slider-row">
+            <input type="range" id="confidenceSlider" min="0.01" max="1.0" step="0.01" value="0.40" oninput="syncSlider('confidence')">
+            <input type="number" class="form-control slider-val" id="confidenceInput" value="0.400" min="0.01" max="1.0" step="0.01" oninput="syncInput('confidence')" style="width:80px;padding:4px 8px;">
+          </div>
+          <div id="confidenceIndicator" class="threshold-indicator moderate">⚡ 適中</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">最低 Lift 值（≥ 1.0 = 正相關）</label>
+          <div class="slider-row">
+            <input type="range" id="liftSlider" min="0.1" max="5.0" step="0.1" value="1.0" oninput="syncSlider('lift')">
+            <input type="number" class="form-control slider-val" id="liftInput" value="1.0" min="0.1" max="5.0" step="0.1" oninput="syncInput('lift')" style="width:80px;padding:4px 8px;">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+          <button class="btn btn-primary" id="runBtn" onclick="runAnalysis()" style="flex:1;">
+            <span id="runBtnIcon">▶</span> <span id="runBtnText">執行分析</span>
+          </button>
+          <button class="btn btn-outline" onclick="resetThresholds()">↺ 重設</button>
+        </div>
+      </div>
+
+      <!-- Quick guide -->
+      <div class="card" style="background:linear-gradient(135deg,#F5EDE3,#FCEEE0);">
+        <div class="card-title" style="margin-bottom:14px;"><span class="icon">💡</span>快速說明</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:white;border-radius:8px;border-left:3px solid var(--primary);">
+            <div style="font-weight:700;font-size:12px;color:var(--primary);margin-bottom:3px;">Support 支援度</div>
+            <div style="font-size:12px;color:var(--gray-600);">X 與 Y 同時出現的訂單占總訂單比例<br><code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-size:11px;">|X∩Y| / N</code></div>
+          </div>
+          <div style="padding:10px 14px;background:white;border-radius:8px;border-left:3px solid var(--green);">
+            <div style="font-weight:700;font-size:12px;color:var(--green);margin-bottom:3px;">Confidence 信賴度</div>
+            <div style="font-size:12px;color:var(--gray-600);">購買 X 的訂單中，也買了 Y 的比例<br><code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-size:11px;">|X∩Y| / |X|</code></div>
+          </div>
+          <div style="padding:10px 14px;background:white;border-radius:8px;border-left:3px solid var(--accent);">
+            <div style="font-weight:700;font-size:12px;color:var(--accent);margin-bottom:3px;">Lift 增益比</div>
+            <div style="font-size:12px;color:var(--gray-600);">Lift &gt; 1 表示正向關聯，越高越強<br><code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-size:11px;">Confidence / (|Y|/N)</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results section (hidden until analysis run) -->
+    <div id="analysisResults" style="display:none;">
+      <div class="section-title">📊 分析結果</div>
+
+      <!-- Stat cards -->
+      <div class="grid-6" id="resultStatCards" style="margin-bottom:20px;"></div>
+
+      <!-- Charts row -->
+      <div class="grid-2" style="margin-bottom:20px;">
+        <!-- Bar chart -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px;"><span class="icon">📊</span>信賴度 Top 10（水平長條圖）</div>
+          <div id="barChart" class="bar-chart"></div>
+        </div>
+        <!-- Scatter plot -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px;"><span class="icon">🎯</span>Support vs Confidence 分佈圖</div>
+          <div class="scatter-container">
+            <svg id="scatterSvg" viewBox="0 0 460 300"></svg>
+            <div class="scatter-tooltip" id="scatterTooltip"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full results table -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title"><span class="icon">📋</span>完整結果列表</div>
+            <div class="card-sub" id="tableSubtitle"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-outline btn-sm" onclick="exportCSV()">📥 匯出 CSV</button>
+            <button class="btn btn-outline btn-sm" onclick="window.print()">🖨️ 列印報表</button>
+          </div>
+        </div>
+        <div class="search-box" style="margin-bottom:14px;">
+          <span class="search-icon">🔍</span>
+          <input class="form-control" id="resultSearch" placeholder="搜尋商品名稱…" oninput="filterResults()" style="padding-left:34px;">
+        </div>
+        <div class="table-wrap" id="resultTableWrap">
+          <table class="data-table" id="resultTable">
+            <thead id="resultTableHead"></thead>
+            <tbody id="resultTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Conclusion callout -->
+      <div id="conclusionBox"></div>
+    </div>
+
+    <!-- Analysis empty state -->
+    <div class="empty-state" id="analysisEmpty">
+      <div class="empty-icon">🔍</div>
+      <h3>尚未執行分析</h3>
+      <p>請先在「資料管理」載入資料，選擇目標商品後執行分析</p>
+    </div>
+
+    <!-- History panel -->
+    <div class="history-panel" id="historyPanel" style="display:none;">
+      <div class="card-title" style="margin-bottom:12px;"><span class="icon">🕐</span>分析歷程</div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TAB 3: 交叉比較
+  ============================================================ -->
+  <div class="tab-panel" id="panel-cross">
+    <div class="card">
+      <div class="card-title" style="margin-bottom:6px;"><span class="icon">📊</span>多目標交叉比較</div>
+      <div class="card-sub" style="margin-bottom:18px;">選取多個目標商品，比較各候選商品與每個目標的信賴度</div>
+
+      <div class="form-group">
+        <label class="form-label">選擇目標商品（可複選）</label>
+        <div class="search-box" style="margin-bottom:8px;">
+          <span class="search-icon">🔍</span>
+          <input class="form-control" id="crossSearch" placeholder="篩選商品…" oninput="filterCrossProducts()" style="padding-left:34px;">
+        </div>
+        <div class="checkbox-grid" id="crossCheckboxes"></div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+        <button class="btn btn-primary" onclick="runCrossComparison()">🔀 執行交叉比較</button>
+        <button class="btn btn-outline" onclick="clearCrossSelection()">✕ 清除選擇</button>
+        <span id="crossSelCount" class="tag blue">已選 0 個</span>
+      </div>
+    </div>
+
+    <div id="crossResults" style="display:none;">
+      <div class="section-title">熱力圖比較結果</div>
+      <div class="callout info">
+        <div class="callout-title">📌 閱讀說明</div>
+        <p>表格中每格顯示「候選商品（列）與目標商品（欄）的信賴度」。深綠色邊框 = 同時滿足所有目標商品的共同關聯商品。</p>
+      </div>
+      <div class="card" style="margin-top:14px;">
+        <div class="card-header">
+          <div class="card-title"><span class="icon">🌡️</span>信賴度熱力圖</div>
+          <div id="universalCount" class="tag green"></div>
+        </div>
+        <div class="heatmap-wrap">
+          <table class="heatmap-table" id="heatmapTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="crossEmpty">
+      <div class="empty-icon">📊</div>
+      <h3>尚未執行交叉比較</h3>
+      <p>請先載入資料，再選取多個目標商品進行比較</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TAB 4: 訂單明細
+  ============================================================ -->
+  <div class="tab-panel" id="panel-orders">
+    <div id="ordersDrillPanel" style="display:none;">
+      <div class="drill-header">
+        <button class="back-btn" onclick="closeDrill()">← 返回</button>
+        <div>
+          <span class="tag blue" id="drillProductA"></span>
+          <span style="margin:0 6px;color:var(--gray-400);">+</span>
+          <span class="tag green" id="drillProductB"></span>
+        </div>
+        <span id="drillCount" class="tag gray" style="margin-left:auto;"></span>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:14px;"><span class="icon">🧾</span>共現訂單明細</div>
+        <div class="table-wrap" style="max-height:480px;">
+          <table class="data-table" id="drillTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="ordersEmpty">
+      <div class="empty-icon">🧾</div>
+      <h3>尚未選取商品對</h3>
+      <p>在「關聯分析」結果表格中點擊任意商品的「明細」按鈕，即可在此查看共現訂單</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TAB 5: 教學說明
+  ============================================================ -->
+  <div class="tab-panel" id="panel-tutorial">
+    <div class="tutorial-card blue">
+      <div class="tutorial-header">
+        <div class="tutorial-icon blue">🔗</div>
+        <div><h3>什麼是關聯規則分析？</h3><p style="font-size:12px;color:var(--gray-400);margin-top:2px;">Association Rule Mining</p></div>
+      </div>
+      <p>關聯規則分析是一種資料挖掘技術，用於發現大量交易資料中項目之間的有趣關係。最典型的應用場景是「購物籃分析」（Market Basket Analysis）：透過分析顧客購買記錄，找出哪些商品常常被一起購買，進而輔助商品陳列、促銷策略與推薦系統設計。</p>
+      <p style="margin-top:8px;">例如，若超市發現「購買啤酒的顧客中，有 68% 也會購買尿布」，這條規則就可以指導商品擺放或捆綁促銷決策。</p>
+    </div>
+
+    <div class="tutorial-card green">
+      <div class="tutorial-header">
+        <div class="tutorial-icon green">🍺</div>
+        <div><h3>啤酒與尿布的故事</h3><p style="font-size:12px;color:var(--gray-400);margin-top:2px;">The Classic Example</p></div>
+      </div>
+      <p>1990 年代，美國 Walmart 在分析購物資料時發現：<strong>每逢週五傍晚，啤酒與嬰兒尿布常常一起被購買</strong>。推測原因是爸爸在下班後順路買尿布，同時順手拿了啤酒。</p>
+      <p style="margin-top:8px;">這個發現讓 Walmart 將啤酒與尿布擺放在相鄰貨架，大幅提升了兩者的銷售量。這正是關聯分析在實務中的價值。</p>
+    </div>
+
+    <div class="tutorial-card purple">
+      <div class="tutorial-header">
+        <div class="tutorial-icon purple">📐</div>
+        <div><h3>三大核心指標公式</h3><p style="font-size:12px;color:var(--gray-400);margin-top:2px;">Support · Confidence · Lift</p></div>
+      </div>
+      <div class="formula-box">
+<span class="comment">-- 設 X = 目標商品, Y = 候選商品, N = 總訂單數 --</span>
+
+<span class="keyword">Support</span>(<span class="var">X → Y</span>)    = |X ∩ Y| / <span class="var">N</span>
+                        <span class="comment">-- X 與 Y 同時出現的訂單數 / 總訂單數</span>
+
+<span class="keyword">Confidence</span>(<span class="var">X → Y</span>) = |X ∩ Y| / |<span class="var">X</span>|
+                        <span class="comment">-- 買了 X 的訂單中，也買了 Y 的比例</span>
+
+<span class="keyword">Lift</span>(<span class="var">X → Y</span>)       = Confidence / (<span class="var">Support(Y)</span>)
+                        = (|X ∩ Y| / |X|) / (|Y| / <span class="var">N</span>)
+                        <span class="comment">-- Lift > 1: 正向關聯 | = 1: 獨立 | < 1: 負向</span>
+      </div>
+    </div>
+
+    <div class="tutorial-card amber">
+      <div class="tutorial-header">
+        <div class="tutorial-icon amber">🧮</div>
+        <div><h3>計算範例</h3><p style="font-size:12px;color:var(--gray-400);margin-top:2px;">Worked Example</p></div>
+      </div>
+      <p>假設有 <strong>100 筆</strong>訂單，其中：</p>
+      <table class="example-table" style="margin:10px 0 14px;">
+        <thead><tr><th>條件</th><th>數量</th></tr></thead>
+        <tbody>
+          <tr><td>含「咖啡」的訂單 |X|</td><td>40 筆</td></tr>
+          <tr><td>含「牛奶」的訂單 |Y|</td><td>30 筆</td></tr>
+          <tr><td>同時含咖啡＋牛奶 |X∩Y|</td><td>20 筆</td></tr>
+          <tr><td>總訂單 N</td><td>100 筆</td></tr>
+        </tbody>
+      </table>
+      <div class="formula-box" style="font-size:13px;">
+Support(咖啡→牛奶)    = 20 / 100 = <span class="number">0.20</span>  (20%)
+Confidence(咖啡→牛奶) = 20 / 40  = <span class="number">0.50</span>  (50%)
+Lift(咖啡→牛奶)       = 0.50 / (30/100) = <span class="number">1.67</span>
+      </div>
+      <p>Lift = 1.67 &gt; 1，表示購買咖啡會「提升」購買牛奶的機率 67%，具有顯著正向關聯。</p>
+    </div>
+
+    <div class="tutorial-card red">
+      <div class="tutorial-header">
+        <div class="tutorial-icon red">📖</div>
+        <div><h3>如何解讀分析結果？</h3><p style="font-size:12px;color:var(--gray-400);margin-top:2px;">Result Interpretation Guide</p></div>
+      </div>
+      <table class="example-table">
+        <thead><tr><th>指標</th><th>數值範圍</th><th>意義</th><th>建議閾值</th></tr></thead>
+        <tbody>
+          <tr><td>Support</td><td>0 – 1</td><td>規律的普遍程度；過低表示樣本稀少</td><td>≥ 0.03（3%）</td></tr>
+          <tr><td>Confidence</td><td>0 – 1</td><td>規律的可靠程度；越高購買概率越確定</td><td>≥ 0.40（40%）</td></tr>
+          <tr><td>Lift</td><td>0 – ∞</td><td>&gt;1: 正向 / =1: 無關 / &lt;1: 負向</td><td>≥ 1.0</td></tr>
+        </tbody>
+      </table>
+      <div class="callout warning" style="margin-top:14px;">
+        <div class="callout-title">⚠️ 常見陷阱</div>
+        <ul>
+          <li>高信賴度不代表高 Lift：若 Y 本身出現率很高（如「塑膠袋」），任何商品與之的 Confidence 都高，但 Lift 可能接近 1</li>
+          <li>支援度過低的規律可能只是偶然巧合，建議設定最小支援度過濾</li>
+          <li>關聯規則只反映相關性，不代表因果關係</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ================================================================
+//  STATE
+// ================================================================
+let rawData = [];       // all parsed rows as objects
+let headers = [];       // column names
+let orders = {};        // { orderId: Set<product> }
+let productList = [];   // sorted unique product names
+let N = 0;              // total unique orders
+
+let lastResults = [];   // last analysis result rows
+let lastTarget = '';
+let analysisHistory = [];
+let runCount = 0;
+let allProductRows = []; // unfiltered rows for preview
+
+// ================================================================
+//  TAB SWITCHING
+// ================================================================
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('tabBtn-' + name).classList.add('active');
+}
+
+// ================================================================
+//  FILE HANDLING
+// ================================================================
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+});
+
+function handleFileSelect(e) {
+  if (e.target.files[0]) processFile(e.target.files[0]);
+}
+
+function processFile(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  showToast('info', '載入中', `正在解析 ${file.name}…`);
+  const reader = new FileReader();
+  if (ext === 'csv') {
+    reader.onload = e => parseCSV(e.target.result, file.name);
+    reader.readAsText(file, 'UTF-8');
+  } else {
+    reader.onload = e => parseXLSX(e.target.result, file.name);
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function parseXLSX(buf, name) {
+  try {
+    const wb = XLSX.read(buf, { type: 'array' });
+    const ws = wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+    processRawRows(rows, name);
+  } catch(e) { showToast('error', '解析失敗', e.message); }
+}
+
+function parseCSV(text, name) {
+  try {
+    const rows = text.trim().split('\n').map(r => r.split(',').map(c => c.replace(/^"|"$/g,'').trim()));
+    processRawRows(rows, name);
+  } catch(e) { showToast('error', '解析失敗', e.message); }
+}
+
+function processRawRows(rows, name) {
+  // Auto-detect header row
+  let headerIdx = -1;
+  for (let i = 0; i < Math.min(rows.length, 20); i++) {
+    if (rows[i].some(c => String(c).includes('訂單編號'))) { headerIdx = i; break; }
+  }
+  if (headerIdx === -1) { showToast('error', '找不到標題列', '請確認資料中包含「訂單編號」欄位'); return; }
+
+  headers = rows[headerIdx].map(h => String(h).trim()).filter(h => h);
+  rawData = rows.slice(headerIdx + 1)
+    .filter(r => r.some(c => String(c).trim() !== ''))
+    .map(r => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = String(r[i] ?? '').trim(); });
+      return obj;
+    });
+
+  allProductRows = rawData;
+
+  // Find order and product columns
+  const orderCol = headers.find(h => h.includes('訂單編號'));
+  const productCol = headers.find(h => h.includes('商品') || h.includes('品名') || h.includes('品項'));
+
+  if (!orderCol || !productCol) {
+    showToast('error', '欄位不足', `需要「訂單編號」和商品相關欄位，找到：${headers.join(', ')}`);
+    return;
+  }
+
+  // Build order map
+  orders = {};
+  rawData.forEach(row => {
+    const oid = row[orderCol]; const prod = row[productCol];
+    if (!oid || !prod) return;
+    if (!orders[oid]) orders[oid] = new Set();
+    orders[oid].add(prod);
+  });
+
+  N = Object.keys(orders).length;
+  const allProds = new Set();
+  Object.values(orders).forEach(s => s.forEach(p => allProds.add(p)));
+  productList = [...allProds].sort();
+
+  buildDataSummary();
+  populateProductSelect();
+  populateCrossCheckboxes();
+  updateHeroStats();
+
+  showToast('success', '載入成功', `${name}：${rawData.length} 筆記錄，${N} 筆訂單，${productList.length} 種商品`);
+  document.getElementById('dataEmptyState').style.display = 'none';
+  document.getElementById('dataSummarySection').style.display = '';
+}
+
+function clearData() {
+  rawData = []; headers = []; orders = {}; productList = []; N = 0;
+  lastResults = []; lastTarget = '';
+  document.getElementById('dataEmptyState').style.display = '';
+  document.getElementById('dataSummarySection').style.display = 'none';
+  document.getElementById('analysisResults').style.display = 'none';
+  document.getElementById('analysisEmpty').style.display = '';
+  document.getElementById('crossResults').style.display = 'none';
+  document.getElementById('crossEmpty').style.display = '';
+  document.getElementById('targetProduct').innerHTML = '<option value="">— 請先載入資料 —</option>';
+  document.getElementById('crossCheckboxes').innerHTML = '';
+  updateHeroStats();
+  showToast('info', '已清除', '資料已清除');
+}
+
+// ================================================================
+//  DATA SUMMARY BUILD
+// ================================================================
+function buildDataSummary() {
+  const orderCol = headers.find(h => h.includes('訂單編號'));
+  const productCol = headers.find(h => h.includes('商品') || h.includes('品名') || h.includes('品項'));
+
+  // Summary stat cards
+  const orderCounts = Object.values(orders).map(s => s.size);
+  const avgProd = (orderCounts.reduce((a,b) => a+b, 0) / orderCounts.length).toFixed(1);
+
+  const cards = [
+    { label: '資料總筆數', val: rawData.length.toLocaleString(), icon: '📄', cls: 'blue' },
+    { label: '唯一訂單數', val: N.toLocaleString(), icon: '📦', cls: 'green' },
+    { label: '商品種類', val: productList.length.toLocaleString(), icon: '🏷️', cls: 'purple' },
+    { label: '平均商品/訂單', val: avgProd, icon: '📊', cls: 'amber' },
+    { label: '最多商品/單', val: Math.max(...orderCounts), icon: '🛒', cls: 'teal' },
+    { label: '資料欄位數', val: headers.length, icon: '📋', cls: 'red' },
+  ];
+  document.getElementById('summaryCards').innerHTML = cards.map(c => `
+    <div class="stat-card ${c.cls}" data-icon="${c.icon}">
+      <div class="stat-label">${c.label}</div>
+      <div class="stat-value" data-target="${c.val}">${c.val}</div>
+    </div>`).join('');
+
+  // Preview table
+  document.getElementById('previewCount').textContent = `${rawData.length} 筆`;
+  renderPreviewTable(rawData.slice(0, 50));
+
+  // Top 10 products
+  const freq = {};
+  rawData.forEach(r => { const p = r[productCol]; if(p) freq[p] = (freq[p]||0)+1; });
+  const top10 = Object.entries(freq).sort((a,b) => b[1]-a[1]).slice(0,10);
+  const maxF = top10[0]?.[1] || 1;
+  document.getElementById('topProductsBars').innerHTML = top10.map(([name, cnt]) => `
+    <div class="mini-bar-row">
+      <div class="mini-bar-label" title="${name}">${name}</div>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${cnt/maxF*100}%"></div></div>
+      <div class="mini-bar-count">${cnt}</div>
+    </div>`).join('');
+
+  // Order size distribution
+  const dist = {};
+  orderCounts.forEach(c => { dist[c] = (dist[c]||0)+1; });
+  const distEntries = Object.entries(dist).sort((a,b) => +a[0]-+b[0]);
+  const maxD = Math.max(...distEntries.map(e => e[1]));
+  document.getElementById('orderDistChart').innerHTML = distEntries.slice(0,12).map(([k,v]) => `
+    <div class="mini-bar-row">
+      <div class="mini-bar-label">${k} 件商品</div>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${v/maxD*100}%;background:linear-gradient(90deg,#8FA88C,#B5CDB3)"></div></div>
+      <div class="mini-bar-count">${v}</div>
+    </div>`).join('');
+}
+
+function renderPreviewTable(data) {
+  if (!data.length) { document.getElementById('previewTable').innerHTML = ''; return; }
+  const th = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+  const tb = `<tbody>${data.map((r,i) => `<tr>${headers.map(h => `<td title="${r[h]}">${r[h]||'—'}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  document.getElementById('previewTable').innerHTML = th + tb;
+}
+
+function filterPreview() {
+  const q = document.getElementById('previewSearch').value.toLowerCase();
+  const filtered = q ? allProductRows.filter(r => Object.values(r).some(v => String(v).toLowerCase().includes(q))) : allProductRows;
+  renderPreviewTable(filtered.slice(0,50));
+  document.getElementById('previewCount').textContent = `${filtered.length} 筆`;
+}
+
+// ================================================================
+//  HERO STATS
+// ================================================================
+function updateHeroStats() {
+  document.getElementById('heroOrders').textContent = N ? N.toLocaleString() : '—';
+  document.getElementById('heroProducts').textContent = productList.length ? productList.length.toLocaleString() : '—';
+  document.getElementById('heroAssoc').textContent = lastResults.filter(r => r.hit).length || '—';
+  document.getElementById('heroRuns').textContent = runCount;
+}
+
+// ================================================================
+//  PRODUCT SELECT & SLIDERS
+// ================================================================
+function populateProductSelect() {
+  const sel = document.getElementById('targetProduct');
+  sel.innerHTML = '<option value="">— 請選擇目標商品 —</option>' +
+    productList.map(p => `<option value="${p}">${p}</option>`).join('');
+}
+
+function filterProductSelect() {
+  const q = document.getElementById('productSearch').value.toLowerCase();
+  const sel = document.getElementById('targetProduct');
+  sel.innerHTML = '<option value="">— 請選擇目標商品 —</option>' +
+    productList.filter(p => p.toLowerCase().includes(q)).map(p => `<option value="${p}">${p}</option>`).join('');
+}
+
+function syncSlider(type) {
+  const slider = document.getElementById(type + 'Slider');
+  const input  = document.getElementById(type + 'Input');
+  const v = parseFloat(slider.value);
+  input.value = v.toFixed(type === 'lift' ? 1 : 3);
+  if (type !== 'lift') updateThresholdIndicator(type, v);
+}
+function syncInput(type) {
+  const slider = document.getElementById(type + 'Slider');
+  const input  = document.getElementById(type + 'Input');
+  const v = parseFloat(input.value) || 0;
+  slider.value = v;
+  if (type !== 'lift') updateThresholdIndicator(type, v);
+}
+function updateThresholdIndicator(type, val) {
+  const el = document.getElementById(type + 'Indicator');
+  let cls, txt;
+  if (type === 'support') {
+    if (val >= 0.1) { cls='strict'; txt='🔒 嚴格（規律罕見）'; }
+    else if (val >= 0.03) { cls='moderate'; txt='⚡ 適中（建議區間）'; }
+    else { cls='loose'; txt='🔓 寬鬆（可能雜訊）'; }
+  } else {
+    if (val >= 0.7) { cls='strict'; txt='🔒 嚴格（高確信度）'; }
+    else if (val >= 0.4) { cls='moderate'; txt='⚡ 適中（建議區間）'; }
+    else { cls='loose'; txt='🔓 寬鬆（請配合 Lift 判斷）'; }
+  }
+  el.className = 'threshold-indicator ' + cls;
+  el.textContent = txt;
+}
+function resetThresholds() {
+  document.getElementById('supportSlider').value = 0.03;
+  document.getElementById('supportInput').value = '0.030';
+  document.getElementById('confidenceSlider').value = 0.40;
+  document.getElementById('confidenceInput').value = '0.400';
+  document.getElementById('liftSlider').value = 1.0;
+  document.getElementById('liftInput').value = '1.0';
+  updateThresholdIndicator('support', 0.03);
+  updateThresholdIndicator('confidence', 0.40);
+}
+
+// ================================================================
+//  CORE ANALYSIS
+// ================================================================
+function runAnalysis() {
+  const target = document.getElementById('targetProduct').value;
+  if (!target) { showToast('warning', '未選商品', '請先選擇目標商品'); return; }
+  if (!N) { showToast('warning', '無資料', '請先在資料管理頁載入資料'); return; }
+
+  const minSup = parseFloat(document.getElementById('supportInput').value) || 0.03;
+  const minCon = parseFloat(document.getElementById('confidenceInput').value) || 0.4;
+  const minLift = parseFloat(document.getElementById('liftInput').value) || 1.0;
+
+  // Button loading state
+  const btn = document.getElementById('runBtn');
+  document.getElementById('runBtnIcon').innerHTML = '<span class="loading-spinner"></span>';
+  document.getElementById('runBtnText').textContent = '分析中…';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // Compute
+    const xOrders = new Set(Object.keys(orders).filter(oid => orders[oid].has(target)));
+    const xCount = xOrders.size;
+
+    const results = productList
+      .filter(p => p !== target)
+      .map(p => {
+        const yOrders = new Set(Object.keys(orders).filter(oid => orders[oid].has(p)));
+        const xyCount = [...xOrders].filter(oid => yOrders.has(oid)).length;
+        const yCount = yOrders.size;
+        const support    = xyCount / N;
+        const confidence = xCount  ? xyCount / xCount : 0;
+        const supportY   = yCount  / N;
+        const lift       = supportY ? confidence / supportY : 0;
+        return { product: p, xyCount, yCount, support, confidence, lift, hit: support >= minSup && confidence >= minCon && lift >= minLift };
+      })
+      .filter(r => r.xyCount > 0)
+      .sort((a, b) => b.confidence - a.confidence);
+
+    lastResults = results; lastTarget = target;
+    runCount++;
+    updateHeroStats();
+
+    // Log history
+    const hitCount = results.filter(r => r.hit).length;
+    analysisHistory.unshift({ time: new Date().toLocaleTimeString(), target, minSup, minCon, hitCount, total: results.length });
+    renderHistory();
+
+    // Build UI
+    renderStatCards(xCount, results, minSup, minCon);
+    renderBarChart(results, minCon);
+    renderScatter(results, minSup, minCon);
+    renderResultTable(results, target, minSup, minCon);
+    renderConclusion(target, xCount, results, minSup, minCon);
+
+    document.getElementById('analysisResults').style.display = '';
+    document.getElementById('analysisEmpty').style.display = 'none';
+    document.getElementById('historyPanel').style.display = '';
+
+    // Reset button
+    document.getElementById('runBtnIcon').textContent = '▶';
+    document.getElementById('runBtnText').textContent = '重新分析';
+    btn.disabled = false;
+
+    showToast('success', '分析完成', `發現 ${hitCount} 個關聯商品（共 ${results.length} 個候選）`);
+  }, 60);
+}
+
+// ================================================================
+//  STAT CARDS
+// ================================================================
+function renderStatCards(xCount, results, minSup, minCon) {
+  const hits = results.filter(r => r.hit);
+  const avgConf = hits.length ? (hits.reduce((s,r) => s+r.confidence, 0) / hits.length * 100).toFixed(1) : 0;
+  const appearRate = (xCount / N * 100).toFixed(1);
+  const cards = [
+    { label: '總訂單數 N',      val: N,               sub: '全部唯一訂單',   cls: 'blue',   icon: '📦' },
+    { label: '目標商品訂單',    val: xCount,          sub: `|X|，出現率 ${appearRate}%`, cls: 'green',  icon: '🎯' },
+    { label: '出現率',          val: appearRate + '%', sub: '目標商品佔比',  cls: 'purple', icon: '📈' },
+    { label: '候選商品數',      val: results.length,  sub: '共現至少 1 次',  cls: 'amber',  icon: '🔍' },
+    { label: '關聯商品數',      val: hits.length,     sub: '滿足所有門檻',   cls: 'teal',   icon: '✅' },
+    { label: '平均信賴度',      val: avgConf + '%',   sub: '關聯商品均值',   cls: 'red',    icon: '💯' },
+  ];
+  document.getElementById('resultStatCards').innerHTML = cards.map(c => `
+    <div class="stat-card ${c.cls}" data-icon="${c.icon}">
+      <div class="stat-label">${c.label}</div>
+      <div class="stat-value">${c.val}</div>
+      <div class="stat-sub">${c.sub}</div>
+    </div>`).join('');
+}
+
+// ================================================================
+//  BAR CHART (horizontal CSS)
+// ================================================================
+function renderBarChart(results, minCon) {
+  const top10 = results.slice(0, 10);
+  if (!top10.length) { document.getElementById('barChart').innerHTML = '<div class="empty-state" style="padding:20px;"><p>無資料</p></div>'; return; }
+  const threshPct = minCon * 100;
+  const html = top10.map((r, i) => {
+    const pct = (r.confidence * 100).toFixed(1);
+    const isHit = r.hit;
+    return `
+    <div class="bar-row">
+      <div class="bar-label" title="${r.product}">${r.product}</div>
+      <div class="bar-track">
+        <div class="bar-fill ${isHit ? 'highlight' : ''}" style="width:0%" data-target="${pct}%">
+          <span class="bar-fill-val">${pct}%</span>
+        </div>
+        <div class="bar-threshold-line" style="left:${threshPct}%" data-label="門檻 ${threshPct.toFixed(0)}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('barChart').innerHTML = html;
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('#barChart .bar-fill').forEach(el => {
+      el.style.width = el.dataset.target;
+    });
+  }, 80);
+}
+
+// ================================================================
+//  SCATTER PLOT (SVG)
+// ================================================================
+function renderScatter(results, minSup, minCon) {
+  const svg = document.getElementById('scatterSvg');
+  const W = 460, H = 300;
+  const padL = 48, padR = 20, padT = 20, padB = 36;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  const allSup = results.map(r => r.support);
+  const allCon = results.map(r => r.confidence);
+  const maxSup = Math.max(...allSup, minSup * 2, 0.01);
+  const maxCon = Math.max(...allCon, 1);
+
+  const px = s => padL + (s / maxSup) * plotW;
+  const py = c => padT + (1 - c / maxCon) * plotH;
+
+  const threshX = px(minSup);
+  const threshY = py(minCon);
+
+  // Background quadrant coloring
+  let svgHTML = `
+    <!-- Q1: both pass -->
+    <rect x="${threshX}" y="${padT}" width="${W - padR - threshX}" height="${threshY - padT}" fill="rgba(122,158,126,.08)" rx="4"/>
+    <!-- Q3: neither -->
+    <rect x="${padL}" y="${threshY}" width="${threshX - padL}" height="${H - padB - threshY}" fill="rgba(193,123,123,.05)" rx="4"/>
+    <!-- axes -->
+    <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="#d1d5db" stroke-width="1.5"/>
+    <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="#d1d5db" stroke-width="1.5"/>
+    <!-- threshold lines -->
+    <line x1="${threshX}" y1="${padT}" x2="${threshX}" y2="${H - padB}" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <line x1="${padL}" y1="${threshY}" x2="${W - padR}" y2="${threshY}" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <!-- threshold labels -->
+    <text x="${threshX + 3}" y="${padT + 11}" fill="#dc2626" font-size="10" font-family="Microsoft JhengHei,sans-serif">Sup≥${minSup.toFixed(3)}</text>
+    <text x="${padL + 4}" y="${threshY - 4}" fill="#dc2626" font-size="10" font-family="Microsoft JhengHei,sans-serif">Conf≥${minCon.toFixed(2)}</text>
+    <!-- axis labels -->
+    <text x="${padL + plotW/2}" y="${H - 4}" text-anchor="middle" fill="#6b7280" font-size="11" font-family="Microsoft JhengHei,sans-serif">Support 支援度</text>
+    <text x="11" y="${padT + plotH/2}" text-anchor="middle" fill="#6b7280" font-size="11" font-family="Microsoft JhengHei,sans-serif" transform="rotate(-90,11,${padT + plotH/2})">Confidence 信賴度</text>
+    <!-- Y axis ticks -->
+    ${[0,.25,.5,.75,1].map(v => `
+      <line x1="${padL-4}" y1="${py(v)}" x2="${padL}" y2="${py(v)}" stroke="#d1d5db" stroke-width="1"/>
+      <text x="${padL - 7}" y="${py(v) + 4}" text-anchor="end" fill="#9ca3af" font-size="10" font-family="Microsoft JhengHei,sans-serif">${(v*100).toFixed(0)}%</text>`).join('')}
+    <!-- X axis ticks -->
+    ${[0, maxSup/4, maxSup/2, maxSup*3/4, maxSup].map(v => `
+      <line x1="${px(v)}" y1="${H - padB}" x2="${px(v)}" y2="${H - padB + 4}" stroke="#d1d5db" stroke-width="1"/>
+      <text x="${px(v)}" y="${H - padB + 14}" text-anchor="middle" fill="#9ca3af" font-size="10" font-family="Microsoft JhengHei,sans-serif">${(v*100).toFixed(1)}%</text>`).join('')}
+  `;
+
+  // Dots
+  results.forEach((r, i) => {
+    const cx = px(r.support);
+    const cy = py(r.confidence);
+    const color = r.hit ? '#7A9E7E' : (r.confidence >= minCon ? '#C4956A' : (r.support >= minSup ? '#8B6F47' : '#B5A596'));
+    const radius = r.hit ? 6 : 4.5;
+    svgHTML += `<circle cx="${cx}" cy="${cy}" r="${radius}" fill="${color}" fill-opacity=".85" stroke="white" stroke-width="1.5"
+      data-idx="${i}" style="cursor:pointer;" onmouseenter="showScatterTip(event,${i})" onmouseleave="hideScatterTip()"/>`;
+  });
+
+  svgHTML += `
+    <!-- Legend -->
+    <circle cx="${W - 100}" cy="${padT + 10}" r="5" fill="#7A9E7E"/>
+    <text x="${W - 92}" y="${padT + 14}" fill="#4A3F34" font-size="10" font-family="Microsoft JhengHei,sans-serif">通過門檻</text>
+    <circle cx="${W - 100}" cy="${padT + 26}" r="4" fill="#B5A596"/>
+    <text x="${W - 92}" y="${padT + 30}" fill="#4A3F34" font-size="10" font-family="Microsoft JhengHei,sans-serif">未達門檻</text>
+  `;
+
+  svg.innerHTML = svgHTML;
+}
+
+let scatterResults = [];
+function showScatterTip(e, idx) {
+  const r = lastResults[idx];
+  if (!r) return;
+  const tip = document.getElementById('scatterTooltip');
+  tip.innerHTML = `
+    <div class="tt-name">${r.product}</div>
+    <div class="tt-row"><span>Support</span><span class="tt-val">${(r.support*100).toFixed(2)}%</span></div>
+    <div class="tt-row"><span>Confidence</span><span class="tt-val">${(r.confidence*100).toFixed(1)}%</span></div>
+    <div class="tt-row"><span>Lift</span><span class="tt-val">${r.lift.toFixed(3)}</span></div>
+    <div class="tt-row"><span>共現次數</span><span class="tt-val">${r.xyCount} 筆</span></div>`;
+  tip.classList.add('show');
+  const rect = e.target.closest('.scatter-container').getBoundingClientRect();
+  tip.style.left = (e.clientX - rect.left + 12) + 'px';
+  tip.style.top  = (e.clientY - rect.top  - 30) + 'px';
+}
+function hideScatterTip() {
+  document.getElementById('scatterTooltip').classList.remove('show');
+}
+
+// ================================================================
+//  RESULT TABLE (sortable)
+// ================================================================
+let sortCol = 'confidence', sortDir = 'desc';
+let filteredResults = [];
+
+function renderResultTable(results, target, minSup, minCon) {
+  filteredResults = results;
+  document.getElementById('tableSubtitle').textContent =
+    `目標商品：${target}｜門檻：Support ≥ ${(minSup*100).toFixed(1)}%，Confidence ≥ ${(minCon*100).toFixed(0)}%`;
+  sortAndRender();
+}
+
+function sortAndRender() {
+  const cols = ['product','xyCount','support','confidence','lift'];
+  const sorted = [...filteredResults].sort((a,b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (typeof va === 'string') return sortDir === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+    return sortDir === 'asc' ? va - vb : vb - va;
+  });
+
+  const colDefs = [
+    { key:'#',          label:'#',       sortable:false },
+    { key:'product',    label:'商品名稱', sortable:true  },
+    { key:'xyCount',    label:'共現次數', sortable:true  },
+    { key:'support',    label:'支援度',   sortable:true  },
+    { key:'confidence', label:'信賴度',   sortable:true  },
+    { key:'lift',       label:'Lift',     sortable:true  },
+    { key:'hit',        label:'判定',     sortable:false },
+    { key:'detail',     label:'明細',     sortable:false },
+  ];
+  const thead = `<tr>${colDefs.map(c => {
+    if (!c.sortable) return `<th>${c.label}</th>`;
+    const dir = sortCol === c.key ? sortDir : 'none';
+    return `<th class="sortable" onclick="setSort('${c.key}')">
+      ${c.label}<span class="sort-arrow ${dir}"></span></th>`;
+  }).join('')}</tr>`;
+
+  const tbody = sorted.map((r, i) => {
+    const hitTag = r.hit
+      ? '<span class="tag green">✅ 關聯</span>'
+      : (r.support >= parseFloat(document.getElementById('supportInput').value) ||
+         r.confidence >= parseFloat(document.getElementById('confidenceInput').value))
+        ? '<span class="tag amber">部分</span>'
+        : '<span class="tag gray">不符</span>';
+    const rowCls = r.hit ? 'row-hit' : (r.xyCount === 0 ? 'row-miss' : 'row-partial');
+    const supPct  = Math.min(r.support   * 100 / 50 * 100, 100).toFixed(0);
+    const conPct  = (r.confidence * 100).toFixed(0);
+    const supColor  = r.support   >= parseFloat(document.getElementById('supportInput').value)    ? 'var(--green)'  : 'var(--amber)';
+    const conColor  = r.confidence >= parseFloat(document.getElementById('confidenceInput').value) ? 'var(--green)' : 'var(--amber)';
+    const liftColor = r.lift >= 1.0 ? 'var(--green)' : 'var(--red)';
+
+    return `<tr class="${rowCls}" style="animation:fadeSlideIn .25s ease ${i*0.02}s both;">
+      <td>${i+1}</td>
+      <td><strong>${r.product}</strong></td>
+      <td>${r.xyCount}</td>
+      <td>
+        <div class="prog-wrap">
+          <div class="prog-bar" style="width:${supPct}%;background:${supColor};"></div>
+          <div class="prog-label">${(r.support*100).toFixed(2)}%</div>
+        </div>
+      </td>
+      <td>
+        <div class="prog-wrap">
+          <div class="prog-bar" style="width:${conPct}%;background:${conColor};"></div>
+          <div class="prog-label">${(r.confidence*100).toFixed(1)}%</div>
+        </div>
+      </td>
+      <td><span style="color:${liftColor};font-weight:700;">${r.lift.toFixed(3)}</span></td>
+      <td>${hitTag}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="drillDown('${lastTarget}','${r.product.replace(/'/g,"\\'")}')">🔍 明細</button></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('resultTableHead').innerHTML = thead;
+  document.getElementById('resultTableBody').innerHTML = tbody;
+}
+
+function setSort(col) {
+  if (sortCol === col) sortDir = sortDir === 'desc' ? 'asc' : 'desc';
+  else { sortCol = col; sortDir = 'desc'; }
+  sortAndRender();
+}
+
+function filterResults() {
+  const q = document.getElementById('resultSearch').value.toLowerCase();
+  filteredResults = q ? lastResults.filter(r => r.product.toLowerCase().includes(q)) : lastResults;
+  sortAndRender();
+}
+
+// ================================================================
+//  CONCLUSION CALLOUT
+// ================================================================
+function renderConclusion(target, xCount, results, minSup, minCon) {
+  const hits = results.filter(r => r.hit);
+  const topHit = hits[0];
+  const bullets = hits.slice(0,3).map(r =>
+    `<li><strong>${r.product}</strong>：信賴度 ${(r.confidence*100).toFixed(1)}%，Lift = ${r.lift.toFixed(2)}，共現 ${r.xyCount} 筆</li>`).join('');
+  const box = document.getElementById('conclusionBox');
+  if (!hits.length) {
+    box.innerHTML = `<div class="callout warning"><div class="callout-title">⚠️ 無關聯商品</div><p>在目前門檻設定下（Support ≥ ${(minSup*100).toFixed(1)}%，Confidence ≥ ${(minCon*100).toFixed(0)}%），未找到符合條件的關聯商品。建議嘗試降低門檻，或確認資料量是否足夠。</p></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="callout success">
+    <div class="callout-title">🎉 分析結論</div>
+    <p>在 <strong>${N.toLocaleString()}</strong> 筆訂單中，目標商品「<strong>${target}</strong>」共出現於 <strong>${xCount}</strong> 筆（${(xCount/N*100).toFixed(1)}%），發現 <strong>${hits.length}</strong> 個關聯商品：</p>
+    <ul>${bullets}</ul>
+    ${topHit ? `<p style="margin-top:8px;">💡 <strong>業務建議</strong>：與「${topHit.product}」的關聯最強（Confidence = ${(topHit.confidence*100).toFixed(1)}%），建議考慮捆綁促銷、相鄰陳列或推薦系統優化。</p>` : ''}
+  </div>`;
+}
+
+// ================================================================
+//  HISTORY
+// ================================================================
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  list.innerHTML = analysisHistory.slice(0,8).map(h => `
+    <div class="history-item">
+      <div class="history-dot"></div>
+      <div>
+        <div><strong>${h.target}</strong><span class="history-tag">${h.hitCount} 個關聯</span></div>
+        <div class="history-detail">Support ≥ ${(h.minSup*100).toFixed(1)}%，Confidence ≥ ${(h.minCon*100).toFixed(0)}%，候選 ${h.total} 個</div>
+        <div class="history-time">${h.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ================================================================
+//  DRILL DOWN (Order Details)
+// ================================================================
+function drillDown(target, product) {
+  const orderCol = headers.find(h => h.includes('訂單編號'));
+  const productCol = headers.find(h => h.includes('商品') || h.includes('品名') || h.includes('品項'));
+
+  // Find orders where both products appear
+  const coOrders = Object.keys(orders).filter(oid => orders[oid].has(target) && orders[oid].has(product));
+
+  document.getElementById('drillProductA').textContent = target;
+  document.getElementById('drillProductB').textContent = product;
+  document.getElementById('drillCount').textContent = `${coOrders.length} 筆共現訂單`;
+
+  // Filter raw data to those orders
+  const coSet = new Set(coOrders);
+  const drillData = rawData.filter(r => coSet.has(r[orderCol]));
+
+  const th = `<thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+  const tb = `<tbody>${drillData.map(r => `<tr>${headers.map(h => `<td title="${r[h]}">${r[h]||'—'}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  document.getElementById('drillTable').innerHTML = th + tb;
+
+  document.getElementById('ordersDrillPanel').style.display = '';
+  document.getElementById('ordersEmpty').style.display = 'none';
+
+  switchTab('orders');
+}
+
+function closeDrill() {
+  document.getElementById('ordersDrillPanel').style.display = 'none';
+  document.getElementById('ordersEmpty').style.display = '';
+}
+
+// ================================================================
+//  CROSS COMPARISON
+// ================================================================
+function populateCrossCheckboxes() {
+  document.getElementById('crossCheckboxes').innerHTML = productList.map(p =>
+    `<label class="checkbox-item">
+      <input type="checkbox" value="${p}" onchange="updateCrossSelCount()">
+      <label style="cursor:pointer;">${p}</label>
+    </label>`).join('');
+  if (productList.length) document.getElementById('crossEmpty').style.display = 'none';
+}
+
+function filterCrossProducts() {
+  const q = document.getElementById('crossSearch').value.toLowerCase();
+  document.querySelectorAll('#crossCheckboxes .checkbox-item').forEach(el => {
+    el.style.display = el.querySelector('input').value.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function updateCrossSelCount() {
+  const cnt = document.querySelectorAll('#crossCheckboxes input:checked').length;
+  document.getElementById('crossSelCount').textContent = `已選 ${cnt} 個`;
+}
+
+function clearCrossSelection() {
+  document.querySelectorAll('#crossCheckboxes input').forEach(c => c.checked = false);
+  updateCrossSelCount();
+}
+
+function runCrossComparison() {
+  const targets = [...document.querySelectorAll('#crossCheckboxes input:checked')].map(c => c.value);
+  if (targets.length < 2) { showToast('warning', '選擇不足', '請至少勾選 2 個目標商品'); return; }
+  if (!N) { showToast('warning', '無資料', '請先載入資料'); return; }
+
+  const minSup = parseFloat(document.getElementById('supportInput').value) || 0.03;
+  const minCon = parseFloat(document.getElementById('confidenceInput').value) || 0.4;
+
+  // Compute confidence for each candidate × each target
+  const candidates = productList.filter(p => !targets.includes(p));
+  const matrix = {}; // candidate -> { target -> confidence }
+
+  candidates.forEach(c => {
+    matrix[c] = {};
+    targets.forEach(t => {
+      const xOrders = Object.keys(orders).filter(oid => orders[oid].has(t));
+      const xyCount = xOrders.filter(oid => orders[oid].has(c)).length;
+      matrix[c][t] = xOrders.length ? xyCount / xOrders.length : 0;
+    });
+  });
+
+  // Filter: at least one target pair has > 0
+  const rows = candidates.filter(c => targets.some(t => matrix[c][t] > 0))
+    .sort((a, b) => {
+      const sumA = targets.reduce((s, t) => s + matrix[a][t], 0);
+      const sumB = targets.reduce((s, t) => s + matrix[b][t], 0);
+      return sumB - sumA;
+    }).slice(0, 30);
+
+  // Universal: passes minCon for ALL targets
+  const universal = rows.filter(c => targets.every(t => matrix[c][t] >= minCon));
+  document.getElementById('universalCount').textContent = `${universal.length} 個通用關聯商品`;
+
+  // Build heatmap table
+  const heatHead = `<tr><th>候選商品</th>${targets.map(t => `<th title="${t}">${t.length > 12 ? t.slice(0,10)+'…' : t}</th>`).join('')}</tr>`;
+  const heatBody = rows.map(c => {
+    const isUniv = universal.includes(c);
+    const cells = targets.map(t => {
+      const v = matrix[c][t];
+      const pct = Math.round(v * 100);
+      // Heatmap color: 0=white, 1=deep green
+      const alpha = Math.min(v * 1.5, 1).toFixed(2);
+      const textColor = v > 0.55 ? 'white' : 'var(--gray-700)';
+      const cls = (v >= minCon && isUniv) ? 'universal' : '';
+      return `<td style="background:rgba(122,158,126,${alpha});color:${textColor};" class="${cls}">${pct > 0 ? pct+'%' : '—'}</td>`;
+    }).join('');
+    return `<tr><td class="row-product" title="${c}">${c}</td>${cells}</tr>`;
+  }).join('');
+
+  document.getElementById('heatmapTable').innerHTML = `<thead>${heatHead}</thead><tbody>${heatBody}</tbody>`;
+  document.getElementById('crossResults').style.display = '';
+  document.getElementById('crossEmpty').style.display = 'none';
+  showToast('success', '交叉比較完成', `分析 ${rows.length} 個候選商品 × ${targets.length} 個目標`);
+}
+
+// ================================================================
+//  EXPORT CSV
+// ================================================================
+function exportCSV() {
+  if (!lastResults.length) { showToast('warning', '無資料', '請先執行分析'); return; }
+  const minSup = parseFloat(document.getElementById('supportInput').value) || 0.03;
+  const minCon = parseFloat(document.getElementById('confidenceInput').value) || 0.4;
+  const rows = [['目標商品', '關聯商品', '共現次數', 'Support', 'Confidence', 'Lift', '判定']];
+  lastResults.forEach(r => rows.push([
+    lastTarget, r.product, r.xyCount,
+    r.support.toFixed(4), r.confidence.toFixed(4), r.lift.toFixed(4),
+    r.hit ? '關聯' : '不符'
+  ]));
+  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `association_${lastTarget}_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  showToast('success', '匯出完成', `已下載 ${lastResults.length} 筆結果`);
+}
+
+// ================================================================
+//  TOAST
+// ================================================================
+function showToast(type, title, msg) {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="toast-icon">${icons[type]||'📌'}</span>
+    <div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => el.remove(), 4200);
+}
+
+// ================================================================
+//  INIT: update indicators on load
+// ================================================================
+updateThresholdIndicator('support', 0.03);
+updateThresholdIndicator('confidence', 0.40);
+</script>
+
+<!-- ================================================================
+     HELP SIDE PANEL
+================================================================ -->
+<style>
+  /* ============================================================
+     Help Panel Overlay & Container
+  ============================================================ */
+  #helpOverlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(31,26,20,.35);
+    backdrop-filter: blur(2px);
+    transition: opacity .3s ease;
+    opacity: 0;
+  }
+  #helpOverlay.open { display: block; opacity: 1; }
+
+  #helpPanel {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 320px; max-width: 92vw;
+    background: #FDFBF9;
+    border-left: 3px solid var(--primary);
+    box-shadow: -6px 0 32px rgba(0,0,0,.14);
+    z-index: 210;
+    transform: translateX(100%);
+    transition: transform .35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #helpPanel.open { transform: translateX(0); }
+
+  /* Panel header */
+  .help-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white; flex-shrink: 0;
+  }
+  .help-panel-title {
+    font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px;
+  }
+  .help-close-btn {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(255,255,255,.2); border: none; color: white;
+    font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: var(--transition); font-family: inherit;
+  }
+  .help-close-btn:hover { background: rgba(255,255,255,.35); }
+
+  /* Panel body (scrollable) */
+  .help-panel-body {
+    flex: 1; overflow-y: auto; padding: 18px 16px;
+    scrollbar-width: thin; scrollbar-color: #D4C8BB #F7F3EF;
+  }
+  .help-panel-body::-webkit-scrollbar { width: 5px; }
+  .help-panel-body::-webkit-scrollbar-track { background: #F7F3EF; }
+  .help-panel-body::-webkit-scrollbar-thumb { background: #D4C8BB; border-radius: 3px; }
+
+  /* Section titles */
+  .help-section-title {
+    font-size: 14px; font-weight: 800; color: var(--primary);
+    display: flex; align-items: center; gap: 7px;
+    margin-bottom: 14px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-light);
+  }
+
+  /* Step items */
+  .help-step {
+    display: flex; gap: 10px; margin-bottom: 14px;
+  }
+  .help-step-num {
+    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+    background: var(--primary); color: white;
+    font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .help-step-body { flex: 1; }
+  .help-step-title {
+    font-size: 13px; font-weight: 700; color: var(--gray-700);
+    margin-bottom: 4px;
+  }
+  .help-step-desc {
+    font-size: 12.5px; color: var(--gray-600); line-height: 1.65;
+  }
+  .help-step-desc ul {
+    list-style: none; padding: 0; margin: 4px 0 0;
+  }
+  .help-step-desc li {
+    position: relative; padding-left: 14px; margin-bottom: 3px;
+  }
+  .help-step-desc li::before {
+    content: '•'; position: absolute; left: 0;
+    color: var(--accent); font-weight: 700;
+  }
+  /* Sub-list with circled numbers */
+  .help-step-desc .sub-list { list-style: none; padding: 0; margin: 4px 0 0; }
+  .help-step-desc .sub-list li { padding-left: 0; }
+  .help-step-desc .sub-list li::before { display: none; }
+
+  /* Note / Tip box */
+  .help-note {
+    border-radius: 8px; padding: 10px 13px; margin-top: 14px;
+    font-size: 12.5px; line-height: 1.65;
+  }
+  .help-note.warning {
+    background: #FFF8F0; border-left: 3px solid var(--amber);
+    color: var(--gray-700);
+  }
+  .help-note.tip {
+    background: var(--green-light); border-left: 3px solid var(--green);
+    color: var(--gray-700);
+  }
+  .help-note-title {
+    font-weight: 700; font-size: 12.5px; margin-bottom: 5px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .help-note ul { list-style: none; padding: 0; margin: 0; }
+  .help-note li { padding-left: 12px; position: relative; margin-bottom: 3px; }
+  .help-note li::before { content: '•'; position: absolute; left: 0; color: var(--accent); }
+
+  /* Formula inline */
+  .help-formula {
+    background: var(--gray-100); border-radius: 5px;
+    padding: 2px 8px; font-family: 'Courier New', monospace;
+    font-size: 11.5px; color: var(--gray-700); white-space: nowrap;
+  }
+
+  /* Simple content blocks (no steps) */
+  .help-block {
+    font-size: 12.5px; color: var(--gray-600); line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .help-block ul { list-style: none; padding: 0; margin: 6px 0 0; }
+  .help-block li { padding-left: 14px; position: relative; margin-bottom: 4px; }
+  .help-block li::before { content: '•'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  /* ============================================================
+     Toggle Button (right edge)
+  ============================================================ */
+  #helpToggleBtn {
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    z-index: 195;
+    background: var(--primary);
+    color: white;
+    border: none; cursor: pointer;
+    border-radius: 10px 0 0 10px;
+    padding: 12px 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    box-shadow: -3px 0 16px rgba(139,111,71,.35);
+    transition: var(--transition);
+    font-family: inherit;
+    animation: btnBounce 1.8s ease 1.2s 2;
+  }
+  #helpToggleBtn:hover { background: var(--primary-dark); padding-right: 12px; }
+  #helpToggleBtn .btn-icon-emoji { font-size: 16px; line-height: 1; }
+  #helpToggleBtn .btn-label {
+    writing-mode: vertical-rl; text-orientation: mixed;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  @keyframes btnBounce {
+    0%,100% { transform: translateY(-50%) translateX(0); }
+    50%      { transform: translateY(-50%) translateX(-6px); }
+  }
+</style>
+
+<!-- Toggle button -->
+<button id="helpToggleBtn" onclick="toggleHelpPanel()" title="操作說明" aria-label="開啟操作說明">
+  <span class="btn-icon-emoji" id="helpToggleIcon">📖</span>
+  <span class="btn-label" id="helpToggleLabel">操作說明</span>
+</button>
+
+<!-- Backdrop overlay -->
+<div id="helpOverlay" onclick="closeHelpPanel()" aria-hidden="true"></div>
+
+<!-- Side panel -->
+<aside id="helpPanel" role="complementary" aria-label="操作說明">
+  <div class="help-panel-header">
+    <div class="help-panel-title">
+      <span>📖</span>
+      <span id="helpPanelTitle">操作說明</span>
+    </div>
+    <button class="help-close-btn" onclick="closeHelpPanel()" aria-label="關閉說明面板">✕</button>
+  </div>
+  <div class="help-panel-body" id="helpPanelBody">
+    <!-- Content injected by JS -->
+  </div>
+</aside>
+
+<script>
+// ================================================================
+//  HELP PANEL — content definitions per tab
+// ================================================================
+const HELP_CONTENT = {
+  data: `
+    <div class="help-section-title">📁 資料管理 — 操作步驟</div>
+
+    <div class="help-step">
+      <div class="help-step-num">1</div>
+      <div class="help-step-body">
+        <div class="help-step-title">準備資料</div>
+        <div class="help-step-desc">
+          確認您的 Excel 或 CSV 檔案包含以下欄位：
+          <ul>
+            <li>訂單編號（必要）</li>
+            <li>商品名稱（必要）</li>
+            <li>其他欄位（可選，供明細查看）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">2</div>
+      <div class="help-step-body">
+        <div class="help-step-title">匯入檔案</div>
+        <div class="help-step-desc">
+          <ul>
+            <li>點擊上傳區域，或直接拖曳檔案</li>
+            <li>系統會自動搜尋含「訂單編號」的列作為標題</li>
+            <li>載入成功後會顯示資料概覽</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">3</div>
+      <div class="help-step-body">
+        <div class="help-step-title">確認資料</div>
+        <div class="help-step-desc">
+          <ul>
+            <li>檢查訂單筆數與商品種類是否正確</li>
+            <li>可在搜尋框輸入關鍵字查找特定資料</li>
+            <li>預覽表格顯示前 50 筆記錄</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-note warning">
+      <div class="help-note-title">⚠️ 注意事項</div>
+      <ul>
+        <li>檔案不會上傳至伺服器，所有分析在瀏覽器本地執行</li>
+        <li>若標題列不在第一行，系統會自動偵測（最多掃描前 10 行）</li>
+        <li>建議先清除多餘的空白列</li>
+      </ul>
+    </div>
+  `,
+
+  analysis: `
+    <div class="help-section-title">🔍 關聯分析 — 操作步驟</div>
+
+    <div class="help-step">
+      <div class="help-step-num">1</div>
+      <div class="help-step-body">
+        <div class="help-step-title">選擇目標商品</div>
+        <div class="help-step-desc">
+          在下拉選單中選擇要分析的目標商品 X。
+          可在搜尋框輸入關鍵字快速篩選。
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">2</div>
+      <div class="help-step-body">
+        <div class="help-step-title">設定門檻值</div>
+        <div class="help-step-desc">
+          <ul>
+            <li><strong>支援度（Support）</strong>：X 與 Y 同時出現的比例<br>
+              <span class="help-formula">|X∩Y| / N</span>　建議值：0.01 ~ 0.10</li>
+            <li style="margin-top:6px;"><strong>信賴度（Confidence）</strong>：買了 X 也買 Y 的比例<br>
+              <span class="help-formula">|X∩Y| / |X|</span>　建議值：0.3 ~ 0.8</li>
+            <li style="margin-top:6px;"><strong>Lift</strong>：關聯強度倍數<br>
+              <span class="help-formula">Confidence / Support(Y)</span>　&gt; 1 表示正相關</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">3</div>
+      <div class="help-step-body">
+        <div class="help-step-title">點擊「執行分析」</div>
+        <div class="help-step-desc">
+          系統會計算所有與目標商品共現的商品。
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">4</div>
+      <div class="help-step-body">
+        <div class="help-step-title">解讀結果</div>
+        <div class="help-step-desc">
+          <ul>
+            <li>📊 長條圖：顯示信賴度排名，紅線為門檻</li>
+            <li>📈 散佈圖：右上象限（綠色）= 關聯商品</li>
+            <li>📋 表格：可點擊欄位排序，點「明細」查看訂單</li>
+            <li>✅ 綠色標籤 = 滿足所有門檻的關聯商品</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-note tip">
+      <div class="help-note-title">💡 小提示</div>
+      同時滿足支援度和信賴度門檻的商品才是「關聯商品」，
+      建議在貨架上相鄰擺放以提升交叉銷售。
+    </div>
+  `,
+
+  cross: `
+    <div class="help-section-title">📊 交叉比較 — 操作步驟</div>
+
+    <div class="help-step">
+      <div class="help-step-num">1</div>
+      <div class="help-step-body">
+        <div class="help-step-title">勾選目標商品</div>
+        <div class="help-step-desc">
+          至少勾選 2 個目標商品進行比較。
+          可使用搜尋框快速找到商品。
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">2</div>
+      <div class="help-step-body">
+        <div class="help-step-title">執行比較</div>
+        <div class="help-step-desc">
+          點擊「執行交叉比較」按鈕。
+        </div>
+      </div>
+    </div>
+
+    <div class="help-step">
+      <div class="help-step-num">3</div>
+      <div class="help-step-body">
+        <div class="help-step-title">解讀熱力圖</div>
+        <div class="help-step-desc">
+          <ul>
+            <li>顏色越深 = 信賴度越高</li>
+            <li>綠框標記 = 通用關聯商品（對所有目標都達標）</li>
+            <li>「—」= 無共現記錄</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="help-note tip">
+      <div class="help-note-title">💡 應用場景</div>
+      找出「通用關聯商品」後，可作為倉庫揀貨路徑
+      優化的參考依據。
+    </div>
+  `,
+
+  orders: `
+    <div class="help-section-title">🧾 訂單明細 — 操作說明</div>
+
+    <div class="help-block">
+      <strong>使用方式</strong>
+      <ul>
+        <li>在「關聯分析」結果表格中，點擊任一商品的「🔍 明細」按鈕，即可跳轉至此頁查看</li>
+      </ul>
+    </div>
+
+    <div class="help-block">
+      <strong>顯示內容</strong>
+      <ul>
+        <li>目標商品與關聯商品共同出現的所有訂單</li>
+        <li>包含完整的訂單資訊（所有欄位）</li>
+      </ul>
+    </div>
+
+    <div class="help-block">
+      <strong>返回方式</strong>
+      <ul>
+        <li>點擊「← 返回」按鈕回到空白狀態</li>
+      </ul>
+    </div>
+  `,
+
+  tutorial: `
+    <div class="help-section-title">📚 教學說明</div>
+
+    <div class="help-block">
+      本頁面提供關聯分析的理論基礎與公式說明。
+    </div>
+
+    <div class="help-block">
+      <strong>內容包含</strong>
+      <ul>
+        <li>① 什麼是關聯分析</li>
+        <li>② 啤酒與尿布的經典案例</li>
+        <li>③ 三大核心指標公式</li>
+        <li>④ 計算範例</li>
+        <li>⑤ 結果解讀指南</li>
+      </ul>
+    </div>
+
+    <div class="help-note tip">
+      <div class="help-note-title">💡 建議</div>
+      可搭配左側教學內容閱讀，加深理解各項指標的意義。
+    </div>
+  `,
+};
+
+// Current active tab (track it to update help content)
+let currentHelpTab = 'data';
+let helpPanelOpen = false;
+
+// Override the existing switchTab to also update help content
+const _origSwitchTab = switchTab;
+function switchTab(name) {
+  _origSwitchTab(name);
+  currentHelpTab = name;
+  if (helpPanelOpen) renderHelpContent(name);
+}
+
+function renderHelpContent(tab) {
+  const titleMap = {
+    data:     '📁 資料管理',
+    analysis: '🔍 關聯分析',
+    cross:    '📊 交叉比較',
+    orders:   '🧾 訂單明細',
+    tutorial: '📚 教學說明',
+  };
+  document.getElementById('helpPanelTitle').textContent = titleMap[tab] || '操作說明';
+  document.getElementById('helpPanelBody').innerHTML = HELP_CONTENT[tab] || '';
+}
+
+function openHelpPanel() {
+  helpPanelOpen = true;
+  renderHelpContent(currentHelpTab);
+  document.getElementById('helpPanel').classList.add('open');
+  document.getElementById('helpOverlay').classList.add('open');
+  document.getElementById('helpToggleIcon').textContent = '✕';
+  document.getElementById('helpToggleLabel').textContent = '關閉';
+  document.getElementById('helpToggleBtn').setAttribute('aria-expanded', 'true');
+}
+
+function closeHelpPanel() {
+  helpPanelOpen = false;
+  document.getElementById('helpPanel').classList.remove('open');
+  document.getElementById('helpOverlay').classList.remove('open');
+  document.getElementById('helpToggleIcon').textContent = '📖';
+  document.getElementById('helpToggleLabel').textContent = '操作說明';
+  document.getElementById('helpToggleBtn').setAttribute('aria-expanded', 'false');
+}
+
+function toggleHelpPanel() {
+  if (helpPanelOpen) closeHelpPanel();
+  else openHelpPanel();
+}
+
+// Close panel on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && helpPanelOpen) closeHelpPanel();
+});
+</script>
+</body>
+</html>
