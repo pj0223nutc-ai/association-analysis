@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>商品關聯分析 · Association Rule Analysis</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- Data loaded from server (data.json) -->
   <style>
     /* ============================================================
        CSS Custom Properties & Reset — Milk Tea Palette
@@ -561,7 +561,7 @@
       <span class="hero-badge">✨ 5 大分析模組</span>
     </div>
     <h1>商品關聯 <span>分析系統</span></h1>
-    <p class="hero-sub">Product Association Rule Analysis &nbsp;·&nbsp; 上傳訂單資料即可一鍵探索購買規律</p>
+    <p class="hero-sub">Product Association Rule Analysis &nbsp;·&nbsp; 配送中心出庫資料關聯規則探勘</p>
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-num" id="heroOrders">—</div><div class="hero-stat-label">訂單筆數</div></div>
       <div class="hero-stat"><div class="hero-stat-num" id="heroProducts">—</div><div class="hero-stat-label">商品種類</div></div>
@@ -577,7 +577,7 @@
 <nav class="tab-nav">
   <div class="tab-nav-inner">
     <button class="tab-btn active" onclick="switchTab('data')" id="tabBtn-data">
-      <span class="tab-icon">📁</span>資料管理
+      <span class="tab-icon">📁</span>資料總覽
     </button>
     <button class="tab-btn" onclick="switchTab('analysis')" id="tabBtn-analysis">
       <span class="tab-icon">🔍</span>關聯分析
@@ -606,29 +606,41 @@
   ============================================================ -->
   <div class="tab-panel active" id="panel-data">
 
-    <!-- Upload card -->
-    <div class="card">
+    <!-- Server data status card -->
+    <div class="card" id="serverStatusCard">
       <div class="card-header">
         <div>
-          <div class="card-title"><span class="icon">📤</span>上傳資料檔案</div>
-          <div class="card-sub">支援 Excel (.xlsx) 和 CSV 格式，系統自動偵測標題列</div>
+          <div class="card-title"><span class="icon">☁️</span>伺服器資料狀態</div>
+          <div class="card-sub">資料從伺服器自動載入，無需手動上傳</div>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="clearData()">🗑️ 清除資料</button>
+        <span class="tag green" id="serverStatusTag">● 載入中…</span>
       </div>
-      <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-        <span class="upload-icon">📂</span>
-        <div class="upload-title">拖曳檔案到此處，或點擊選取</div>
-        <div class="upload-sub">系統將自動搜尋含「訂單編號」的標題列</div>
-        <div class="format-badges">
-          <span class="format-badge xlsx">✓ .xlsx Excel</span>
-          <span class="format-badge csv">✓ .csv 逗號分隔</span>
+      <div style="padding:16px 0 0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:20px;">📦</span>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400);">資料來源</div>
+            <div style="font-weight:700;color:var(--gray-700);">配送中心出庫資料庫</div>
+          </div>
         </div>
-        <p class="upload-hint">檔案不會上傳至伺服器，所有分析在瀏覽器本地執行</p>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:20px;">🔄</span>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400);">更新時間</div>
+            <div style="font-weight:700;color:var(--gray-700);" id="serverUpdateTime">—</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:20px;">📡</span>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400);">連線狀態</div>
+            <div style="font-weight:700;color:var(--green);" id="serverConnStatus">連線中…</div>
+          </div>
+        </div>
       </div>
-      <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFileSelect(event)">
     </div>
 
-    <!-- Data summary (hidden until data loaded) -->
+    <!-- Data summary -->
     <div id="dataSummarySection" style="display:none;">
       <div class="section-title">📈 資料概覽</div>
       <div class="grid-6" id="summaryCards" style="margin-bottom:20px;"></div>
@@ -668,11 +680,11 @@
       </div>
     </div>
 
-    <!-- Empty state -->
+    <!-- Empty state (shown while loading) -->
     <div class="empty-state" id="dataEmptyState">
-      <div class="empty-icon">📭</div>
-      <h3>尚未載入資料</h3>
-      <p>請上傳 Excel 或 CSV 檔案以開始分析</p>
+      <div class="empty-icon">⏳</div>
+      <h3>正在從伺服器載入資料…</h3>
+      <p>請稍候</p>
     </div>
   </div>
 
@@ -1012,121 +1024,8 @@ function switchTab(name) {
 }
 
 // ================================================================
-//  FILE HANDLING
+//  (Upload removed — data loaded from server via data.json)
 // ================================================================
-const dropZone = document.getElementById('dropZone');
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-dropZone.addEventListener('drop', e => {
-  e.preventDefault(); dropZone.classList.remove('drag-over');
-  if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
-});
-
-function handleFileSelect(e) {
-  if (e.target.files[0]) processFile(e.target.files[0]);
-}
-
-function processFile(file) {
-  const ext = file.name.split('.').pop().toLowerCase();
-  showToast('info', '載入中', `正在解析 ${file.name}…`);
-  const reader = new FileReader();
-  if (ext === 'csv') {
-    reader.onload = e => parseCSV(e.target.result, file.name);
-    reader.readAsText(file, 'UTF-8');
-  } else {
-    reader.onload = e => parseXLSX(e.target.result, file.name);
-    reader.readAsArrayBuffer(file);
-  }
-}
-
-function parseXLSX(buf, name) {
-  try {
-    const wb = XLSX.read(buf, { type: 'array' });
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-    processRawRows(rows, name);
-  } catch(e) { showToast('error', '解析失敗', e.message); }
-}
-
-function parseCSV(text, name) {
-  try {
-    const rows = text.trim().split('\n').map(r => r.split(',').map(c => c.replace(/^"|"$/g,'').trim()));
-    processRawRows(rows, name);
-  } catch(e) { showToast('error', '解析失敗', e.message); }
-}
-
-function processRawRows(rows, name) {
-  // Auto-detect header row
-  let headerIdx = -1;
-  for (let i = 0; i < Math.min(rows.length, 20); i++) {
-    if (rows[i].some(c => String(c).includes('訂單編號'))) { headerIdx = i; break; }
-  }
-  if (headerIdx === -1) { showToast('error', '找不到標題列', '請確認資料中包含「訂單編號」欄位'); return; }
-
-  headers = rows[headerIdx].map(h => String(h).trim()).filter(h => h);
-  rawData = rows.slice(headerIdx + 1)
-    .filter(r => r.some(c => String(c).trim() !== ''))
-    .map(r => {
-      const obj = {};
-      headers.forEach((h, i) => { obj[h] = String(r[i] ?? '').trim(); });
-      return obj;
-    });
-
-  allProductRows = rawData;
-
-  // Find order and product columns
-  const orderCol = headers.find(h => h.includes('訂單編號'));
-  const productCol = headers.find(h => h.includes('商品') || h.includes('品名') || h.includes('品項'));
-
-  if (!orderCol || !productCol) {
-    showToast('error', '欄位不足', `需要「訂單編號」和商品相關欄位，找到：${headers.join(', ')}`);
-    return;
-  }
-
-  // Build order map
-  orders = {};
-  rawData.forEach(row => {
-    const oid = row[orderCol]; const prod = row[productCol];
-    if (!oid || !prod) return;
-    if (!orders[oid]) orders[oid] = new Set();
-    orders[oid].add(prod);
-  });
-
-  N = Object.keys(orders).length;
-  const allProds = new Set();
-  Object.values(orders).forEach(s => s.forEach(p => allProds.add(p)));
-  productList = [...allProds].sort();
-
-  buildDataSummary();
-  populateProductSelect();
-  populateCrossCheckboxes();
-  updateHeroStats();
-
-  showToast('success', '載入成功', `${name}：${rawData.length} 筆記錄，${N} 筆訂單，${productList.length} 種商品`);
-  document.getElementById('dataEmptyState').style.display = 'none';
-  document.getElementById('dataSummarySection').style.display = '';
-
-  // Auto-switch to analysis tab after 800ms so user can start analyzing immediately
-  setTimeout(() => {
-    switchTab('analysis');
-    showToast('info', '可以開始分析', '已自動切換到關聯分析頁面，請選擇目標商品後點擊「執行分析」');
-  }, 800);
-}
-
-function clearData() {
-  rawData = []; headers = []; orders = {}; productList = []; N = 0;
-  lastResults = []; lastTarget = '';
-  document.getElementById('dataEmptyState').style.display = '';
-  document.getElementById('dataSummarySection').style.display = 'none';
-  document.getElementById('analysisResults').style.display = 'none';
-  document.getElementById('analysisEmpty').style.display = '';
-  document.getElementById('crossResults').style.display = 'none';
-  document.getElementById('crossEmpty').style.display = '';
-  document.getElementById('targetProduct').innerHTML = '<option value="">— 請先載入資料 —</option>';
-  document.getElementById('crossCheckboxes').innerHTML = '';
-  updateHeroStats();
-  showToast('info', '已清除', '資料已清除');
-}
 
 // ================================================================
 //  DATA SUMMARY BUILD
@@ -1272,7 +1171,7 @@ function resetThresholds() {
 function runAnalysis() {
   const target = document.getElementById('targetProduct').value;
   if (!N) {
-    showToast('warning', '尚未載入資料', '請先回到「資料管理」頁面上傳 Excel 或 CSV 檔案');
+    showToast('warning', '資料尚未載入', '伺服器資料載入中，請稍候再試');
     // Flash the data tab button to draw attention
     const dataBtn = document.getElementById('tabBtn-data');
     dataBtn.style.animation = 'none'; dataBtn.offsetHeight; // reflow
@@ -1970,19 +1869,14 @@ updateThresholdIndicator('confidence', 0.40);
 // ================================================================
 const HELP_CONTENT = {
   data: `
-    <div class="help-section-title">📁 資料管理 — 操作步驟</div>
+    <div class="help-section-title">📁 資料總覽 — 說明</div>
 
     <div class="help-step">
       <div class="help-step-num">1</div>
       <div class="help-step-body">
-        <div class="help-step-title">準備資料</div>
+        <div class="help-step-title">自動載入</div>
         <div class="help-step-desc">
-          確認您的 Excel 或 CSV 檔案包含以下欄位：
-          <ul>
-            <li>訂單編號（必要）</li>
-            <li>商品名稱（必要）</li>
-            <li>其他欄位（可選，供明細查看）</li>
-          </ul>
+          頁面開啟時會自動從伺服器載入配送中心出庫資料，無需手動操作。
         </div>
       </div>
     </div>
@@ -1990,12 +1884,12 @@ const HELP_CONTENT = {
     <div class="help-step">
       <div class="help-step-num">2</div>
       <div class="help-step-body">
-        <div class="help-step-title">匯入檔案</div>
+        <div class="help-step-title">查看資料概覽</div>
         <div class="help-step-desc">
           <ul>
-            <li>點擊上傳區域，或直接拖曳檔案</li>
-            <li>系統會自動搜尋含「訂單編號」的列作為標題</li>
-            <li>載入成功後會顯示資料概覽</li>
+            <li>上方統計卡片顯示訂單數、商品種類等摘要</li>
+            <li>可在搜尋框輸入關鍵字查找特定訂單或商品</li>
+            <li>預覽表格顯示前 50 筆記錄</li>
           </ul>
         </div>
       </div>
@@ -2004,23 +1898,18 @@ const HELP_CONTENT = {
     <div class="help-step">
       <div class="help-step-num">3</div>
       <div class="help-step-body">
-        <div class="help-step-title">確認資料</div>
+        <div class="help-step-title">開始分析</div>
         <div class="help-step-desc">
-          <ul>
-            <li>檢查訂單筆數與商品種類是否正確</li>
-            <li>可在搜尋框輸入關鍵字查找特定資料</li>
-            <li>預覽表格顯示前 50 筆記錄</li>
-          </ul>
+          確認資料無誤後，點擊上方「關聯分析」分頁開始進行商品關聯分析。
         </div>
       </div>
     </div>
 
-    <div class="help-note warning">
-      <div class="help-note-title">⚠️ 注意事項</div>
+    <div class="help-note tip">
+      <div class="help-note-title">💡 小提示</div>
       <ul>
-        <li>檔案不會上傳至伺服器，所有分析在瀏覽器本地執行</li>
-        <li>若標題列不在第一行，系統會自動偵測（最多掃描前 10 行）</li>
-        <li>建議先清除多餘的空白列</li>
+        <li>資料來自配送中心出庫資料庫，包含 984 筆唯一訂單</li>
+        <li>如伺服器連線狀態顯示異常，請重新整理頁面</li>
       </ul>
     </div>
   `,
@@ -2275,10 +2164,20 @@ function loadFromServer() {
       document.getElementById('dataEmptyState').style.display = 'none';
       document.getElementById('dataSummarySection').style.display = '';
 
+      // Update server status UI
+      document.getElementById('serverStatusTag').textContent = '● 已連線';
+      document.getElementById('serverStatusTag').className = 'tag green';
+      document.getElementById('serverConnStatus').textContent = '已連線';
+      document.getElementById('serverUpdateTime').textContent = new Date().toLocaleString('zh-TW');
+
       showToast('success', '伺服器資料已載入', N + ' 筆訂單，' + productList.length + ' 種商品');
     })
     .catch(e => {
-      showToast('warning', '載入失敗', '無法從伺服器取得資料，請手動上傳檔案');
+      document.getElementById('serverStatusTag').textContent = '● 離線';
+      document.getElementById('serverStatusTag').className = 'tag red';
+      document.getElementById('serverConnStatus').textContent = '連線失敗';
+      document.getElementById('dataEmptyState').innerHTML = '<div class="empty-icon">❌</div><h3>無法連線伺服器</h3><p>請檢查網路連線後重新整理頁面</p>';
+      showToast('error', '載入失敗', '無法從伺服器取得資料');
       console.error('Fetch error:', e);
     });
 }
