@@ -505,85 +505,187 @@
   <div class="panel-title">步驟說明 &amp; Excel 操作對照</div>
 
   <div class="panel-section active" id="panel-s1">
-    <h4>步驟 1：認識資料</h4>
-    <p>這份資料來自一個配送中心的出庫記錄，格式為「一筆訂單 → 多個商品」。</p>
-    <h4>Excel 操作對照</h4>
-    <ul>
-      <li>在 Excel 中，原始資料通常為兩欄：訂單編號 / 商品名稱</li>
-      <li>用「移除重複」功能統計不重複訂單數</li>
-      <li>用「COUNTIF + 樞紐分析」統計商品種類數</li>
-    </ul>
-    <h4>小技巧</h4>
-    <p>注意：一筆訂單可能包含多個商品，所以原始記錄數（3,333）遠大於訂單數（984）。</p>
+    <h4>📁 步驟 1：認識資料</h4>
+    <p style="margin-bottom:10px;">先了解這份配送中心出庫資料的結構。</p>
+
+    <div style="background:var(--primary-light);border-radius:8px;padding:12px;margin-bottom:10px;">
+      <div style="font-weight:700;color:var(--primary-dark);margin-bottom:6px;">📌 資料結構</div>
+      <p style="font-size:.82rem;margin:0;">每一列 = 一筆「訂單×商品」記錄<br>
+      同一個訂單編號可能出現好幾列（因為一張訂單買了多個商品）</p>
+    </div>
+
+    <h4 style="margin-top:12px;">🖥️ Excel 操作教學</h4>
+
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-weight:700;font-size:.85rem;color:var(--primary);margin-bottom:6px;">統計不重複訂單數</div>
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>打開 Excel 檔案</li>
+        <li>選取「訂單編號」那一整欄（點欄位標題 A）</li>
+        <li>點選上方 <strong>資料</strong> 分頁</li>
+        <li>找到「資料工具」群組，點 <strong>移除重複值</strong></li>
+        <li>在彈出的視窗中，只勾選「訂單編號」，按確定</li>
+        <li>Excel 會告訴你：「找到並移除了 2360 個重複值；保留 <strong>984</strong> 個唯一值」</li>
+        <li>⚠️ 記下數字後，按 <strong>Ctrl+Z 復原</strong>！不然資料會被刪掉</li>
+      </ol>
+    </div>
+
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-weight:700;font-size:.85rem;color:var(--primary);margin-bottom:6px;">統計商品種類數</div>
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>選取「商品名稱」那一整欄</li>
+        <li>同樣用 <strong>移除重複值</strong></li>
+        <li>只勾選「商品名稱」，按確定</li>
+        <li>Excel 會顯示保留了 <strong>132</strong> 個唯一值</li>
+        <li>⚠️ 一樣記得 <strong>Ctrl+Z 復原</strong></li>
+      </ol>
+    </div>
+
+    <div style="background:#FFF3E8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:.82rem;color:var(--gray-700);">
+      💡 <strong>為什麼 3344 筆記錄只有 984 筆訂單？</strong><br>
+      因為一筆訂單可能包含多個商品，例如訂單 ON2021090400013 就買了 3 件不同商品，在資料中占了 3 列。
+    </div>
   </div>
 
   <div class="panel-section" id="panel-s2">
-    <h4>步驟 2：篩選目標商品訂單</h4>
-    <p>找出所有「包含目標商品 X」的訂單，這是計算支援度的分子第一步。</p>
-    <h4>Excel 操作</h4>
-    <ul>
-      <li>篩選欄位：在商品名稱欄位使用「篩選」功能</li>
-      <li>選取目標商品後，複製訂單編號那欄</li>
-      <li>貼到新工作表，再用「移除重複」統計不重複訂單數</li>
-    </ul>
-    <h4>為什麼要去重複？</h4>
-    <p>如果一筆訂單裡有兩件目標商品，直接計數會算兩次，所以要先去重複再算。</p>
+    <h4>🔍 步驟 2：篩選目標商品訂單</h4>
+    <p style="margin-bottom:10px;">找出哪些訂單包含了目標商品。</p>
+
+    <h4>🖥️ Excel 操作教學</h4>
+
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-weight:700;font-size:.85rem;color:var(--primary);margin-bottom:6px;">篩選含目標商品的記錄</div>
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>點選「商品名稱」欄位的任一格</li>
+        <li>點上方 <strong>常用 → 排序與篩選 → 篩選</strong></li>
+        <li>欄位標題會出現下拉箭頭 ▼</li>
+        <li>點「商品名稱」的 ▼</li>
+        <li>在搜尋框輸入「黃金搭檔」</li>
+        <li>只勾選 <strong>黃金搭檔（兒童青少年）</strong>，按確定</li>
+        <li>現在表格只顯示包含該商品的記錄</li>
+      </ol>
+    </div>
+
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-weight:700;font-size:.85rem;color:var(--primary);margin-bottom:6px;">複製到新工作表 + 去重複</div>
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>選取篩選後的「訂單編號」欄，<strong>Ctrl+C</strong> 複製</li>
+        <li>在工作簿下方新增一個工作表（按 + 號），命名為「訂單篩選表」</li>
+        <li><strong>Ctrl+V</strong> 貼上</li>
+        <li>用 <strong>移除重複值</strong> 統計不重複訂單數</li>
+      </ol>
+    </div>
+
+    <div style="background:#FFF3E8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:.82rem;color:var(--gray-700);">
+      💡 <strong>為什麼要先篩選再去重複？</strong><br>
+      因為一張訂單可能買了多件同一商品，直接計數會重複計算。去重複後才是真正的「幾筆訂單」。
+    </div>
   </div>
 
   <div class="panel-section" id="panel-s3">
-    <h4>步驟 3：統計共現商品頻次</h4>
-    <p>在 34 筆目標訂單中，計算每種商品「出現在幾筆不同訂單」。</p>
-    <h4>Excel 操作（樞紐分析表）</h4>
-    <ul>
-      <li>先篩選出 34 筆目標訂單的所有記錄（共 119 筆）</li>
-      <li>插入 → 樞紐分析表</li>
-      <li>將「商品名稱」拖到「列」，將「訂單編號」拖到「值」（計數）</li>
-      <li>排序：從大到小</li>
-    </ul>
-    <h4>注意</h4>
-    <p>目標商品本身（黃金搭檔兒童青少年）也會出現在統計結果中（34次），這是正常的。</p>
+    <h4>📊 步驟 3：統計共現頻次</h4>
+    <p style="margin-bottom:10px;">看看這些訂單裡還有哪些商品一起被買。</p>
+
+    <h4>🖥️ Excel 操作教學</h4>
+
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-weight:700;font-size:.85rem;color:var(--primary);margin-bottom:6px;">用進階篩選取得完整訂單</div>
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>先回到原始資料表，清除篩選（<strong>常用 → 排序與篩選 → 篩選</strong>）</li>
+        <li>新建一個工作表「含黃金(兒)訂單」</li>
+        <li>在此工作表中，選擇 <strong>資料 → 進階</strong>（進階篩選）</li>
+        <li>選「將篩選結果複製到其他位置」</li>
+        <li><strong>資料範圍</strong>：選原始資料的全部</li>
+        <li><strong>準則範圍</strong>：選「訂單篩選表」的訂單編號</li>
+        <li><strong>複製到</strong>：選目前工作表的 A1</li>
+        <li>按確定 → 得到所有相關訂單的完整記錄</li>
+      </ol>
+    </div>
+
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="font-weight:700;font-size:.85rem;color:var(--primary);margin-bottom:6px;">用樞紐分析表統計頻次</div>
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>選取「含黃金(兒)訂單」的所有資料</li>
+        <li>點 <strong>插入 → 樞紐分析表</strong></li>
+        <li>放到新工作表「商品訂購頻次統計」</li>
+        <li>把「商品名稱」拖到 <strong>列</strong> 區域</li>
+        <li>把「數量」拖到 <strong>值</strong> 區域</li>
+        <li>點「加總：數量」的下拉選單 → <strong>值欄位設定</strong> → 改為 <strong>計數</strong></li>
+        <li>選 <strong>常用 → 排序與篩選 → 降冪排序</strong></li>
+      </ol>
+    </div>
+
+    <div style="background:#E8F0E9;border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:10px 12px;font-size:.82rem;color:var(--gray-700);">
+      ✅ 目標商品本身也會出現在統計中（34次），這是正常的！其他商品的計數就是「共現次數」。
+    </div>
   </div>
 
   <div class="panel-section" id="panel-s4">
-    <h4>步驟 4：計算支援度</h4>
-    <div style="background: var(--gray-800); border-radius: 8px; padding: 12px; margin: 8px 0; font-family: monospace; font-size: .85rem; color: #F5EDE3;">
+    <h4>📐 步驟 4：計算支援度</h4>
+    <div style="background:var(--gray-800);border-radius:8px;padding:12px;margin:8px 0;font-family:monospace;font-size:.9rem;color:#F5EDE3;text-align:center;">
       Support(X→Y) = |X∩Y| / N
     </div>
-    <p>|X∩Y| = 兩個商品同時出現在幾筆訂單<br>N = 全部訂單總數（984）</p>
-    <h4>Excel 操作</h4>
-    <ul>
-      <li>在步驟 3 的頻次表旁邊新增一欄「支援度」</li>
-      <li>公式：<code>=共現次數/984</code></li>
-      <li>設定門檻：最小支援度 = 0.03（即 3%）</li>
-    </ul>
-    <h4>解讀</h4>
-    <p>支援度 0.0335 代表有 3.35% 的訂單同時包含這兩件商品。</p>
+    <p style="font-size:.82rem;color:var(--gray-600);">|X∩Y| = 共現次數 &nbsp; N = 全部訂單數（984）</p>
+
+    <h4>🖥️ Excel 操作教學</h4>
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>在頻次統計表旁邊新增一欄，標題寫「支援度」</li>
+        <li>在第一個商品旁的儲存格輸入公式：<br>
+          <code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:.85rem;">=B3/984</code><br>
+          （B3 = 該商品的計數）</li>
+        <li>向下拖曳填滿到所有商品</li>
+        <li>門檻：支援度 ≥ <strong>0.03</strong> 的才算通過</li>
+      </ol>
+    </div>
+
+    <div style="background:#FFF3E8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:.82rem;color:var(--gray-700);">
+      💡 <strong>怎麼看？</strong> 支援度 0.0335 代表在全部 984 筆訂單中，有 3.35% 同時包含這兩件商品。數字越大代表兩者越常一起出現。
+    </div>
   </div>
 
   <div class="panel-section" id="panel-s5">
-    <h4>步驟 5：計算信賴度</h4>
-    <div style="background: var(--gray-800); border-radius: 8px; padding: 12px; margin: 8px 0; font-family: monospace; font-size: .85rem; color: #F5EDE3;">
+    <h4>📐 步驟 5：計算信賴度</h4>
+    <div style="background:var(--gray-800);border-radius:8px;padding:12px;margin:8px 0;font-family:monospace;font-size:.9rem;color:#F5EDE3;text-align:center;">
       Confidence(X→Y) = |X∩Y| / |X|
     </div>
-    <p>|X| = 包含 X（目標商品）的訂單數（34）</p>
-    <h4>Excel 操作</h4>
-    <ul>
-      <li>在支援度旁邊新增一欄「信賴度」</li>
-      <li>公式：<code>=共現次數/34</code></li>
-      <li>設定門檻：最小信賴度 = 0.4（即 40%）</li>
-    </ul>
-    <h4>解讀</h4>
-    <p>信賴度 0.9706 代表：買了 X 的訂單中，有 97.06% 也買了 Y。</p>
+    <p style="font-size:.82rem;color:var(--gray-600);">|X∩Y| = 共現次數 &nbsp; |X| = 目標商品的訂單數</p>
+
+    <h4>🖥️ Excel 操作教學</h4>
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>在「支援度」欄旁邊再新增一欄「信賴度」</li>
+        <li>在儲存格輸入公式：<br>
+          <code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:.85rem;">=B3/B$2</code><br>
+          （B$2 = 目標商品的計數，用 $ 固定列號）</li>
+        <li>向下拖曳填滿</li>
+        <li>門檻：信賴度 ≥ <strong>0.4</strong> 的才算通過</li>
+      </ol>
+    </div>
+
+    <div style="background:#FFF3E8;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 12px;font-size:.82rem;color:var(--gray-700);">
+      💡 <strong>怎麼看？</strong> 信賴度 0.9706 代表買了目標商品的人中，有 97% 也買了該商品。數字越大代表「買了 X 就很可能也會買 Y」。
+    </div>
   </div>
 
   <div class="panel-section" id="panel-s6">
-    <h4>步驟 6：判斷關聯商品</h4>
-    <p>必須同時滿足兩個條件：<br>✅ 支援度 ≥ 0.03<br>✅ 信賴度 ≥ 0.4</p>
-    <h4>Excel 操作</h4>
-    <ul>
-      <li>新增「是否為關聯商品」欄位</li>
-      <li>公式：<code>=IF(AND(支援度>=0.03, 信賴度>=0.4), "是", "否")</code></li>
-    </ul>
+    <h4>✅ 步驟 6：判斷關聯商品</h4>
+    <p style="margin-bottom:10px;">同時滿足兩個條件才是關聯商品：<br>
+    ✅ 支援度 ≥ 0.03<br>✅ 信賴度 ≥ 0.4</p>
+
+    <h4>🖥️ Excel 操作教學</h4>
+    <div style="background:white;border:1.5px solid var(--gray-200);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <ol style="font-size:.82rem;padding-left:18px;margin:0;color:var(--gray-700);line-height:1.8;">
+        <li>新增一欄「是否為關聯商品」</li>
+        <li>輸入公式：<br>
+          <code style="background:var(--gray-100);padding:3px 8px;border-radius:4px;font-size:.85rem;">=IF(AND(C3>=0.03, D3>=0.4), "是", "否")</code></li>
+        <li>向下拖曳填滿</li>
+        <li>只有顯示「是」的就是關聯商品</li>
+      </ol>
+    </div>
+
+    <div style="background:#E8F0E9;border-left:3px solid var(--green);border-radius:0 8px 8px 0;padding:10px 12px;font-size:.82rem;color:var(--gray-700);">
+      ✅ <strong>業務應用</strong>：關聯商品應放在相鄰貨架，方便揀貨；也可以做捆綁促銷或推薦系統。
+    </div>
     <h4>業務意義</h4>
     <p>找到關聯商品後，可以在推薦系統中設定：「買了 X 的客戶，推薦商品 Y」。這就是購物車分析的核心！</p>
   </div>
